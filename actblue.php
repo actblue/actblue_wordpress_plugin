@@ -12,4 +12,4 @@
  * @package         ActBlue
  */
 
-// Your code starts here.
+// Code here.
