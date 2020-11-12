@@ -10,7 +10,7 @@
  */
 
 /**
- * Defines the plugin name, version, and two examples hooks for how to
+ * Defines the plugin name, version, and two example hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  */
 class ActBlue_Admin {
