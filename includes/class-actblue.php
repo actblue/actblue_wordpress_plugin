@@ -51,6 +51,24 @@ class ActBlue {
 	protected $version;
 
 	/**
+	 * The instance containing the admin functionality.
+	 *
+	 * @since  0.1.0
+	 * @access private
+	 * @var    ActBlue_Admin
+	 */
+	private $plugin_admin;
+
+	/**
+	 * The instance containing the public functionality.
+	 *
+	 * @since  0.1.0
+	 * @access private
+	 * @var    ActBlue_Public
+	 */
+	private $plugin_public;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -60,16 +78,10 @@ class ActBlue {
 	 * @since 0.1.0
 	 */
 	public function __construct() {
-		if ( defined( 'ACTBLUE_PLUGIN_VERSION' ) ) {
-			$this->version = ACTBLUE_PLUGIN_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+		$this->version     = ACTBLUE_PLUGIN_VERSION;
 		$this->plugin_name = 'actblue';
 
 		$this->load_dependencies();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
 	}
 
 	/**
@@ -87,25 +99,18 @@ class ActBlue {
 	 * @access private
 	 */
 	private function load_dependencies() {
-
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-actblue-loader.php';
-
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-actblue-admin.php';
+		$this->plugin_admin = new ActBlue_Admin( $this->plugin_name, $this->version );
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-actblue-public.php';
-
-		$this->loader = new ActBlue_Loader();
+		$this->plugin_public = new ActBlue_Public( $this->plugin_name, $this->version );
 	}
 
 	/**
@@ -115,13 +120,11 @@ class ActBlue {
 	 * @since  0.1.0
 	 * @access private
 	 */
-	private function define_admin_hooks() {
-		$plugin_admin = new ActBlue_Admin( $this->plugin_name, $this->version );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_settings_page' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+	private function register_admin_hooks() {
+		add_action( 'admin_enqueue_scripts', array( $this->plugin_admin, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this->plugin_admin, 'enqueue_scripts' ) );
+		add_action( 'admin_menu', array( $this->plugin_admin, 'add_settings_page' ) );
+		add_action( 'admin_init', array( $this->plugin_admin, 'register_settings' ) );
 	}
 
 	/**
@@ -131,11 +134,9 @@ class ActBlue {
 	 * @since  0.1.0
 	 * @access private
 	 */
-	private function define_public_hooks() {
-		$plugin_public = new ActBlue_Public( $this->plugin_name, $this->version );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+	private function register_public_hooks() {
+		add_action( 'wp_enqueue_scripts', array( $this->plugin_public, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $this->plugin_public, 'enqueue_scripts' ) );
 	}
 
 	/**
@@ -144,6 +145,7 @@ class ActBlue {
 	 * @since 1.0.0
 	 */
 	public function run() {
-		$this->loader->run();
+		$this->register_admin_hooks();
+		$this->register_public_hooks();
 	}
 }
