@@ -4,10 +4,9 @@
   "description": "ActBlue enhancements plugin.",
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.4",
-    "phpcompatibility/php-compatibility": "*",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "wp-coding-standards/wpcs": "*"
+    "wp-coding-standards/wpcs": "^2.3"
   },
   "prefer-stable" : true
 }
