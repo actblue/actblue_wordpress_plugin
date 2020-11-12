@@ -125,6 +125,29 @@ class ActBlue {
 		add_action( 'admin_enqueue_scripts', array( $this->plugin_admin, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $this->plugin_admin, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this->plugin_admin, 'register_settings' ) );
+
+		add_filter(
+			'wp_kses_allowed_html',
+			function( $allowed_tags ) {
+				$allowed_tags['div'] = array(
+					'name' => true,
+					'id' => true,
+					'class' => true,
+					'style' => true,
+					'sandbox' => true,
+				);
+
+				$allowed_tags['iframe'] = array(
+					'name' => true,
+					'id' => true,
+					'class' => true,
+					'style' => true,
+					'sandbox' => true,
+				);
+
+				return $allowed_tags;
+			}
+		);
 	}
 
 	/**
@@ -137,6 +160,14 @@ class ActBlue {
 	private function register_public_hooks() {
 		add_action( 'wp_enqueue_scripts', array( $this->plugin_public, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this->plugin_public, 'enqueue_scripts' ) );
+
+		add_filter(
+			'body_class',
+			function( $classes ) {
+				$classes[] = 'actblue-active';
+				return $classes;
+			}
+		);
 	}
 
 	/**
