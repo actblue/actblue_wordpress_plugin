@@ -74,16 +74,19 @@ class ActBlue_Admin {
 	 * @link https://developer.wordpress.org/reference/functions/add_options_page/
 	 */
 	public function add_settings_page() {
-		// We can add a top-level menu page with `add_menu_page`.
-		// add_menu_page(
-		// 	'ActBlue Settings', // Page's meta <title>.
-		// 	'ActBlue', // Menu link text.
-		// 	'manage_options', // User capability required to access the page.
-		// 	'actblue-settings', // Page slug.
-		// 	array( $this, 'render_settings_page' ), // Callback function to render page.
-		// 	'dashicons-schedule', // Icon for the menu item.
-		// 	100 // Priority.
-		// );
+		/*
+		 * We can add a top-level menu page with `add_menu_page`.
+
+		add_menu_page(
+			'ActBlue Settings', // Page's meta <title>.
+			'ActBlue', // Menu link text.
+			'manage_options', // User capability required to access the page.
+			'actblue-settings', // Page slug.
+			array( $this, 'render_settings_page' ), // Callback function to render page.
+			'dashicons-schedule', // Icon for the menu item.
+			100 // Priority.
+		);
+		*/
 
 		// Or, we can create a subpage inside `Settings`.
 		add_options_page(
