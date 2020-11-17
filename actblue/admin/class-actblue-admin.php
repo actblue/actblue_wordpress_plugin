@@ -122,14 +122,6 @@ class ActBlue_Admin {
 			$slug,
 			$section_id
 		);
-
-		add_settings_field(
-			'actblue_title',
-			'Title',
-			array( $this, 'render_title_field' ), // Function which prints the field.
-			$slug,
-			$section_id
-		);
 	}
 
 	/**
@@ -154,19 +146,4 @@ class ActBlue_Admin {
 			esc_attr( $text['token'] )
 		);
 	}
-
-	/**
-	 * Renders the title field.
-	 *
-	 * @since 0.1.0
-	 */
-	public function render_title_field() {
-		$text = get_option( 'actblue_settings' );
-
-		printf(
-			'<input type="text" id="actblue_title" name="actblue_settings[title]" value="%s" />',
-			esc_attr( $text['title'] )
-		);
-	}
-
 }
