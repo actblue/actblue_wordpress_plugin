@@ -1,35 +1,13 @@
-version: 2.0
-
-references:
-  ##
-  ## Env variables
-  ##
-
-  # The directory where our scripts can find the WP installation.
-  WP_CORE_DIR: &WP_CORE_DIR
-    /tmp/wordpress
-
-  # Hostname of the WP site used for testing.
-  WP_HOST: &WP_HOST
-    actblue.test
-
-  # Name of the plugin in the WP directory @todo make sure this is right.
-  WP_ORG_PLUGIN_NAME: &WP_ORG_PLUGIN_NAME
-    actblue
-
-  # WordPress.org username.
-  WP_ORG_USERNAME: &WP_ORG_USERNAME
-    actblue # @todo make sure this is right
-
-  ##
-  ## Default container config
-  ##
-  container_config: &container_config
-    docker:
-      - image: circleci/php:7.2
-    environment:
-      - WP_CORE_DIR: *WP_CORE_DIR
-      - WP_HOST: *WP_HOST
-      - WP_ORG_PLUGIN_NAME: *WP_ORG_PLUGIN_NAME
-      - WP_ORG_USERNAME: *WP_ORG_USERNAME
-    working_directory: ~/actblue
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+# Use a package of configuration called an orb.
+orbs:
+  # Declare a dependency on the welcome-orb
+  welcome: circleci/welcome-orb@0.4.1
+# Orchestrate or schedule a set of jobs
+workflows:
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
+    jobs:
+      - welcome/run
