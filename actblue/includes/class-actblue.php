@@ -81,7 +81,18 @@ class ActBlue {
 		$this->version     = ACTBLUE_PLUGIN_VERSION;
 		$this->plugin_name = 'actblue';
 
+		$this->enable_oembed();
 		$this->load_dependencies();
+	}
+
+	/**
+	 * Whitelists the ActBlue oEmbed url.
+	 *
+	 * @since  0.1.0
+	 * @access private
+	 */
+	private function enable_oembed() {
+		wp_oembed_add_provider( 'https://secure.actblue.com/*', 'https://secure.actblue.com/cf/oembed' );
 	}
 
 	/**
