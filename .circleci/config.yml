@@ -33,7 +33,7 @@ job-references:
       - WP_CORE_DIR: "/tmp/wordpress/"
     steps:
       - checkout:
-        path: ~/actblue
+          path: ~/actblue
       - run: *setup_environment
       - run: *install_dependencies
       - run:
@@ -56,7 +56,7 @@ jobs:
       - image: *mysql_image
     steps:
       - checkout:
-        path: ~/actblue
+          path: ~/actblue
       - run: *setup_environment
       - run: *install_dependencies
       - run:
