@@ -114,43 +114,6 @@ class ActBlue {
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since  0.1.0
-	 * @access private
-	 */
-	private function register_admin_hooks() {
-		add_action( 'admin_enqueue_scripts', array( $this->plugin_admin, 'enqueue_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this->plugin_admin, 'enqueue_scripts' ) );
-		add_action( 'admin_menu', array( $this->plugin_admin, 'add_settings_page' ) );
-		add_action( 'admin_init', array( $this->plugin_admin, 'register_settings' ) );
-
-		add_filter(
-			'wp_kses_allowed_html',
-			function( $allowed_tags ) {
-				$allowed_tags['div'] = array(
-					'name' => true,
-					'id' => true,
-					'class' => true,
-					'style' => true,
-					'sandbox' => true,
-				);
-
-				$allowed_tags['iframe'] = array(
-					'name' => true,
-					'id' => true,
-					'class' => true,
-					'style' => true,
-					'sandbox' => true,
-				);
-
-				return $allowed_tags;
-			}
-		);
-	}
-
-	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
@@ -158,16 +121,7 @@ class ActBlue {
 	 * @access private
 	 */
 	private function register_public_hooks() {
-		add_action( 'wp_enqueue_scripts', array( $this->plugin_public, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this->plugin_public, 'enqueue_scripts' ) );
-
-		add_filter(
-			'body_class',
-			function( $classes ) {
-				$classes[] = 'actblue-active';
-				return $classes;
-			}
-		);
 	}
 
 	/**
@@ -176,7 +130,6 @@ class ActBlue {
 	 * @since 1.0.0
 	 */
 	public function run() {
-		$this->register_admin_hooks();
 		$this->register_public_hooks();
 	}
 }

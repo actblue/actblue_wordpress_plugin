@@ -46,16 +46,6 @@ class ActBlue_Public {
 	}
 
 	/**
-	 * Register the stylesheets for the public-facing site. This function should be added
-	 * as a callback when using the `wp_enqueue_scripts` hook.
-	 *
-	 * @since 0.1.0
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/actblue-public.css', array(), $this->version, 'all' );
-	}
-
-	/**
 	 * Register the JavaScript for the public-facing site. This function should be added
 	 * as a callback when using the `wp_enqueue_scripts` hook.
 	 *
