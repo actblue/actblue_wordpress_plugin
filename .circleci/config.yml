@@ -54,8 +54,7 @@ jobs:
   build:
     <<: *container_config
     steps:
-      - checkout:
-          path: ~/actblue
+      - checkout
       - run:
           name: Install dependencies
           command: composer install -n -o
@@ -70,8 +69,7 @@ jobs:
   code_quality:
     <<: *container_config
     steps:
-      - checkout:
-          path: ~/actblue
+      - checkout
       - *attach_workspace
       - *copy_vendor
       - run:
