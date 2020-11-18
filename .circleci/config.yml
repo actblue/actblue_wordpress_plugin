@@ -33,7 +33,7 @@ references:
     run:
       name: Copy vendor directory
     #   command: cp -R /tmp/vendor .
-      command: ls -la
+      command: ls -la /tmp
 
   install_subversion: &install_subversion
     run:
