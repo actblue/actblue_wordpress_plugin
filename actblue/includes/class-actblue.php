@@ -90,9 +90,16 @@ class ActBlue {
 	 *
 	 * @since  0.1.0
 	 * @access private
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/wp_oembed_add_provider/
 	 */
 	private function enable_oembed() {
-		wp_oembed_add_provider( 'https://secure.actblue.com/*', 'https://secure.actblue.com/cf/oembed' );
+		$provider_url = actblue_get_url( '/cf/oembed' );
+
+		// This first parameter indicates the string that WordPress looks for to
+		// initiate the call to the oEmbed provider. For that reason, we'll leave
+		// that pattern consistent.
+		wp_oembed_add_provider( 'https://secure.actblue.com/*', $provider_url );
 	}
 
 	/**

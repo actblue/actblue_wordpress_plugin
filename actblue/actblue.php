@@ -29,6 +29,28 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'ACTBLUE_PLUGIN_VERSION', '1.0.0' );
 
 /**
+ * Defines the ActBlue host.
+ */
+define( 'ACTBLUE_HOST', 'https://secure.actblue.com' );
+
+/**
+ * Utility function for returning the correct ActBlue endpoint url based on the
+ * environment context.
+ *
+ * @param string $route The route at the ActBlue host to hit. This parameter should
+ *                      include a leading slash.
+ *
+ * @return string The fully qualified url to make a request to ActBlue.
+ */
+function actblue_get_url( $route ) {
+	if ( defined( 'ACTBLUE_ENV' ) && 'development' === ACTBLUE_ENV && defined( 'ACTBLUE_STAGING_HOST' ) ) {
+		return ACTBLUE_STAGING_HOST . $route;
+	}
+
+	return ACTBLUE_HOST . $route;
+}
+
+/**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
