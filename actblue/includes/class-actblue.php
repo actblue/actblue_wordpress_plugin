@@ -86,7 +86,7 @@ class ActBlue {
 	}
 
 	/**
-	 * Whitelists the ActBlue oEmbed url.
+	 * Adds the ActBlue oEmbed endpoint to the list of allowed oEmbed endpoints.
 	 *
 	 * @since  0.1.0
 	 * @access private
