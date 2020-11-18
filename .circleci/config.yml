@@ -32,8 +32,7 @@ references:
   copy_vendor: &copy_vendor
     run:
       name: Copy vendor directory
-    #   command: cp -R /tmp/vendor .
-      command: ls -la /tmp/actblue
+      command: cp -R /tmp/actblue/vendor actblue
 
   install_subversion: &install_subversion
     run:
@@ -77,9 +76,9 @@ jobs:
       - checkout
       - *attach_workspace
       - *copy_vendor
-    #   - run:
-    #       name: Run code quality tests
-    #       command: cd actblue && vendor/bin/phpcs
+      - run:
+          name: Run code quality tests
+          command: cd actblue && vendor/bin/phpcs
 
 workflows:
   version: 2
