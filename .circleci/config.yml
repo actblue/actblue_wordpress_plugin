@@ -57,7 +57,8 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: composer install -n -o
+        #   command: composer install -n -o
+          command: ls -la
       - run:
           name: Install WordPress
           command: bash .circleci/install-wp.sh
