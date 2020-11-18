@@ -61,7 +61,7 @@ jobs:
           command: cd actblue && composer install -n -o
       - run:
           name: Install WordPress
-		  command: bash .circleci/install-wp.sh
+          command: bash .circleci/install-wp.sh
       - persist_to_workspace:
           root: .
           paths:
@@ -69,7 +69,7 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-			- wordpress
+            - wordpress
 
   code_quality:
     <<: *container_config
