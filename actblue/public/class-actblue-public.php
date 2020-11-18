@@ -52,8 +52,7 @@ class ActBlue_Public {
 	 * @since 0.1.0
 	 */
 	public function enqueue_scripts() {
-		// @TODO: add the actblue.js script path here:
-		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/actblue-public.js', array( 'jquery' ), $this->version, false );
+		$actblue_src = actblue_get_url( '/cf/assets/actblue.js' );
+		wp_enqueue_script( $this->plugin_name, $actblue_src, array(), $this->version, false );
 	}
-
 }
