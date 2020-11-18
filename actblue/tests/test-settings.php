@@ -1,14 +1,14 @@
 <?php
 /**
- * Class SampleTest
+ * Class SettingsTest.
  *
  * @package Actblue
  */
 
 /**
- * Sample test case.
+ * Test case for the settings.
  */
-class SampleTest extends WP_UnitTestCase {
+class SettingsTest extends WP_UnitTestCase {
 
 	/**
 	 * A single example test.
