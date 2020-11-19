@@ -72,14 +72,18 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update && sudo apt-get install subversion
-            sudo docker-php-ext-install mysqli
-            sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
-            sudo apt-get update && sudo apt-get install default-mysql-client
-            git submodule update --init
-            composer global require "phpunit/phpunit=5.7.*"
+          name: Install subversion
+          command: sudo apt-get update && sudo apt-get install subversion
+      - run:
+          name: Install mysql client
+          command: sudo apt-get update && sudo apt-get install default-mysql-client
+      - run:
+          name: Add mysql docker package
+          command: sudo docker-php-ext-install mysqli
+            # sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
+      - run:
+          name: Install PHPUnit
+          command: composer global require "phpunit/phpunit=5.7.*"
       - run:
           name: Run unit tests
           command: |
