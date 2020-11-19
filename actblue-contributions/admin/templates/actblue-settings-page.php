@@ -3,7 +3,7 @@
  * The view for the settings page in the admin.
  *
  * @link       https://secure.actblue.com/
- * @since      0.1.0
+ * @since      1.0.0
  * @author     ActBlue
  * @package    ActBlue
  * @subpackage ActBlue/admin

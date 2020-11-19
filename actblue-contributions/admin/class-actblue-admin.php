@@ -3,7 +3,7 @@
  * The admin-specific functionality of the plugin.
  *
  * @link       https://secure.actblue.com/
- * @since      0.1.0
+ * @since      1.0.0
  * @author     ActBlue
  * @package    ActBlue
  * @subpackage ActBlue/admin
@@ -17,7 +17,7 @@ class ActBlue_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access private
 	 * @var    string
 	 */
@@ -26,7 +26,7 @@ class ActBlue_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access private
 	 * @var    string
 	 */
@@ -35,7 +35,7 @@ class ActBlue_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $plugin_name The name of this plugin.
 	 * @param string $version     The version of this plugin.
@@ -48,7 +48,7 @@ class ActBlue_Admin {
 	/**
 	 * Adds the admin menu page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/add_menu_page/
 	 * @link https://developer.wordpress.org/reference/functions/add_options_page/
@@ -77,7 +77,7 @@ class ActBlue_Admin {
 	/**
 	 * Register the settings keys.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/register_setting/
 	 * @link https://developer.wordpress.org/reference/functions/add_settings_section/
@@ -127,7 +127,7 @@ class ActBlue_Admin {
 	/**
 	 * Renders the settings page markup.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function render_settings_page() {
 		include plugin_dir_path( __FILE__ ) . 'templates/actblue-settings-page.php';
@@ -136,7 +136,7 @@ class ActBlue_Admin {
 	/**
 	 * Renders the token field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function render_token_field() {
 		$text = get_option( 'actblue_settings' );

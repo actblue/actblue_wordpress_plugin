@@ -1,4 +1,4 @@
-# ActBlue Plugin and Docker Setup
+# ActBlue Contributions Plugin and Docker Setup
 
 ## Installation
 
