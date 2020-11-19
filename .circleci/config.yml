@@ -66,15 +66,16 @@ jobs:
 
   unit_tests:
     <<: *container_config
+    docker:
+      - image: circleci/php:7.2
+      - image: circleci/mysql:5.7
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            sudo apt-get update && sudo apt-get install subversion
+            sudo apt-get update && sudo apt-get install subversion mysql-client
             sudo docker-php-ext-install mysqli
-            sudo apt-get update && sudo apt-get install default-mysql-client
-            git submodule update --init
             composer global require "phpunit/phpunit=5.7.*"
       - run:
           name: Run unit tests
