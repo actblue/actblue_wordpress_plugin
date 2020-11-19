@@ -23,7 +23,7 @@ references:
       - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
       - WP_ORG_USERNAME: *WP_ORG_USERNAME
       - WP_TESTS_DIR: *WP_TESTS_DIR
-    working_directory: ~/actblue-contributions
+    working_directory: ~/*WP_PLUGIN_NAME
 
   workspace_root: &workspace_root
     /tmp
@@ -43,7 +43,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - actblue-contributions/vendor
+            - *WP_PLUGIN_NAME/vendor
 
   code_quality:
     <<: *container_config
@@ -55,8 +55,7 @@ jobs:
           command: cp -R /tmp/$WP_PLUGIN_NAME/vendor $WP_PLUGIN_NAME
       - run:
           name: Run code quality tests
-          command: ls $WP_PLUGIN_NAME
-          # command: $WP_PLUGIN_NAME/vendor/bin/phpcs
+          command: cd $WP_PLUGIN_NAME && vendor/bin/phpcs
 
   unit_tests:
     <<: *container_config

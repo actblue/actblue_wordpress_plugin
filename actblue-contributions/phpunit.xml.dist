@@ -8,7 +8,7 @@
 	convertWarningsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite name="actblue-plugin-tests">
+		<testsuite name="actblue-contributions-tests">
 			<directory prefix="test-" suffix=".php">./tests/</directory>
 		</testsuite>
 	</testsuites>
