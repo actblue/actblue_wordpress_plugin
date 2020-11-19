@@ -8,14 +8,14 @@
  * @wordpress-plugin
  * Plugin Name:      ActBlue Contributions
  * Plugin URI:       https://secure.actblue.com/
- * Description:      Enhance the ActBlue experience.
+ * Description:      Easily embed your ActBlue contribution forms on any WordPress page
  * Author:           ActBlue
  * Author URI:       https://secure.actblue.com/
  * License:          GPL-2.0+
  * License URI:      http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:      actblue
  * Domain Path:      /languages
- * Version:          0.1.0
+ * Version:          1.0.0
  */
 
 // If this file is called directly, abort.
@@ -65,7 +65,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-actblue.php';
  *
  * @return void
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 function actblue_plugin__run() {
 	$actblue_plugin = new ActBlue();

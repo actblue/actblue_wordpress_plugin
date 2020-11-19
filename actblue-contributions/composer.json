@@ -1,8 +1,9 @@
 {
   "name": "actblue/actblue-contributions-wp-plugin",
   "type": "wordpress-plugin",
+  "version": "1.0.0",
   "authors": [],
-  "description": "ActBlue enhancements plugin.",
+  "description": "Easily embed your ActBlue contribution forms on any WordPress page",
   "require": {
     "composer/installers": "v1.0.6"
   },
