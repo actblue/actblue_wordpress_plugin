@@ -40,7 +40,7 @@ if ! $(wp core is-installed); then
 		--admin_password="$WORDPRESS_ADMIN_PASSWORD"
 
 	# Activate the actblue plugin.
-	wp plugin activate actblue
+	wp plugin activate actblue-contributions
 fi
 
 # Install the tests

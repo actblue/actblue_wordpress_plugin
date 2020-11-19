@@ -7,7 +7,6 @@
  *
  * @wordpress-plugin
  * Plugin Name:      ActBlue Contributions
- * Plugin URI:       https://secure.actblue.com/
  * Description:      Easily embed your ActBlue contribution forms on any WordPress page
  * Author:           ActBlue
  * Author URI:       https://secure.actblue.com/

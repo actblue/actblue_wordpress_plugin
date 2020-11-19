@@ -9,7 +9,7 @@ services:
       - "80:80"
       - "443:443"
     # Set the working directory to look at the actblue dir on the container.
-    working_dir: /var/www/html/wp-content/plugins/actblue
+    working_dir: /var/www/html/wp-content/plugins/actblue-contributions
 
     environment:
       # WordPress install configuration.
