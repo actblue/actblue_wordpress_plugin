@@ -46,46 +46,21 @@ class ActBlue_Admin {
 	}
 
 	/**
-	 * Register the stylesheets for the admin area. This function should be added as
-	 * a callback when using the `admin_enqueue_scripts` hook.
-	 *
-	 * @since 0.1.0
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/actblue-admin.css', array(), $this->version, 'all' );
-	}
-
-	/**
-	 * Register the JavaScript for the admin area. This function should be added as
-	 * a callback when using the `admin_enqueue_scripts` hook.
-	 *
-	 * @since 0.1.0
-	 */
-	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/actblue-admin.js', array( 'jquery' ), $this->version, false );
-	}
-
-	/**
 	 * Adds the admin menu page.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/add_menu_page/
 	 * @link https://developer.wordpress.org/reference/functions/add_options_page/
+	 *
+	 * @usage
+	 *
+	 *   In the main ActBlue class, enqueue this method as the callback for the
+	 *   `admin_menu` hook.
 	 */
 	public function add_settings_page() {
 		/*
 		 * We can add a top-level menu page with `add_menu_page`.
-
-		add_menu_page(
-			'ActBlue Settings', // Page's meta <title>.
-			'ActBlue', // Menu link text.
-			'manage_options', // User capability required to access the page.
-			'actblue-settings', // Page slug.
-			array( $this, 'render_settings_page' ), // Callback function to render page.
-			'dashicons-schedule', // Icon for the menu item.
-			100 // Priority.
-		);
 		*/
 
 		// Or, we can create a subpage inside `Settings`.
@@ -107,6 +82,11 @@ class ActBlue_Admin {
 	 * @link https://developer.wordpress.org/reference/functions/register_setting/
 	 * @link https://developer.wordpress.org/reference/functions/add_settings_section/
 	 * @link https://developer.wordpress.org/reference/functions/add_settings_field/
+	 *
+	 * @usage
+	 *
+	 *   In the main ActBlue class, enqueue this method as the callback for the
+	 *   `admin_init` hook.
 	 */
 	public function register_settings() {
 		// Slug of the page we're rendering these settings on.
@@ -142,14 +122,6 @@ class ActBlue_Admin {
 			$slug,
 			$section_id
 		);
-
-		add_settings_field(
-			'actblue_title',
-			'Title',
-			array( $this, 'render_title_field' ), // Function which prints the field.
-			$slug,
-			$section_id
-		);
 	}
 
 	/**
@@ -174,19 +146,4 @@ class ActBlue_Admin {
 			esc_attr( $text['token'] )
 		);
 	}
-
-	/**
-	 * Renders the title field.
-	 *
-	 * @since 0.1.0
-	 */
-	public function render_title_field() {
-		$text = get_option( 'actblue_settings' );
-
-		printf(
-			'<input type="text" id="actblue_title" name="actblue_settings[title]" value="%s" />',
-			esc_attr( $text['title'] )
-		);
-	}
-
 }
