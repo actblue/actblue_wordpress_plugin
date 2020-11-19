@@ -39,11 +39,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: |
-            sudo apt-get update && sudo apt-get install subversion default-mysql-client
-            sudo docker-php-ext-install mysqli
-            composer global require "phpunit/phpunit=5.7.*"
-            cd actblue && composer install -n -o
+          command: cd actblue && composer install -n -o
       # - run:
       #     name: Install WordPress
       #     command: bash .circleci/install-wp.sh
@@ -75,9 +71,12 @@ jobs:
       - image: circleci/mysql:5.7
     steps:
       - checkout
-      # - run:
-      #     name: Install subversion
-      #     command:
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install subversion default-mysql-client
+            sudo docker-php-ext-install mysqli
+            composer global require "phpunit/phpunit=5.7.*"
       # - run:
       #     name: Install mysql client
       #     command:
