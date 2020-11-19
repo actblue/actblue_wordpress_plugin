@@ -1,5 +1,5 @@
 {
-  "name": "actblue/actblue-wp-plugin",
+  "name": "actblue/actblue-contributions-wp-plugin",
   "type": "wordpress-plugin",
   "authors": [],
   "description": "ActBlue enhancements plugin.",

@@ -1,7 +1,7 @@
-=== ActBlue ===
+=== ActBlue Contributions ===
 Contributors: actblue,upstatement
 Donate link: https://secure.actblue.com/
-Tags: donate,donation,fundraising,giving,charity,nonprofit
+Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributions
 Requires at least: 4.5
 Tested up to: 5.5.6
 Requires PHP: 5.6

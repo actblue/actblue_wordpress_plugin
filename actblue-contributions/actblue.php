@@ -6,7 +6,7 @@
  * @package ActBlue
  *
  * @wordpress-plugin
- * Plugin Name:      ActBlue
+ * Plugin Name:      ActBlue Contributions
  * Plugin URI:       https://secure.actblue.com/
  * Description:      Enhance the ActBlue experience.
  * Author:           ActBlue
