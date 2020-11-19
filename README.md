@@ -1,6 +1,6 @@
 # ActBlue WordPress Plugin
 
-This repository holds the source code for the ActBlue WordPress plugin, as well as a docker container that can be used to spin up a local environment containing WordPress (with the plugin installed and activated). The container comes with SSL support and PHP unit tests with [PHPUnit 7](https://phpunit.de/getting-started/phpunit-7.html).
+This repository holds the source code for the ActBlue WordPress plugin, as well as a docker container that can be used to spin up a local environment containing WordPress (with the plugin installed and activated). The container comes with SSL support and PHP unit tests with PHPUnit](https://phpunit.de).
 
 ## Prerequisites
 
@@ -29,7 +29,7 @@ The docker container will mount the local `actblue/` directory into the `wp-cont
 
 ## Testing
 
-PHP unit testing via [PHPUnit 7](https://phpunit.de/getting-started/phpunit-7.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
+PHP unit testing via [PHPUnit 5](https://phpunit.de/getting-started/phpunit-5.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
 
 To run the PHP unit tests on the container, run the following command (note that the container needs to be running for this to work):
 
