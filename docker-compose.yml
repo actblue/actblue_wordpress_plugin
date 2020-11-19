@@ -30,7 +30,7 @@ services:
       RUN_SCRIPTS: 1
     # Mount the actblue/ plugin directory so that local changes persist.
     volumes:
-      - ./actblue:/var/www/html/wp-content/plugins/actblue
+      - ./actblue-contributions:/var/www/html/wp-content/plugins/actblue-contributions
 
   db:
     image: mysql:5.7
