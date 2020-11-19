@@ -80,7 +80,6 @@ jobs:
       - run:
           name: Add mysql docker package
           command: sudo docker-php-ext-install mysqli
-            # sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
       - run:
           name: Install PHPUnit
           command: composer global require "phpunit/phpunit=5.7.*"
@@ -96,9 +95,9 @@ workflows:
   run_tests:
     jobs:
       - build
-      # - code_quality:
-      #     requires:
-      #       - build
+      - code_quality:
+          requires:
+            - build
       - unit_tests:
           requires:
             - build
