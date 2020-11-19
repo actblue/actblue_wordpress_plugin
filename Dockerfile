@@ -14,7 +14,7 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
   chmod +x /usr/local/bin/wp;
 
 # Install phpunit for unit tests.
-RUN wget -O phpunit https://phar.phpunit.de/phpunit-7.phar; \
+RUN wget -O phpunit https://phar.phpunit.de/phpunit-5.phar; \
   chmod +x phpunit; \
   mv phpunit /usr/local/bin/;
 

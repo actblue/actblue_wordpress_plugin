@@ -69,7 +69,7 @@ jobs:
           command: |
             sudo apt-get update && sudo apt-get install subversion default-mysql-client
             sudo docker-php-ext-install mysqli
-            composer global require "phpunit/phpunit=5.7.*"
+            composer global require "phpunit/phpunit ^5"
       - run:
           name: Run unit tests
           command: |
