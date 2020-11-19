@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "author": "ActBlue",
   "scripts": {
-    "build": "wp-scripts build"
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
   },
   "devDependencies": {
     "@wordpress/scripts": "12.5.0"

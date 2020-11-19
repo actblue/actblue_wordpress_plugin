@@ -51,16 +51,15 @@ class ActBlue_Blocks {
 	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
-		// $blocks_asset = include plugin_dir_path( __FILE__ ) . 'build/'
+		$blocks_asset = include ACTBLUE_PLUGIN_DIR . 'build/blocks.asset.php';
 
-		error_log(print_r('hello', true));
-
-		// wp_enqueue_script(
-		// 	$this->plugin_name . '-blocks',
-		// 	plugins_url( '/build/blocks.js', __FILE__ ),
-		// 	$blocks_asset['dependencies'],
-		// 	$this->version
-		// );
+		wp_enqueue_script(
+			$this->plugin_name . '-blocks',
+			ACTBLUE_PLUGIN_URI . 'build/blocks.js',
+			$blocks_asset['dependencies'],
+			$this->version,
+			true
+		);
 	}
 
 }

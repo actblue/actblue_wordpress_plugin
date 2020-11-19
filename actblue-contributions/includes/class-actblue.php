@@ -174,5 +174,6 @@ class ActBlue {
 	 */
 	public function run() {
 		$this->register_public_hooks();
+		$this->register_blocks();
 	}
 }
