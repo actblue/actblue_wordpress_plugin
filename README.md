@@ -54,5 +54,5 @@ docker-composer stop
 You can run the following command to list the running containers and confirm that the container has been stopped (it won't be listed):
 
 ```sh
-docker ps
+docker-compose ps
 ```
