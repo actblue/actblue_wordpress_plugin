@@ -55,8 +55,8 @@ If you have a question about the ActBlue platform, visit our [support site](http
 
 == Screenshots ==
 
-1. 
-2.
+1. Just paste your ActBlue form page link in the WordPress editor.
+2. The link will automatically be replaced with the live form.
 
 == Changelog ==
 
