@@ -1,10 +1,18 @@
-
 {
-  "name": "actblue",
-  "version": "0.1.0",
+  "name": "@actblue/actblue-wp-plugin",
+  "version": "1.0.0",
   "author": "ActBlue",
-  "scripts" : {
+  "scripts": {
+    "build": "wp-scripts build"
   },
   "devDependencies": {
-  }
+    "@wordpress/scripts": "12.5.0"
+  },
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [],
+  "license": "ISC"
 }
