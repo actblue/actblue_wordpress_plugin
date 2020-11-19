@@ -40,17 +40,10 @@ jobs:
       - run:
           name: Install dependencies
           command: cd actblue && composer install -n -o
-      # - run:
-      #     name: Install WordPress
-      #     command: bash .circleci/install-wp.sh
       - persist_to_workspace:
           root: .
           paths:
             - actblue/vendor
-      # - persist_to_workspace:
-      #     root: *workspace_root
-      #     paths:
-      #       - wordpress
 
   code_quality:
     <<: *container_config
@@ -77,15 +70,6 @@ jobs:
             sudo apt-get update && sudo apt-get install subversion default-mysql-client
             sudo docker-php-ext-install mysqli
             composer global require "phpunit/phpunit=5.7.*"
-      # - run:
-      #     name: Install mysql client
-      #     command:
-      # - run:
-      #     name: Add mysql docker package
-      #     command:
-      # - run:
-      #     name: Install PHPUnit
-      #     command:
       - run:
           name: Run unit tests
           command: |
