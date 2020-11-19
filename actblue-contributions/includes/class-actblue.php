@@ -88,7 +88,7 @@ class ActBlue {
 	 */
 	public function __construct() {
 		$this->version     = ACTBLUE_PLUGIN_VERSION;
-		$this->plugin_name = 'actblue';
+		$this->plugin_name = 'actblue-contributions';
 
 		$this->enable_oembed();
 		$this->load_dependencies();
