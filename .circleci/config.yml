@@ -43,7 +43,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - $WP_PLUGIN_NAME/vendor
+            - actblue-contributions/vendor
 
   code_quality:
     <<: *container_config
