@@ -85,6 +85,6 @@ workflows:
       - code_quality:
           requires:
             - build
-      # - unit_tests:
-      #     requires:
-      #       - build
+      - unit_tests:
+          requires:
+            - build
