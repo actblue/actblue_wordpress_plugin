@@ -26,7 +26,7 @@ services:
       # See https://github.com/richarvey/nginx-php-fpm
       RUN_SCRIPTS: 1
     volumes:
-      - ./actblue:/var/www/html/wp-content/plugins/actblue
+      - ./actblue-contributions:/var/www/html/wp-content/plugins/actblue-contributions
 
   db:
     image: mysql:5.7
