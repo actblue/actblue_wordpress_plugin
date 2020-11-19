@@ -6,7 +6,7 @@ references:
     /tmp/wordpress
   WP_HOST: &WP_HOST
     actblue.test
-  WP_ORG_PLUGIN_NAME: &WP_ORG_PLUGIN_NAME
+  WP_PLUGIN_NAME: &WP_PLUGIN_NAME
     actblue-contributions
   WP_ORG_USERNAME: &WP_ORG_USERNAME
     actblue
@@ -20,10 +20,10 @@ references:
     environment:
       - WP_CORE_DIR: *WP_CORE_DIR
       - WP_HOST: *WP_HOST
-      - WP_ORG_PLUGIN_NAME: *WP_ORG_PLUGIN_NAME
+      - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
       - WP_ORG_USERNAME: *WP_ORG_USERNAME
       - WP_TESTS_DIR: *WP_TESTS_DIR
-    working_directory: ~/actblue
+    working_directory: ~/actblue-contributions
 
   workspace_root: &workspace_root
     /tmp
@@ -39,11 +39,11 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: cd actblue-contributions && composer install -n -o
+          command: cd $WP_PLUGIN_NAME && composer install -n -o
       - persist_to_workspace:
           root: .
           paths:
-            - actblue-contributions/vendor
+            - $WP_PLUGIN_NAME/vendor
 
   code_quality:
     <<: *container_config
@@ -52,10 +52,10 @@ jobs:
       - *attach
       - run:
           name: Copy vendor directory
-          command: cp -R /tmp/actblue-contributions/vendor actblue
+          command: cp -R /tmp/$WP_PLUGIN_NAME/vendor $WP_PLUGIN_NAME
       - run:
           name: Run code quality tests
-          command: actblue-contributions/vendor/bin/phpcs
+          command: $WP_PLUGIN_NAME/vendor/bin/phpcs
 
   unit_tests:
     <<: *container_config
@@ -74,8 +74,8 @@ jobs:
           name: Run unit tests
           command: |
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash actblue/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            cd actblue-contributions && $HOME/.composer/vendor/bin/phpunit
+            bash $WP_PLUGIN_NAME/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+            cd $WP_PLUGIN_NAME && $HOME/.composer/vendor/bin/phpunit
 
 workflows:
   version: 2
