@@ -23,7 +23,7 @@ references:
       - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
       - WP_ORG_USERNAME: *WP_ORG_USERNAME
       - WP_TESTS_DIR: *WP_TESTS_DIR
-    working_directory: ~/*WP_PLUGIN_NAME
+    working_directory: ~/actblue-contributions
 
   workspace_root: &workspace_root
     /tmp
@@ -43,7 +43,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - *WP_PLUGIN_NAME/vendor
+            - actblue-contributions/vendor
 
   code_quality:
     <<: *container_config
