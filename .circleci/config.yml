@@ -1,0 +1,90 @@
+version: 2
+
+references:
+  # Environment variables.
+  WP_CORE_DIR: &WP_CORE_DIR
+    /tmp/wordpress
+  WP_HOST: &WP_HOST
+    actblue.test
+  WP_PLUGIN_NAME: &WP_PLUGIN_NAME
+    actblue-contributions
+  WP_ORG_USERNAME: &WP_ORG_USERNAME
+    actblue
+  WP_TESTS_DIR: &WP_TESTS_DIR
+    /tmp/wordpress-tests-lib
+
+  # Container configuration.
+  container_config: &container_config
+    docker:
+      - image: circleci/php:7.2
+    environment:
+      - WP_CORE_DIR: *WP_CORE_DIR
+      - WP_HOST: *WP_HOST
+      - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
+      - WP_ORG_USERNAME: *WP_ORG_USERNAME
+      - WP_TESTS_DIR: *WP_TESTS_DIR
+    working_directory: ~/actblue-contributions
+
+  workspace_root: &workspace_root
+    /tmp
+
+  attach: &attach
+    attach_workspace:
+      at: *workspace_root
+
+jobs:
+  build:
+    <<: *container_config
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: cd $WP_PLUGIN_NAME && composer install -n -o
+      - persist_to_workspace:
+          root: .
+          paths:
+            - actblue-contributions/vendor
+
+  code_quality:
+    <<: *container_config
+    steps:
+      - checkout
+      - *attach
+      - run:
+          name: Copy vendor directory
+          command: cp -R /tmp/$WP_PLUGIN_NAME/vendor $WP_PLUGIN_NAME
+      - run:
+          name: Run code quality tests
+          command: cd $WP_PLUGIN_NAME && vendor/bin/phpcs
+
+  unit_tests:
+    <<: *container_config
+    docker:
+      - image: circleci/php:7.2
+      - image: circleci/mysql:5.7
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install subversion default-mysql-client
+            sudo docker-php-ext-install mysqli
+            composer global require "phpunit/phpunit ^5"
+      - run:
+          name: Run unit tests
+          command: |
+            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+            bash $WP_PLUGIN_NAME/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+            cd $WP_PLUGIN_NAME && $HOME/.composer/vendor/bin/phpunit
+
+workflows:
+  version: 2
+  run_tests:
+    jobs:
+      - build
+      - code_quality:
+          requires:
+            - build
+      - unit_tests:
+          requires:
+            - build

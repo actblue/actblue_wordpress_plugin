@@ -38,4 +38,12 @@ if ! $(wp core is-installed); then
 		--admin_user="$WORDPRESS_ADMIN_USER" \
 		--admin_email="$WORDPRESS_ADMIN_EMAIL" \
 		--admin_password="$WORDPRESS_ADMIN_PASSWORD"
+
+	# Activate the actblue plugin.
+	wp plugin activate actblue
+fi
+
+# Install the tests
+if [ ! -d /tmp/wordpress-tests-lib ]; then
+bash /var/www/html/wp-content/plugins/actblue/bin/install-wp-tests.sh wordpress_tests root root db
 fi
