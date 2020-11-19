@@ -1,7 +1,7 @@
-=== Actblue ===
-Contributors: ActBlue
+=== ActBlue ===
+Contributors: actblue,upstatement
 Donate link: https://secure.actblue.com/
-Tags:
+Tags: donate,donation,fundraising,giving,charity,nonprofit
 Requires at least: 4.5
 Tested up to: 5.5.6
 Requires PHP: 5.6
@@ -9,56 +9,57 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Easily embed your ActBlue donation forms on any WordPress page
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+This plugin makes it possible to display your ActBlue Embed forms on your WordPress site by dropping a donation form link in any WordPress editor.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+= Features =
+- Registers a custom [oEmbed](https://wordpress.org/support/article/embeds/) provider for ActBlue Embed forms
+- Adds the `actblue.js` script tag to all of your pages to power analytics and conversion features
 
-A few notes about the sections above:
+= Coming Soon =
+- Support for Donation buttons
+- Support for refcodes
+- Gutenberg block with additional customization options
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+= About ActBlue =
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+[ActBlue](https://secure.actblue.com/) is an American nonprofit technology organization established in June 2004 that enables left-leaning nonprofits, Democratic candidates, and progressive groups to raise money from individual donors on the Internet by providing them with online fundraising software. Its stated mission is to "empower small-dollar donors."
 
 == Installation ==
 
 1. Upload the `actblue` directory to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= How do I create an embeddable donation form? =
 
-An answer to that question.
+Embeddable donation forms are currently available to admins of 501(c)(3) and 501(c)(4) nonprofit organizations.
 
-= What about foo bar? =
+If you're not already registered with ActBlue, head over to the [ActBlue site to get started](https://secure.actblue.com/pending_entities/new). Instructions for setting up your embeddable donation form can be found on the [support site](https://support.actblue.com/campaigns/working-with-contribution-forms/embeddable-forms-buttons-for-nonprofits/).
 
-Answer to foo bar dilemma.
+= How do I customize the appearance of my donation form? =
+
+You can customize the appearance and behavior of your form through the ActBlue platform.
+
+You can learn more about available customization options in the [embed support guide](https://support.actblue.com/campaigns/working-with-contribution-forms/embeddable-forms-buttons-for-nonprofits/).
+
+= How do I get help? =
+
+If you're having issues with the plugin, please log in with your WP.org account and open a ticket in the [plugin support forum](https://wordpress.org/support/plugin/actblue/).
+
+If you have a question about the ActBlue platform, visit our [support site](https://support.actblue.com/). If you're still stuck, don't hesitate to [send us an email](https://secure.actblue.com/contact).
 
 == Screenshots ==
 
+1. 
+2.
 
 == Changelog ==
 
 = 0.1.0 =
 * Adds the ActBlue script to public-facing pages.
 * Adds the ActBlue oEmbed endpoint to the list of allowed providers.
-
