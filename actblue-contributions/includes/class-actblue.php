@@ -6,7 +6,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link       https://secure.actblue.com/
- * @since      0.1.0
+ * @since      1.0.0
  * @author     ActBlue
  * @package    ActBlue
  * @subpackage ActBlue/includes
@@ -26,7 +26,7 @@ class ActBlue {
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access protected
 	 * @var    ActBlue_Loader
 	 */
@@ -35,7 +35,7 @@ class ActBlue {
 	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access protected
 	 * @var    string
 	 */
@@ -44,7 +44,7 @@ class ActBlue {
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access protected
 	 * @var    string
 	 */
@@ -53,7 +53,7 @@ class ActBlue {
 	/**
 	 * The instance containing the admin functionality.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access private
 	 * @var    ActBlue_Admin
 	 */
@@ -62,7 +62,7 @@ class ActBlue {
 	/**
 	 * The instance containing the public functionality.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access private
 	 * @var    ActBlue_Public
 	 */
@@ -84,7 +84,7 @@ class ActBlue {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		$this->version     = ACTBLUE_PLUGIN_VERSION;
@@ -97,7 +97,7 @@ class ActBlue {
 	/**
 	 * Adds the ActBlue oEmbed endpoint to the list of allowed oEmbed endpoints.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access private
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/wp_oembed_add_provider/
@@ -122,7 +122,7 @@ class ActBlue {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access private
 	 */
 	private function load_dependencies() {
@@ -150,7 +150,7 @@ class ActBlue {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @access private
 	 */
 	private function register_public_hooks() {

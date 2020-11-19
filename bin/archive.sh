@@ -12,10 +12,10 @@
 shopt -s dotglob
 
 echo "Copying plugin files ..."
-rsync -rc --exclude-from="actblue/.distignore" --delete --delete-excluded actblue/ dist/
+rsync -rc --exclude-from="actblue-contributions/.distignore" --delete --delete-excluded actblue-contributions/ dist/
 
 echo "Creating zip file ..."
-(cd dist && zip -r ../actblue.zip ./*)
+(cd dist && zip -r ../actblue-contributions.zip ./*)
 
 echo "Cleaning up ..."
 rm -rf dist
