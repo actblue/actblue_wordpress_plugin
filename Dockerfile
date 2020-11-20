@@ -28,6 +28,3 @@ COPY docker/conf /var/www/html/conf
 # Copy startup scripts into location expected by nginx-php-fpm.
 # See https://github.com/richarvey/nginx-php-fpm/blob/master/docs/scripting_templating.md
 COPY docker/scripts /var/www/html/scripts
-
-# Copy the plugin into the right place, so we can set up unit testing.
-COPY actblue /var/www/html/wp-content/plugins/actblue
