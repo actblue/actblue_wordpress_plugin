@@ -1,4 +1,11 @@
-import { registerBlockType } from "@wordpress/blocks";
-import ActblueEmbed from "./actblue-embed";
+/**
+ * WordPress dependencies
+ */
+import { registerBlockVariation } from "@wordpress/blocks";
 
-registerBlockType(ActblueEmbed.name, ActblueEmbed.settings);
+/**
+ * Internal dependencies
+ */
+import { settings as actblueEmbedSettings } from "./extends/actblue-embed";
+
+registerBlockVariation("core/embed", actblueEmbedSettings);
