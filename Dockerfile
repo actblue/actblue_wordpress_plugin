@@ -30,4 +30,4 @@ COPY docker/conf /var/www/html/conf
 COPY docker/scripts /var/www/html/scripts
 
 # Copy the plugin into the right place, so we can set up unit testing.
-COPY actblue /var/www/html/wp-content/plugins/actblue
+COPY actblue-contributions /var/www/html/wp-content/plugins/actblue-contributions
