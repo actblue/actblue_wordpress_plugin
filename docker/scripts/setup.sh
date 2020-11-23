@@ -45,5 +45,5 @@ fi
 
 # Install the tests
 if [ ! -d /tmp/wordpress-tests-lib ]; then
-bash /var/www/html/wp-content/plugins/actblue/bin/install-wp-tests.sh wordpress_tests root root db
+	bash /var/www/html/wp-content/plugins/actblue-contributions/bin/install-wp-tests.sh wordpress_tests root root db
 fi
