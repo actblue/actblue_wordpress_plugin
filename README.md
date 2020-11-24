@@ -2,6 +2,17 @@
 
 This repository holds the source code for the ActBlue WordPress plugin, as well as a docker container that can be used to spin up a local environment containing WordPress (with the plugin installed and activated). The container comes with SSL support and PHP unit tests with PHPUnit](https://phpunit.de).
 
+## Structure
+
+### `actblue-contributions/`
+The WordPress plugin source.
+
+### `assets/`
+Assets for the plugin. This includes things like banner images and screenshots that go on the plugin page on WordPress.org.
+
+### `docker/`
+Configuration files for the local docker image.
+
 ## Prerequisites
 
 To get the docker setup up and running you'll need [Docker Desktop](https://www.docker.com/products/docker-desktop) (note that this has only been tested with the Mac version).
