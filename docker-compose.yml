@@ -31,6 +31,7 @@ services:
     # Mount the actblue/ plugin directory so that local changes persist.
     volumes:
       - ./actblue-contributions:/var/www/html/wp-content/plugins/actblue-contributions
+      - ./logs/:/var/www/html/logs
 
   db:
     image: mysql:5.7

@@ -69,6 +69,15 @@ class ActBlue {
 	private $plugin_public;
 
 	/**
+	 * The instance containing the block functionality.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 * @var    ActBlue_Blocks
+	 */
+	private $plugin_blocks;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -129,6 +138,12 @@ class ActBlue {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-actblue-public.php';
 		$this->plugin_public = new ActBlue_Public( $this->plugin_name, $this->version );
+
+		/**
+		 * The class responsible for anything to do with blocks.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/class-actblue-blocks.php';
+		$this->plugin_blocks = new ActBlue_Blocks( $this->plugin_name, $this->version );
 	}
 
 	/**
@@ -143,11 +158,22 @@ class ActBlue {
 	}
 
 	/**
+	 * Register any block hooks.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 */
+	private function register_blocks() {
+		add_action( 'enqueue_block_editor_assets', array( $this->plugin_blocks, 'enqueue_scripts' ) );
+	}
+
+	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
 	 * @since 1.0.0
 	 */
 	public function run() {
 		$this->register_public_hooks();
+		$this->register_blocks();
 	}
 }

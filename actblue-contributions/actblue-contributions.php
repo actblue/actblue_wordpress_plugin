@@ -33,6 +33,16 @@ define( 'ACTBLUE_PLUGIN_VERSION', '1.0.0' );
 define( 'ACTBLUE_HOST', 'https://secure.actblue.com' );
 
 /**
+ * Defines the directory for this plugin.
+ */
+define( 'ACTBLUE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+
+/**
+ * Defines the uri for this plugin.
+ */
+define( 'ACTBLUE_PLUGIN_URI', trailingslashit( plugins_url( '', __FILE__ ) ) );
+
+/**
  * Utility function for returning the correct ActBlue endpoint url based on the
  * environment context.
  *
