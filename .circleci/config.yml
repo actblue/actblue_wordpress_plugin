@@ -69,6 +69,7 @@ jobs:
       - image: circleci/mysql:5.7
     steps:
       - checkout
+      - *install_subversion
       - run:
           name: Install dependencies
           command: |
