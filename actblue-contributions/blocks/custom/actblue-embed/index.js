@@ -12,6 +12,7 @@ export const getBlockSettings = () => {
 		...settings,
 		name,
 		title: "ActBlue Embed",
-		icon: "",
+		icon: "block",
+		description: "Embed an ActBlue contribution form.",
 	};
 };
