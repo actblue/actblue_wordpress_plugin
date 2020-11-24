@@ -1,11 +1,15 @@
 /**
  * WordPress dependencies
  */
-import { registerBlockVariation } from "@wordpress/blocks";
+import domReady from "@wordpress/dom-ready";
+import { registerBlockType } from "@wordpress/blocks";
 
 /**
  * Internal dependencies
  */
-import { settings as actblueEmbedSettings } from "./extends/actblue-embed";
+import { name, getBlockSettings } from "./custom/actblue-embed";
 
-registerBlockVariation("core/embed", actblueEmbedSettings);
+// We need to run this on domReady so that the block data has been initialized.
+domReady(() => {
+	registerBlockType(name, getBlockSettings());
+});
