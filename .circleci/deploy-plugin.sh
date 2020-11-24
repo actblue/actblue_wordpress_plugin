@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-CIRCLECI=1
-CIRCLE_BRANCH="main"
-WP_ORG_PASSWORD="password"
-WP_ORG_PLUGIN_NAME="actblue-contributions"
-WP_ORG_USERNAME="actblue"
-
 if [[ -z "$CIRCLECI" ]]; then
     echo "This script can only be run by CircleCI. Aborting." 1>&2
     exit 1
@@ -31,20 +25,19 @@ if [[ -z "$WP_ORG_USERNAME" ]]; then
     exit 1
 fi
 
-PLUGIN_BUILD_DIRECTORIES=(lib resources src)
-PLUGIN_BUILD_FILES=(index.php LICENSE passwords-evolved.php pluggable.php readme.txt)
+# SVN_URL="file:///Users/braican/Projects/upstatement/actblue/svn"
+SVN_URL="https://plugins.svn.wordpress.org/${WP_ORG_PLUGIN_NAME}/"
 PLUGIN_BUILD_PATH="/tmp/build"
 PLUGIN_SVN_PATH="/tmp/svn"
 
 # Figure out the most recent git tag
 LATEST_GIT_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+
 # Remove the "v" at the beginning of the git tag
 LATEST_SVN_TAG=${LATEST_GIT_TAG:1}
 
-echo "$LATEST_GIT_TAG"
-
-# # Check if the latest SVN tag exists already
-TAG=$(svn ls "https://plugins.svn.wordpress.org/$WP_ORG_PLUGIN_NAME/tags/$LATEST_SVN_TAG")
+# Check if the latest SVN tag exists already
+TAG=$(svn ls "${SVN_URL}tags/${LATEST_SVN_TAG}")
 error=$?
 if [ $error == 0 ]; then
     # Tag exists, don't deploy
@@ -55,27 +48,23 @@ fi
 # Checkout the git tag
 git checkout tags/$LATEST_GIT_TAG
 
-# Create the build directory
+# Create the build directory.
 mkdir $PLUGIN_BUILD_PATH
 
-# Copy plugin directories to the build directory
-for DIRECTORY in "${PLUGIN_BUILD_DIRECTORIES[@]}"; do
-    cp -r $DIRECTORY $PLUGIN_BUILD_PATH/$DIRECTORY
-done
-
-# Copy plugin files to the build directory
-for FILE in "${PLUGIN_BUILD_FILES[@]}"; do
-    cp $FILE $PLUGIN_BUILD_PATH/$FILE
-done
+# Copy plugin files.
+rsync -rc --exclude-from="./actblue-contributions/.distignore" ./actblue-contributions/ $PLUGIN_BUILD_PATH
 
 # Checkout the SVN repo
-svn co -q "http://svn.wp-plugins.org/$WP_ORG_PLUGIN_NAME" $PLUGIN_SVN_PATH
+svn checkout -q $SVN_URL $PLUGIN_SVN_PATH
 
 # Move to SVN directory
 cd $PLUGIN_SVN_PATH
 
-# Delete the trunk directory
+# Delete the trunk directory and create a `tags` directory if there isn't one.
 rm -rf ./trunk
+if [ ! -d "./tags" ]; then
+  mkdir tags
+fi
 
 # Copy our new version of the plugin as the new trunk directory
 cp -r $PLUGIN_BUILD_PATH ./trunk
@@ -90,4 +79,4 @@ svn stat | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
 svn stat | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
 
 # Commit to SVN
-svn ci --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD -m "Deploy version $LATEST_SVN_TAG"
+svn commit --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD -m "Deploy version $LATEST_SVN_TAG"
