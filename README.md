@@ -4,13 +4,28 @@ This repository holds the source code for the ActBlue WordPress plugin, as well 
 
 ## Prerequisites
 
-To get the docker setup up and running you'll need [Docker Desktop](https://www.docker.com/products/docker-desktop) (note that this has only been tested with the Mac version).
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) to get the local environment set up and running via a docker container (note that this has only been tested with the Mac version).
+- [npm](https://www.npmjs.com/) for JavaScript dependencies, including those required to build editor blocks.
 
 You'll also need to ensure that your ports 80 and 443 are free.
 
+
 ## Installation
 
-Run the following to build and start the containers:
+First, install the JavaScript dependencies:
+
+```sh
+# Move into the plugin source folder:
+cd actblue-contributions
+
+# Install dependencies:
+npm install
+
+# Move back into the project root.
+cd ..
+```
+
+Once dependencies are installed and you're back in the project root, run the following to build and start the containers:
 
 ```sh
 docker-compose up -d --build
