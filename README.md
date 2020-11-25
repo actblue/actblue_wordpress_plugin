@@ -38,17 +38,17 @@ These values can be modified in the `docker-compose.yml` file upon building the 
 
 The docker container will mount the local `actblue/` directory into the `wp-content/plugins/` directory, so local changes will be reflected directly on the container.
 
-## Testing
+### Starting the container
 
-PHP unit testing via [PHPUnit 5](https://phpunit.de/getting-started/phpunit-5.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
-
-To run the PHP unit tests on the container, run the following command (note that the container needs to be running for this to work):
+You can spin up your docker local docker environment by running the following command:
 
 ```sh
-docker-compose exec wordpress phpunit
+docker-compose up -d
 ```
 
-## Removing the containers
+Note that the `-d` flag will start the container in [detached mode](https://docs.docker.com/compose/reference/up/) which will run the container in the background.
+
+### Removing the container
 
 To reset your environment, or to remove the container and all the dependent assets from your machine, run the following. Note that this will entirely reset the state of your container, including your database:
 
@@ -66,4 +66,40 @@ You can run the following command to list the running containers and confirm tha
 
 ```sh
 docker-compose ps
+```
+
+## Testing
+
+PHP unit testing via [PHPUnit 5](https://phpunit.de/getting-started/phpunit-5.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
+
+To run the PHP unit tests on the container, run the following command (note that the container needs to be running for this to work):
+
+```sh
+docker-compose exec wordpress phpunit
+```
+
+## Deployment
+
+The distributed code for this plugin is hosted on the WordPress svn repository and is located at http://plugins.svn.wordpress.org/actblue-contributions/. This GitHub repository comes with two scripts that help facilitate the deployment of the plugin assets and source to that svn repository. The cripts will run as a part of CircleCI's continuous integration, but you can also manually deploy the plugin by running them locally.
+
+The scripts take the latest git tag and then upload that version to the svn respository. To release a new version, tag this GitHub repository with a new version tag with the format of `vX.X.X` (the scripts require the leading `v`) and then push the tag to the GitHub repository.
+
+To manually deploy a new version of the plugin:
+
+- Do a `git fetch` to ensure that you have the latest tags from the remote GitHub repository.
+- Make sure that all distributable assets have been built. The `actblue-contributions/` directory should hold all distributable files and any relevant assets should be placed in the `assets/` directory.
+- Ensure that you have the credentials for the WordPress.org account that has write access to the WordPress svn repository. These credentials can be passed to the script via command line arguments, or be set with the `WP_ORG_PASSWORD` and `WP_ORG_USERNAME` environment variables.
+
+Then run the following scripts:
+
+```sh
+# Deploy any assets for the plugin listing on WordPress.org:
+./.circleci deploy-assets.sh
+
+# Deploy the plugin source:
+./.circleci deploy-plugin.sh
+
+# Both script also accept command line arguments for the WordPress.org username
+# and password if those haven't been set as environment variables.
+./.circleci deploy-assets.sh -u actblue -p password
 ```
