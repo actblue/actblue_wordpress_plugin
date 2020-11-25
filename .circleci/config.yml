@@ -45,7 +45,7 @@ jobs:
             npm install
       - run:
           name: Build
-          command: npm run build
+          command: cd $WP_PLUGIN_NAME && npm run build
       - persist_to_workspace:
           root: .
           paths:
