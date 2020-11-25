@@ -25,8 +25,7 @@ if [[ -z "$WP_ORG_USERNAME" ]]; then
     exit 1
 fi
 
-# SVN_URL="file:///tmp/wp-svn-actblue-contributions"
-SVN_URL="https://plugins.svn.wordpress.org/${WP_ORG_PLUGIN_NAME}/"
+SVN_URL=${SVN_URL:-"https://plugins.svn.wordpress.org/${WP_ORG_PLUGIN_NAME}/"}
 PLUGIN_BUILD_PATH="/tmp/build"
 PLUGIN_SVN_PATH="/tmp/svn"
 

@@ -25,8 +25,7 @@ if [[ -z "$WP_ORG_USERNAME" ]]; then
     exit 1
 fi
 
-# SVN_URL="file:///tmp/wp-svn-actblue-contributions"
-SVN_URL="https://plugins.svn.wordpress.org/${WP_ORG_PLUGIN_NAME}/"
+SVN_URL=${SVN_URL:-"https://plugins.svn.wordpress.org/${WP_ORG_PLUGIN_NAME}/"}
 PLUGIN_SVN_PATH="/tmp/svn"
 
 # Checkout the SVN repo
@@ -36,7 +35,6 @@ svn checkout -q $SVN_URL $PLUGIN_SVN_PATH
 rm -rf $PLUGIN_SVN_PATH/assets
 
 # Copy our plugin assets as the new assets directory
-# cp -r ./assets $PLUGIN_SVN_PATH/assets
 rsync -rc --exclude=".gitkeep" ./assets/ $PLUGIN_SVN_PATH/assets/
 
 # Move to SVN directory
