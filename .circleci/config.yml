@@ -40,6 +40,9 @@ jobs:
       - run:
           name: Install dependencies
           command: cd $WP_PLUGIN_NAME && composer install -n -o
+      - run:
+          name: Check node
+          command: npm -v
       - persist_to_workspace:
           root: .
           paths:
