@@ -15,7 +15,7 @@ const icon = () => (
 
 export const name = "actblue/embed";
 
-export const getBlockSettings = () => {
+export const getSettings = () => {
 	const settings = getBlockType("core/embed");
 
 	return {

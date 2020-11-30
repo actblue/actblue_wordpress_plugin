@@ -7,7 +7,9 @@
     "start": "wp-scripts start"
   },
   "devDependencies": {
-    "@wordpress/scripts": "12.5.0"
+    "@wordpress/scripts": "12.5.0",
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.20"
   },
   "description": "",
   "main": "index.js",
