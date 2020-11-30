@@ -19,13 +19,10 @@ export default function save({ attributes }) {
 		customBackgroundColor,
 		customTextColor,
 		customGradient,
-		linkTarget,
 		gradient,
-		rel,
 		text,
 		textColor,
 		title,
-		url,
 	} = attributes;
 
 	const textClass = getColorClassName("color", textColor);
@@ -62,16 +59,15 @@ export default function save({ attributes }) {
 	// A title will no longer be assigned for new or updated button block links.
 
 	return (
-		<div>
+		<div className="wp-block-button">
 			<RichText.Content
 				tagName="a"
 				className={buttonClasses}
-				href={url}
+				href="#"
 				title={title}
 				style={buttonStyle}
 				value={text}
-				target={linkTarget}
-				rel={rel}
+				onClick="console.log('test');return false;"
 			/>
 		</div>
 	);

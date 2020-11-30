@@ -164,7 +164,7 @@ class ActBlue {
 	 * @access private
 	 */
 	private function register_blocks() {
-		add_action( 'enqueue_block_editor_assets', array( $this->plugin_blocks, 'enqueue_scripts' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this->plugin_blocks, 'enqueue_admin' ) );
 	}
 
 	/**

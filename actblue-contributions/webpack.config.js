@@ -9,7 +9,6 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		blocks: "./blocks",
-		styles: "./blocks/styles.scss",
 		editor: "./blocks/editor.scss",
 	},
 	module: {

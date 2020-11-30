@@ -7,31 +7,21 @@ import classnames from "classnames";
  * WordPress dependencies
  */
 import { __ } from "@wordpress/i18n";
-import { useCallback, useState } from "@wordpress/element";
+import { useCallback } from "@wordpress/element";
 import { compose } from "@wordpress/compose";
 import {
-	KeyboardShortcuts,
 	PanelBody,
 	RangeControl,
-	TextControl,
-	ToggleControl,
 	withFallbackStyles,
-	ToolbarButton,
-	ToolbarGroup,
-	Popover,
 } from "@wordpress/components";
 import {
-	BlockControls,
 	__experimentalUseGradient,
 	ContrastChecker,
 	InspectorControls,
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
 	RichText,
 	withColors,
-	__experimentalLinkControl as LinkControl,
 } from "@wordpress/block-editor";
-import { rawShortcut, displayShortcut } from "@wordpress/keycodes";
-import { link } from "@wordpress/icons";
 
 const { getComputedStyle } = window;
 
@@ -56,7 +46,6 @@ const applyFallbackStyles = withFallbackStyles((node, ownProps) => {
 	};
 });
 
-const NEW_TAB_REL = "noreferrer noopener";
 const MIN_BORDER_RADIUS_VALUE = 0;
 const MAX_BORDER_RADIUS_VALUE = 50;
 const INITIAL_BORDER_RADIUS_POSITION = 5;
@@ -83,64 +72,6 @@ function BorderPanel({ borderRadius = "", setAttributes }) {
 	);
 }
 
-function URLPicker({
-	isSelected,
-	url,
-	setAttributes,
-	opensInNewTab,
-	onToggleOpenInNewTab,
-}) {
-	const [isURLPickerOpen, setIsURLPickerOpen] = useState(false);
-	const openLinkControl = () => {
-		setIsURLPickerOpen(true);
-	};
-	const linkControl = isURLPickerOpen && (
-		<Popover
-			position="bottom center"
-			onClose={() => setIsURLPickerOpen(false)}
-		>
-			<LinkControl
-				className="wp-block-navigation-link__inline-link-input"
-				value={{ url, opensInNewTab }}
-				onChange={({
-					url: newURL = "",
-					opensInNewTab: newOpensInNewTab,
-				}) => {
-					setAttributes({ url: newURL });
-
-					if (opensInNewTab !== newOpensInNewTab) {
-						onToggleOpenInNewTab(newOpensInNewTab);
-					}
-				}}
-			/>
-		</Popover>
-	);
-	return (
-		<>
-			<BlockControls>
-				<ToolbarGroup>
-					<ToolbarButton
-						name="link"
-						icon={link}
-						title={__("Link")}
-						shortcut={displayShortcut.primary("k")}
-						onClick={openLinkControl}
-					/>
-				</ToolbarGroup>
-			</BlockControls>
-			{isSelected && (
-				<KeyboardShortcuts
-					bindGlobal
-					shortcuts={{
-						[rawShortcut.primary("k")]: openLinkControl,
-					}}
-				/>
-			)}
-			{linkControl}
-		</>
-	);
-}
-
 function ButtonEdit({
 	attributes,
 	backgroundColor,
@@ -151,41 +82,9 @@ function ButtonEdit({
 	fallbackTextColor,
 	setAttributes,
 	className,
-	isSelected,
 }) {
-	const {
-		borderRadius,
-		linkTarget,
-		placeholder,
-		rel,
-		text,
-		url,
-	} = attributes;
-	const onSetLinkRel = useCallback(
-		(value) => {
-			setAttributes({ rel: value });
-		},
-		[setAttributes]
-	);
+	const { borderRadius, placeholder, text } = attributes;
 
-	const onToggleOpenInNewTab = useCallback(
-		(value) => {
-			const newLinkTarget = value ? "_blank" : undefined;
-
-			let updatedRel = rel;
-			if (newLinkTarget && !rel) {
-				updatedRel = NEW_TAB_REL;
-			} else if (!newLinkTarget && rel === NEW_TAB_REL) {
-				updatedRel = undefined;
-			}
-
-			setAttributes({
-				linkTarget: newLinkTarget,
-				rel: updatedRel,
-			});
-		},
-		[rel, setAttributes]
-	);
 	const {
 		gradientClass,
 		gradientValue,
@@ -217,13 +116,6 @@ function ButtonEdit({
 						? borderRadius + "px"
 						: undefined,
 				}}
-			/>
-			<URLPicker
-				url={url}
-				setAttributes={setAttributes}
-				isSelected={isSelected}
-				opensInNewTab={linkTarget === "_blank"}
-				onToggleOpenInNewTab={onToggleOpenInNewTab}
 			/>
 			<InspectorControls>
 				<PanelColorGradientSettings
@@ -259,18 +151,6 @@ function ButtonEdit({
 					borderRadius={borderRadius}
 					setAttributes={setAttributes}
 				/>
-				<PanelBody title={__("Link settings")}>
-					<ToggleControl
-						label={__("Open in new tab")}
-						onChange={onToggleOpenInNewTab}
-						checked={linkTarget === "_blank"}
-					/>
-					<TextControl
-						label={__("Link rel")}
-						value={rel || ""}
-						onChange={onSetLinkRel}
-					/>
-				</PanelBody>
 			</InspectorControls>
 		</div>
 	);
