@@ -80,7 +80,7 @@ docker-compose exec wordpress phpunit
 
 ## Deployment
 
-The distributed code for this plugin is hosted on the WordPress svn repository and is located at http://plugins.svn.wordpress.org/actblue-contributions/. This GitHub repository comes with two scripts that help facilitate the deployment of the plugin assets and source to that svn repository. The cripts will run as a part of CircleCI's continuous integration, but you can also manually deploy the plugin by running them locally.
+The distributed code for this plugin is hosted on the WordPress svn repository and is located at http://plugins.svn.wordpress.org/actblue-contributions/. This GitHub repository comes with two scripts that help facilitate the deployment of the plugin assets and source to that svn repository. The scripts will run as a part of CircleCI's continuous integration, but you can also manually deploy the plugin by running them locally.
 
 The scripts take the latest git tag and then upload that version to the svn respository. To release a new version, tag this GitHub repository with a new version tag with the format of `vX.X.X` (the scripts require the leading `v`) and then push the tag to the GitHub repository.
 
