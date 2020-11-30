@@ -12,6 +12,7 @@ import { compose } from "@wordpress/compose";
 import {
 	PanelBody,
 	RangeControl,
+	TextControl,
 	withFallbackStyles,
 } from "@wordpress/components";
 import {
@@ -83,7 +84,7 @@ function ButtonEdit({
 	setAttributes,
 	className,
 }) {
-	const { borderRadius, placeholder, text } = attributes;
+	const { borderRadius, placeholder, text, token, amount } = attributes;
 
 	const {
 		gradientClass,
@@ -118,6 +119,19 @@ function ButtonEdit({
 				}}
 			/>
 			<InspectorControls>
+				<PanelBody title={__("ActBlue Settings")}>
+					<TextControl
+						label="Token"
+						value={token}
+						onChange={(value) => setAttributes({ token: value })}
+					/>
+					<TextControl
+						type="number"
+						label="Amount"
+						value={amount}
+						onChange={(value) => setAttributes({ amount: value })}
+					/>
+				</PanelBody>
 				<PanelColorGradientSettings
 					title={__("Background & Text Color")}
 					settings={[

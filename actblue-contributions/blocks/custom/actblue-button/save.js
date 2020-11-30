@@ -23,6 +23,8 @@ export default function save({ attributes }) {
 		text,
 		textColor,
 		title,
+		token,
+		amount,
 	} = attributes;
 
 	const textClass = getColorClassName("color", textColor);
@@ -58,6 +60,12 @@ export default function save({ attributes }) {
 	// if it had already been assigned, for the sake of backward-compatibility.
 	// A title will no longer be assigned for new or updated button block links.
 
+	const contributionArgs = JSON.stringify({ token, amount });
+
+	console.log(
+		`if (window.actblue && typeof window.actblue.requestContribution === 'function') { window.actblue.requestContribution(${contributionArgs}) }; return false;`
+	);
+
 	return (
 		<div className="wp-block-button">
 			<RichText.Content
@@ -67,7 +75,7 @@ export default function save({ attributes }) {
 				title={title}
 				style={buttonStyle}
 				value={text}
-				onClick="console.log('test');return false;"
+				onClick={`if (window.actblue && typeof window.actblue.requestContribution === 'function') { window.actblue.requestContribution(${contributionArgs}) }; return false;`}
 			/>
 		</div>
 	);

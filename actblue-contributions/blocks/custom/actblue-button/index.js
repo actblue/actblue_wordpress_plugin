@@ -48,6 +48,14 @@ const attributes = {
 	customGradient: {
 		type: "string",
 	},
+
+	// ActBlue form settings.
+	token: {
+		type: "string",
+	},
+	amount: {
+		type: "string",
+	},
 };
 
 export const name = "actblue/button";
