@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "author": "ActBlue",
   "scripts": {
-    "build": "wp-scripts build",
-    "start": "wp-scripts start"
+    "build": "wp-scripts build --config webpack.config.js",
+    "start": "wp-scripts start --config webpack.config.js"
+  },
+  "dependencies": {
+    "@wordpress/icons": "^2.8.0"
   },
   "devDependencies": {
-    "@wordpress/icons": "^2.8.0",
     "@wordpress/scripts": "12.5.0",
     "classnames": "^2.2.6",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0"
   },
   "description": "",
   "main": "index.js",
