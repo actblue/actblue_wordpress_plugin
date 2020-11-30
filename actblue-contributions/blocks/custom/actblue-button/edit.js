@@ -8,52 +8,63 @@ import classnames from "classnames";
  */
 import { __ } from "@wordpress/i18n";
 import { useCallback, useState } from "@wordpress/element";
+import { compose } from "@wordpress/compose";
 import {
-	Button,
-	ButtonGroup,
 	KeyboardShortcuts,
 	PanelBody,
 	RangeControl,
 	TextControl,
 	ToggleControl,
+	withFallbackStyles,
 	ToolbarButton,
 	ToolbarGroup,
 	Popover,
 } from "@wordpress/components";
 import {
 	BlockControls,
+	__experimentalUseGradient,
+	ContrastChecker,
 	InspectorControls,
+	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
 	RichText,
-	useBlockProps,
+	withColors,
 	__experimentalLinkControl as LinkControl,
-	__experimentalUseEditorFeature as useEditorFeature,
 } from "@wordpress/block-editor";
 import { rawShortcut, displayShortcut } from "@wordpress/keycodes";
-import { link, linkOff } from "@wordpress/icons";
-import { createBlock } from "@wordpress/blocks";
+import { link } from "@wordpress/icons";
 
-/**
- * Internal dependencies
- */
-import ColorEdit from "./color-edit.js";
-import getColorAndStyleProps from "./color-props";
+const { getComputedStyle } = window;
+
+const applyFallbackStyles = withFallbackStyles((node, ownProps) => {
+	const { textColor, backgroundColor } = ownProps;
+	const backgroundColorValue = backgroundColor && backgroundColor.color;
+	const textColorValue = textColor && textColor.color;
+	//avoid the use of querySelector if textColor color is known and verify if node is available.
+	const textNode =
+		!textColorValue && node
+			? node.querySelector('[contenteditable="true"]')
+			: null;
+	return {
+		fallbackBackgroundColor:
+			backgroundColorValue || !node
+				? undefined
+				: getComputedStyle(node).backgroundColor,
+		fallbackTextColor:
+			textColorValue || !textNode
+				? undefined
+				: getComputedStyle(textNode).color,
+	};
+});
 
 const NEW_TAB_REL = "noreferrer noopener";
 const MIN_BORDER_RADIUS_VALUE = 0;
 const MAX_BORDER_RADIUS_VALUE = 50;
 const INITIAL_BORDER_RADIUS_POSITION = 5;
 
-const EMPTY_ARRAY = [];
-
 function BorderPanel({ borderRadius = "", setAttributes }) {
-	const initialBorderRadius = borderRadius;
 	const setBorderRadius = useCallback(
 		(newBorderRadius) => {
-			if (newBorderRadius === undefined)
-				setAttributes({
-					borderRadius: initialBorderRadius,
-				});
-			else setAttributes({ borderRadius: newBorderRadius });
+			setAttributes({ borderRadius: newBorderRadius });
 		},
 		[setAttributes]
 	);
@@ -72,35 +83,6 @@ function BorderPanel({ borderRadius = "", setAttributes }) {
 	);
 }
 
-function WidthPanel({ selectedWidth, setAttributes }) {
-	function handleChange(newWidth) {
-		// Check if we are toggling the width off
-		const width = selectedWidth === newWidth ? undefined : newWidth;
-
-		// Update attributes
-		setAttributes({ width });
-	}
-
-	return (
-		<PanelBody title={__("Width settings")}>
-			<ButtonGroup aria-label={__("Button width")}>
-				{[25, 50, 75, 100].map((widthValue) => {
-					return (
-						<Button
-							key={widthValue}
-							isSmall
-							isPrimary={widthValue === selectedWidth}
-							onClick={() => handleChange(widthValue)}
-						>
-							{widthValue}%
-						</Button>
-					);
-				})}
-			</ButtonGroup>
-		</PanelBody>
-	);
-}
-
 function URLPicker({
 	isSelected,
 	url,
@@ -109,21 +91,10 @@ function URLPicker({
 	onToggleOpenInNewTab,
 }) {
 	const [isURLPickerOpen, setIsURLPickerOpen] = useState(false);
-	const urlIsSet = !!url;
-	const urlIsSetandSelected = urlIsSet && isSelected;
 	const openLinkControl = () => {
 		setIsURLPickerOpen(true);
-		return false; // prevents default behaviour for event
 	};
-	const unlinkButton = () => {
-		setAttributes({
-			url: undefined,
-			linkTarget: undefined,
-			rel: undefined,
-		});
-		setIsURLPickerOpen(false);
-	};
-	const linkControl = (isURLPickerOpen || urlIsSetandSelected) && (
+	const linkControl = isURLPickerOpen && (
 		<Popover
 			position="bottom center"
 			onClose={() => setIsURLPickerOpen(false)}
@@ -148,25 +119,13 @@ function URLPicker({
 		<>
 			<BlockControls>
 				<ToolbarGroup>
-					{!urlIsSet && (
-						<ToolbarButton
-							name="link"
-							icon={link}
-							title={__("Link")}
-							shortcut={displayShortcut.primary("k")}
-							onClick={openLinkControl}
-						/>
-					)}
-					{urlIsSetandSelected && (
-						<ToolbarButton
-							name="link"
-							icon={linkOff}
-							title={__("Unlink")}
-							shortcut={displayShortcut.primaryShift("k")}
-							onClick={unlinkButton}
-							isActive={true}
-						/>
-					)}
+					<ToolbarButton
+						name="link"
+						icon={link}
+						title={__("Link")}
+						shortcut={displayShortcut.primary("k")}
+						onClick={openLinkControl}
+					/>
 				</ToolbarGroup>
 			</BlockControls>
 			{isSelected && (
@@ -174,7 +133,6 @@ function URLPicker({
 					bindGlobal
 					shortcuts={{
 						[rawShortcut.primary("k")]: openLinkControl,
-						[rawShortcut.primaryShift("k")]: unlinkButton,
 					}}
 				/>
 			)}
@@ -183,15 +141,18 @@ function URLPicker({
 	);
 }
 
-function ButtonEdit(props) {
-	const {
-		attributes,
-		setAttributes,
-		className,
-		isSelected,
-		onReplace,
-		mergeBlocks,
-	} = props;
+function ButtonEdit({
+	attributes,
+	backgroundColor,
+	textColor,
+	setBackgroundColor,
+	setTextColor,
+	fallbackBackgroundColor,
+	fallbackTextColor,
+	setAttributes,
+	className,
+	isSelected,
+}) {
 	const {
 		borderRadius,
 		linkTarget,
@@ -199,7 +160,6 @@ function ButtonEdit(props) {
 		rel,
 		text,
 		url,
-		width,
 	} = attributes;
 	const onSetLinkRel = useCallback(
 		(value) => {
@@ -207,7 +167,6 @@ function ButtonEdit(props) {
 		},
 		[setAttributes]
 	);
-	const colors = useEditorFeature("color.palette") || EMPTY_ARRAY;
 
 	const onToggleOpenInNewTab = useCallback(
 		(value) => {
@@ -227,49 +186,38 @@ function ButtonEdit(props) {
 		},
 		[rel, setAttributes]
 	);
-
-	const colorProps = getColorAndStyleProps(attributes, colors, true);
-	const blockProps = useBlockProps();
+	const {
+		gradientClass,
+		gradientValue,
+		setGradient,
+	} = __experimentalUseGradient();
 
 	return (
-		<>
-			<ColorEdit {...props} />
-			<div
-				{...blockProps}
-				className={classnames(blockProps.className, {
-					[`has-custom-width wp-block-button__width-${width}`]: width,
+		<div className={className}>
+			<RichText
+				placeholder={placeholder || __("Add text…")}
+				value={text}
+				onChange={(value) => setAttributes({ text: value })}
+				withoutInteractiveFormatting
+				className={classnames("wp-block-button__link", {
+					"has-background": backgroundColor.color || gradientValue,
+					[backgroundColor.class]:
+						!gradientValue && backgroundColor.class,
+					"has-text-color": textColor.color,
+					[textColor.class]: textColor.class,
+					[gradientClass]: gradientClass,
+					"no-border-radius": borderRadius === 0,
 				})}
-			>
-				<RichText
-					placeholder={placeholder || __("Add text…")}
-					value={text}
-					onChange={(value) => setAttributes({ text: value })}
-					withoutInteractiveFormatting
-					className={classnames(
-						className,
-						"wp-block-button__link",
-						colorProps.className,
-						{
-							"no-border-radius": borderRadius === 0,
-						}
-					)}
-					style={{
-						borderRadius: borderRadius
-							? borderRadius + "px"
-							: undefined,
-						...colorProps.style,
-					}}
-					onSplit={(value) =>
-						createBlock("core/button", {
-							...attributes,
-							text: value,
-						})
-					}
-					onReplace={onReplace}
-					onMerge={mergeBlocks}
-					identifier="text"
-				/>
-			</div>
+				style={{
+					...(!backgroundColor.color && gradientValue
+						? { background: gradientValue }
+						: { backgroundColor: backgroundColor.color }),
+					color: textColor.color,
+					borderRadius: borderRadius
+						? borderRadius + "px"
+						: undefined,
+				}}
+			/>
 			<URLPicker
 				url={url}
 				setAttributes={setAttributes}
@@ -278,12 +226,37 @@ function ButtonEdit(props) {
 				onToggleOpenInNewTab={onToggleOpenInNewTab}
 			/>
 			<InspectorControls>
+				<PanelColorGradientSettings
+					title={__("Background & Text Color")}
+					settings={[
+						{
+							colorValue: textColor.color,
+							onColorChange: setTextColor,
+							label: __("Text color"),
+						},
+						{
+							colorValue: backgroundColor.color,
+							onColorChange: setBackgroundColor,
+							gradientValue,
+							onGradientChange: setGradient,
+							label: __("Background"),
+						},
+					]}
+				>
+					<ContrastChecker
+						{...{
+							// Text is considered large if font size is greater or equal to 18pt or 24px,
+							// currently that's not the case for button.
+							isLargeText: false,
+							textColor: textColor.color,
+							backgroundColor: backgroundColor.color,
+							fallbackBackgroundColor,
+							fallbackTextColor,
+						}}
+					/>
+				</PanelColorGradientSettings>
 				<BorderPanel
 					borderRadius={borderRadius}
-					setAttributes={setAttributes}
-				/>
-				<WidthPanel
-					selectedWidth={width}
 					setAttributes={setAttributes}
 				/>
 				<PanelBody title={__("Link settings")}>
@@ -299,8 +272,11 @@ function ButtonEdit(props) {
 					/>
 				</PanelBody>
 			</InspectorControls>
-		</>
+		</div>
 	);
 }
 
-export default ButtonEdit;
+export default compose([
+	withColors("backgroundColor", { textColor: "color" }),
+	applyFallbackStyles,
+])(ButtonEdit);

@@ -1803,6 +1803,15 @@
     prettier "npm:wp-prettier@2.0.5"
     requireindex "^1.2.0"
 
+"@wordpress/icons@^2.8.0":
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/icons/-/icons-2.8.0.tgz#cab47c3c6c17089c68e308b60658e8fbb59e070d"
+  integrity sha512-ZhQXXzNqcDh0JRY/Ro7iePjTDD8FnZ5W8ze8NKg9da9I24QwL5mWCJezt8ZhBo0wxnD+Lk3kKKMYA6P+lh6qWg==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    "@wordpress/element" "^2.18.0"
+    "@wordpress/primitives" "^1.10.0"
+
 "@wordpress/jest-console@^3.9.0":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@wordpress/jest-console/-/jest-console-3.9.0.tgz#88a81585e7d95dd1957994b5c9d83e82d9fe8a1a"
@@ -1850,6 +1859,15 @@
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@wordpress/prettier-config/-/prettier-config-0.4.0.tgz#bc8ab5c234c74a5c3bbb424cbbc3010b2be1be44"
   integrity sha512-7c4VeugkCwDkaHSD7ffxoP0VC5c///gCTEAT032OhI5Rik2dPxE3EkNAB2NhotGE8M4dMAg4g5Wj2OWZIn8TFw==
+
+"@wordpress/primitives@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/primitives/-/primitives-1.10.0.tgz#8f1e74c98dfa497074450b3fc2e5a0e2b134cd73"
+  integrity sha512-C1drc//1dEFf7eMVfuk9Z11X9VzFgKHBA8J3yAj5fxJffbATYfzHCLgERcZQIUsnn8GUL4VScNbmRf6+8i2rhw==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    "@wordpress/element" "^2.18.0"
+    classnames "^2.2.5"
 
 "@wordpress/scripts@12.5.0":
   version "12.5.0"
@@ -3015,6 +3033,11 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+classnames@^2.2.5, classnames@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
 
 clean-stack@^2.0.0:
   version "2.2.0"
