@@ -67,7 +67,7 @@ if [ $error == 0 ]; then
     exit 0
 fi
 
-# Checkout the git tag
+# Checkout the git tag.
 git checkout tags/$LATEST_GIT_TAG
 
 # Create the build directory.
@@ -75,6 +75,9 @@ mkdir $PLUGIN_BUILD_PATH
 
 # Copy plugin files.
 rsync -rc --exclude-from="./actblue-contributions/.distignore" ./actblue-contributions/ $PLUGIN_BUILD_PATH
+
+# Go back to the `main` branch to reset the state of the local repository.
+git checkout main
 
 # Checkout the SVN repo
 svn checkout -q $SVN_URL $PLUGIN_SVN_PATH
@@ -88,17 +91,17 @@ if [ ! -d "./tags" ]; then
   mkdir tags
 fi
 
-# Copy our new version of the plugin as the new trunk directory
+# Copy our new version of the plugin as the new trunk directory.
 cp -r $PLUGIN_BUILD_PATH ./trunk
 
-# Copy our new version of the plugin into new version tag directory
+# Copy our new version of the plugin into new version tag directory.
 cp -r $PLUGIN_BUILD_PATH ./tags/$LATEST_SVN_TAG
 
 # Add new files to SVN
 svn stat | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
 
-# Remove deleted files from SVN
+# Remove deleted files from SVN.
 svn stat | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
 
-# Commit to SVN
+# Commit to SVN.
 svn commit --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD -m "Deploy version $LATEST_SVN_TAG"
