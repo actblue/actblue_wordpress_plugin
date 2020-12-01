@@ -6,13 +6,12 @@ import { getPhotoHtml } from "./util";
 /**
  * External dependencies
  */
-import { parse } from "url";
 import classnames from "classnames/dedupe";
 
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 import { Placeholder, SandBox } from "@wordpress/components";
 import { RichText, BlockIcon } from "@wordpress/block-editor";
 import { Component } from "@wordpress/element";
@@ -62,16 +61,7 @@ class EmbedPreview extends Component {
 		const { interactive } = this.state;
 
 		const html = "photo" === type ? getPhotoHtml(preview) : preview.html;
-		const parsedHost = parse(url).host.split(".");
-		const parsedHostBaseUrl = parsedHost
-			.splice(parsedHost.length - 2, parsedHost.length - 1)
-			.join(".");
 		const cannotPreview = false;
-		// translators: %s: host providing embed content e.g: www.youtube.com
-		const iframeTitle = sprintf(
-			__("Embedded content from %s"),
-			parsedHostBaseUrl
-		);
 		const sandboxClassnames = classnames(
 			type,
 			className,
@@ -87,7 +77,7 @@ class EmbedPreview extends Component {
 				<SandBox
 					html={html}
 					scripts={scripts}
-					title={iframeTitle}
+					title="Embedded content from actblue.com"
 					type={sandboxClassnames}
 					onFocus={this.hideOverlay}
 				/>
@@ -116,15 +106,9 @@ class EmbedPreview extends Component {
 							<a href={url}>{url}</a>
 						</p>
 						<p className="components-placeholder__error">
-							{
-								/* translators: %s: host providing embed content e.g: www.youtube.com */
-								sprintf(
-									__(
-										"Embedded content from %s can't be previewed in the editor."
-									),
-									parsedHostBaseUrl
-								)
-							}
+							{__(
+								"Embedded content from actblue.com can't be previewed in the editor."
+							)}
 						</p>
 					</Placeholder>
 				) : (
