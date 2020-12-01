@@ -62,10 +62,6 @@ export default function save({ attributes }) {
 
 	const contributionArgs = JSON.stringify({ token, amount });
 
-	console.log(
-		`if (window.actblue && typeof window.actblue.requestContribution === 'function') { window.actblue.requestContribution(${contributionArgs}) }; return false;`
-	);
-
 	return (
 		<div className="wp-block-button">
 			<RichText.Content
