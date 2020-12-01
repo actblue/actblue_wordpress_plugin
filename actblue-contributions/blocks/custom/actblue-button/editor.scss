@@ -1,11 +1,8 @@
-// Display "table" is used because the button container should only wrap the content and not takes the full width.
-div[data-type="actblue/button"] {
-	.wp-block-actblue-button {
-		margin-top: 30px;
-		margin-bottom: 30px;
-	}
-
-	.block-editor-block-styles__item-preview & {
-		display: table;
-	}
+// Mimic the default admin styles for the button block.
+.wp-block-buttons div[data-type="actblue/button"] {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	display: inline-block;
+	width: auto;
+	margin-right: 8px;
 }
