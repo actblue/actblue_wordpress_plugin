@@ -78,6 +78,15 @@ class ActBlue {
 	private $plugin_blocks;
 
 	/**
+	 * The instance containing the proxy functionality.
+	 *
+	 * @since  2.0.0
+	 * @access private
+	 * @var    ActBlue_Proxy
+	 */
+	private $plugin_proxy;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -144,6 +153,12 @@ class ActBlue {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'blocks/class-actblue-blocks.php';
 		$this->plugin_blocks = new ActBlue_Blocks( $this->plugin_name, $this->version );
+
+		/**
+		 * The proxy class.
+		 */
+		require_once plugin_dir_path( __FILE__ ) . 'class-actblue-proxy.php';
+		$this->plugin_proxy = new ActBlue_Proxy( $this->plugin_name, $this->version );
 	}
 
 	/**
@@ -168,6 +183,16 @@ class ActBlue {
 	}
 
 	/**
+	 * Registers the proxy actions for ajax requests.
+	 *
+	 * @since  2.0.0
+	 * @access private
+	 */
+	private function register_ajax_actions() {
+		add_action( 'wp_ajax_proxy_actblue', array( $this->plugin_proxy, 'fetch' ) );
+	}
+
+	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
 	 * @since 1.0.0
@@ -175,5 +200,6 @@ class ActBlue {
 	public function run() {
 		$this->register_public_hooks();
 		$this->register_blocks();
+		$this->register_ajax_actions();
 	}
 }
