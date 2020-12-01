@@ -12,7 +12,6 @@
   "devDependencies": {
     "@wordpress/scripts": "12.5.0",
     "classnames": "^2.2.6",
-    "lodash": "^4.17.20",
     "memize": "^1.1.0",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0"

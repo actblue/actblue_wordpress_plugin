@@ -1,14 +1,12 @@
 /**
  * Internal dependencies
  */
-import { HOSTS_NO_PREVIEWS } from "./constants";
 import { getPhotoHtml } from "./util";
 
 /**
  * External dependencies
  */
 import { parse } from "url";
-import { includes } from "lodash";
 import classnames from "classnames/dedupe";
 
 /**
@@ -68,7 +66,7 @@ class EmbedPreview extends Component {
 		const parsedHostBaseUrl = parsedHost
 			.splice(parsedHost.length - 2, parsedHost.length - 1)
 			.join(".");
-		const cannotPreview = includes(HOSTS_NO_PREVIEWS, parsedHostBaseUrl);
+		const cannotPreview = false;
 		// translators: %s: host providing embed content e.g: www.youtube.com
 		const iframeTitle = sprintf(
 			__("Embedded content from %s"),

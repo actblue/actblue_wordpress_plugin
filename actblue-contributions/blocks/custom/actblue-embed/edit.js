@@ -149,14 +149,11 @@ class EmbedEdit extends Component {
 			);
 		}
 
-		// Even though we set attributes that get derived from the preview,
-		// we don't access them directly because for the initial render,
-		// the `setAttributes` call will not have taken effect. If we're
-		// rendering responsive content, setting the responsive classes
-		// after the preview has been rendered can result in unwanted
-		// clipping or scrollbars. The `getAttributesFromPreview` function
-		// that `getMergedAttributes` uses is memoized so that we're not
-		// calculating them on every render.
+		// Even though we set attributes that get derived from the preview, we don't
+		// access them directly because for the initial render, the `setAttributes`
+		// call will not have taken effect. The `getAttributesFromPreview` function
+		// that `getMergedAttributes` uses is memoized so that we're not calculating
+		// them on every render.
 		const previewAttributes = this.getMergedAttributes();
 		const { caption, type } = previewAttributes;
 		const className = classnames(
