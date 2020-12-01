@@ -6,6 +6,9 @@
     "build": "wp-scripts build",
     "start": "wp-scripts start"
   },
+  "dependencies": {
+    "@wordpress/icons": "^2.8.0"
+  },
   "devDependencies": {
     "@wordpress/scripts": "12.5.0",
     "classnames": "^2.2.6",
