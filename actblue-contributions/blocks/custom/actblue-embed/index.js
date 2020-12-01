@@ -1,7 +1,12 @@
 /**
+ * Internal dependencies
+ */
+import { getEmbedBlockSettings } from "./settings";
+
+/**
  * WordPress dependencies
  */
-import { getBlockType } from "@wordpress/blocks";
+import { __ } from "@wordpress/i18n";
 import { SVG, Path } from "@wordpress/primitives";
 
 const icon = () => (
@@ -15,14 +20,9 @@ const icon = () => (
 
 export const name = "actblue/embed";
 
-export const getBlockSettings = () => {
-	const settings = getBlockType("core/embed");
-
-	return {
-		...settings,
-		name,
-		icon,
-		title: "ActBlue Embed",
-		description: "Embed an ActBlue contribution form.",
-	};
-};
+export const settings = getEmbedBlockSettings({
+	title: "ActBlue Embed",
+	description: __("Embed an ActBlue contribution form."),
+	icon,
+	responsive: false,
+});
