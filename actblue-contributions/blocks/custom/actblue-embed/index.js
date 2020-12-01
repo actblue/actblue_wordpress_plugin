@@ -22,9 +22,6 @@ const attributes = {
 	type: {
 		type: "string",
 	},
-	providerNameSlug: {
-		type: "string",
-	},
 	allowResponsive: {
 		type: "boolean",
 		default: true,

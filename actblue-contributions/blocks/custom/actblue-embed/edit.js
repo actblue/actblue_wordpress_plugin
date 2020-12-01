@@ -1,12 +1,7 @@
 /**
  * Internal dependencies
  */
-import {
-	createUpgradedEmbedBlock,
-	getClassNames,
-	fallback,
-	getAttributesFromPreview,
-} from "./util";
+import { getClassNames, fallback, getAttributesFromPreview } from "./util";
 import EmbedControls from "./embed-controls";
 import EmbedLoading from "./embed-loading";
 import EmbedPlaceholder from "./embed-placeholder";
@@ -52,15 +47,6 @@ class EmbedEdit extends Component {
 
 	handleIncomingPreview() {
 		this.setMergedAttributes();
-		if (this.props.onReplace) {
-			const upgradedBlock = createUpgradedEmbedBlock(
-				this.props,
-				this.getMergedAttributes()
-			);
-			if (upgradedBlock) {
-				this.props.onReplace(upgradedBlock);
-			}
-		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -149,16 +135,11 @@ class EmbedEdit extends Component {
 
 	toggleResponsive() {
 		const { allowResponsive, className } = this.props.attributes;
-		const { html } = this.props.preview;
 		const newAllowResponsive = !allowResponsive;
 
 		this.props.setAttributes({
 			allowResponsive: newAllowResponsive,
-			className: getClassNames(
-				html,
-				className,
-				responsive && newAllowResponsive
-			),
+			className: getClassNames(className),
 		});
 	}
 

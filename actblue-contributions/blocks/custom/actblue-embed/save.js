@@ -9,15 +9,14 @@ import classnames from "classnames/dedupe";
 import { RichText } from "@wordpress/block-editor";
 
 const EmbedSave = ({ attributes }) => {
-	const { url, caption, type, providerNameSlug } = attributes;
+	const { url, caption, type } = attributes;
 
 	if (!url) {
 		return null;
 	}
 
-	const embedClassName = classnames("wp-block-embed", {
+	const embedClassName = classnames("wp-block-embed", "is-provider-actblue", {
 		[`is-type-${type}`]: type,
-		[`is-provider-${providerNameSlug}`]: providerNameSlug,
 	});
 
 	return (
