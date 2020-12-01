@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getClassNames, fallback, getAttributesFromPreview } from "./util";
+import { fallback, getAttributesFromPreview } from "./util";
 import EmbedControls from "./embed-controls";
 import EmbedLoading from "./embed-loading";
 import EmbedPlaceholder from "./embed-placeholder";
@@ -22,8 +22,6 @@ import { withSelect, withDispatch } from "@wordpress/data";
 
 import { title, icon } from "./index";
 
-const responsive = false;
-
 class EmbedEdit extends Component {
 	constructor() {
 		super(...arguments);
@@ -31,8 +29,6 @@ class EmbedEdit extends Component {
 		this.setUrl = this.setUrl.bind(this);
 		this.getMergedAttributes = this.getMergedAttributes.bind(this);
 		this.setMergedAttributes = this.setMergedAttributes.bind(this);
-		this.getResponsiveHelp = this.getResponsiveHelp.bind(this);
-		this.toggleResponsive = this.toggleResponsive.bind(this);
 		this.handleIncomingPreview = this.handleIncomingPreview.bind(this);
 
 		this.state = {
@@ -98,16 +94,10 @@ class EmbedEdit extends Component {
 	 */
 	getMergedAttributes() {
 		const { preview } = this.props;
-		const { className, allowResponsive } = this.props.attributes;
+		const { className } = this.props.attributes;
 		return {
 			...this.props.attributes,
-			...getAttributesFromPreview(
-				preview,
-				title,
-				className,
-				responsive,
-				allowResponsive
-			),
+			...getAttributesFromPreview(preview, title, className),
 		};
 	}
 
@@ -123,26 +113,6 @@ class EmbedEdit extends Component {
 		this.setState({ editingURL: true });
 	}
 
-	getResponsiveHelp(checked) {
-		return checked
-			? __(
-					"This embed will preserve its aspect ratio when the browser is resized."
-			  )
-			: __(
-					"This embed may not preserve its aspect ratio when the browser is resized."
-			  );
-	}
-
-	toggleResponsive() {
-		const { allowResponsive, className } = this.props.attributes;
-		const newAllowResponsive = !allowResponsive;
-
-		this.props.setAttributes({
-			allowResponsive: newAllowResponsive,
-			className: getClassNames(className),
-		});
-	}
-
 	render() {
 		const { url, editingURL } = this.state;
 		const {
@@ -151,7 +121,6 @@ class EmbedEdit extends Component {
 			isSelected,
 			preview,
 			cannotEmbed,
-			themeSupportsResponsive,
 			tryAgain,
 		} = this.props;
 
@@ -189,7 +158,7 @@ class EmbedEdit extends Component {
 		// that `getMergedAttributes` uses is memoized so that we're not
 		// calculating them on every render.
 		const previewAttributes = this.getMergedAttributes();
-		const { caption, type, allowResponsive } = previewAttributes;
+		const { caption, type } = previewAttributes;
 		const className = classnames(
 			previewAttributes.className,
 			this.props.className
@@ -199,11 +168,6 @@ class EmbedEdit extends Component {
 			<>
 				<EmbedControls
 					showEditButton={preview && !cannotEmbed}
-					themeSupportsResponsive={themeSupportsResponsive}
-					blockSupportsResponsive={responsive}
-					allowResponsive={allowResponsive}
-					getResponsiveHelp={this.getResponsiveHelp}
-					toggleResponsive={this.toggleResponsive}
 					switchBackToURLInput={this.switchBackToURLInput}
 				/>
 				<EmbedPreview
@@ -232,13 +196,12 @@ export default compose(
 			getEmbedPreview,
 			isPreviewEmbedFallback,
 			isRequestingEmbedPreview,
-			getThemeSupports,
 		} = core;
 		const preview = undefined !== url && getEmbedPreview(url);
 		const previewIsFallback =
 			undefined !== url && isPreviewEmbedFallback(url);
 		const fetching = undefined !== url && isRequestingEmbedPreview(url);
-		const themeSupports = getThemeSupports();
+
 		// The external oEmbed provider does not exist. We got no type info and no html.
 		const badEmbedProvider =
 			!!preview && undefined === preview.type && false === preview.html;
@@ -254,7 +217,6 @@ export default compose(
 		return {
 			preview: validPreview ? preview : undefined,
 			fetching,
-			themeSupportsResponsive: themeSupports["responsive-embeds"],
 			cannotEmbed,
 		};
 	}),
