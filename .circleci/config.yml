@@ -28,6 +28,11 @@ references:
   workspace_root: &workspace_root
     /tmp
 
+  install_subversion: &install_subversion
+    run:
+      name: Install subversion
+      command: sudo apt-get update && sudo apt-get install subversion
+
   attach: &attach
     attach_workspace:
       at: *workspace_root
@@ -64,10 +69,11 @@ jobs:
       - image: circleci/mysql:5.7
     steps:
       - checkout
+      - *install_subversion
       - run:
           name: Install dependencies
           command: |
-            sudo apt-get update && sudo apt-get install subversion default-mysql-client
+            sudo apt-get update && sudo apt-get install default-mysql-client
             sudo docker-php-ext-install mysqli
             composer global require "phpunit/phpunit ^5"
       - run:
@@ -77,14 +83,44 @@ jobs:
             bash $WP_PLUGIN_NAME/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
             cd $WP_PLUGIN_NAME && $HOME/.composer/vendor/bin/phpunit
 
+  deploy_assets:
+    <<: *container_config
+    steps:
+      - checkout
+      - *attach
+      - *install_subversion
+      - run:
+          name: Deploy assets to WordPress plugin directory
+          command: .circleci/deploy-assets.sh
+
+  deploy_plugin:
+    <<: *container_config
+    steps:
+      - checkout
+      - *attach
+      - *install_subversion
+      - run:
+          name: Deploy assets to WordPress plugin directory
+          command: .circleci/deploy-plugin.sh
+
 workflows:
   version: 2
   run_tests:
     jobs:
       - build
+      - deploy_assets:
+          filters:
+            branches:
+              only:
+                - main
       - code_quality:
           requires:
             - build
       - unit_tests:
           requires:
             - build
+      - deploy_plugin:
+          filters:
+            branches:
+              only:
+                - main
