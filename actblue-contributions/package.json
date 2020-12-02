@@ -7,7 +7,6 @@
     "start": "wp-scripts start --config webpack.config.js"
   },
   "dependencies": {
-    "@wordpress/api-fetch": "^3.20.0",
     "@wordpress/icons": "^2.8.0"
   },
   "devDependencies": {

@@ -7,7 +7,6 @@ import classnames from "classnames";
  * WordPress dependencies
  */
 import { __ } from "@wordpress/i18n";
-import apiFetch from "@wordpress/api-fetch";
 import { useCallback, useState } from "@wordpress/element";
 import { compose } from "@wordpress/compose";
 import {
@@ -88,7 +87,7 @@ function ActBlueButtonEdit({
 }) {
 	const { borderRadius, placeholder, text, token } = attributes;
 
-	const [endpoint, setEndpoint] = useState("");
+	const [endpoint, setEndpoint] = useState();
 
 	const {
 		gradientClass,
@@ -101,22 +100,12 @@ function ActBlueButtonEdit({
 			return;
 		}
 
-		const host = "https://secure.actblue.com/cf/oembed";
-		const url = `${host}?url=${endpoint}&format=json`;
+		const url = `https://secure.actblue.com/cf/oembed?url=${endpoint}&format=json`;
 
-		// apiFetch({
-		// 	url: `${window.ajaxurl}?action=proxy_actblue&url=${url}`,
-		// })
-		// 	.then(({ success, data }) => {
-		// 		if (!success) {
-		// 			throw new Error(data);
-		// 		}
-
-		// 		setAttributes({ token: data.title });
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error(error);
-		// 	});
+		fetch(url)
+			.then((resp) => resp.json())
+			.then((resp) => setAttributes({ token: resp.token }))
+			.catch((error) => console.error(error));
 	};
 
 	return (
@@ -147,14 +136,19 @@ function ActBlueButtonEdit({
 			/>
 			<InspectorControls>
 				<PanelBody title={__("ActBlue Settings")}>
-					<TextControl
-						label="oEmbed endpoint"
-						value={endpoint}
-						onChange={(value) => setEndpoint(value)}
-					/>
-					<Button isSecondary onClick={handleEndpointSubmit}>
-						Fetch
-					</Button>
+					{!token && (
+						<>
+							<TextControl
+								label="oEmbed endpoint"
+								value={endpoint}
+								onChange={(value) => setEndpoint(value)}
+							/>
+							<Button isSecondary onClick={handleEndpointSubmit}>
+								Fetch
+							</Button>
+						</>
+					)}
+
 					<TextControl
 						label="Token"
 						value={token}
