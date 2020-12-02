@@ -104,19 +104,19 @@ function ActBlueButtonEdit({
 		const host = "https://secure.actblue.com/cf/oembed";
 		const url = `${host}?url=${endpoint}&format=json`;
 
-		apiFetch({
-			url: `${window.ajaxurl}?action=proxy_actblue&url=${url}`,
-		})
-			.then(({ success, data }) => {
-				if (!success) {
-					throw new Error(data);
-				}
+		// apiFetch({
+		// 	url: `${window.ajaxurl}?action=proxy_actblue&url=${url}`,
+		// })
+		// 	.then(({ success, data }) => {
+		// 		if (!success) {
+		// 			throw new Error(data);
+		// 		}
 
-				setAttributes({ token: data.title });
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+		// 		setAttributes({ token: data.title });
+		// 	})
+		// 	.catch((error) => {
+		// 		console.error(error);
+		// 	});
 	};
 
 	return (
