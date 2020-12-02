@@ -139,13 +139,16 @@ function ActBlueButtonEdit({
 					{!token && (
 						<>
 							<TextControl
-								label="oEmbed endpoint"
+								label="Embed URL"
 								value={endpoint}
 								onChange={(value) => setEndpoint(value)}
 							/>
+							<p>Use the embed URL to fetch your token.</p>
 							<Button isSecondary onClick={handleEndpointSubmit}>
-								Fetch
+								Get Token
 							</Button>
+							<br />
+							<br />
 						</>
 					)}
 
