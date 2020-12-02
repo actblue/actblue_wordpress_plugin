@@ -8,6 +8,7 @@ import { registerBlockType } from "@wordpress/blocks";
  * Internal dependencies
  */
 // import * as embedBlock from "./custom/actblue-embed";
+import * as buttonsBlock from "./custom/actblue-buttons";
 import * as buttonBlock from "./custom/actblue-button";
 
 // We need to run this on domReady so that the block data has been initialized.
@@ -17,6 +18,6 @@ import * as buttonBlock from "./custom/actblue-button";
 // registerBlockType(embedBlock.name, embedBlock.getSettings());
 // });
 
-[buttonBlock].forEach(({ name, settings }) => {
+[buttonsBlock, buttonBlock].forEach(({ name, settings }) => {
 	registerBlockType(name, settings);
 });

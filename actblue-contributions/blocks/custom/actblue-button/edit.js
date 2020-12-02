@@ -75,7 +75,7 @@ function BorderPanel({ borderRadius = "", setAttributes }) {
 	);
 }
 
-function ButtonEdit({
+function ActBlueButtonEdit({
 	attributes,
 	backgroundColor,
 	textColor,
@@ -86,7 +86,7 @@ function ButtonEdit({
 	setAttributes,
 	className,
 }) {
-	const { borderRadius, placeholder, text, token, amount } = attributes;
+	const { borderRadius, placeholder, text, token } = attributes;
 
 	const [endpoint, setEndpoint] = useState("");
 
@@ -160,12 +160,18 @@ function ButtonEdit({
 						value={token}
 						onChange={(value) => setAttributes({ token: value })}
 					/>
-					<TextControl
+
+					{/*
+					We can add a field for an `Amount` with another text control. We can grab the
+					`amount` variable from the attributes passed to this edit function.
+					*/}
+
+					{/* <TextControl
 						type="number"
 						label="Amount"
 						value={amount}
 						onChange={(value) => setAttributes({ amount: value })}
-					/>
+					/> */}
 				</PanelBody>
 				<PanelColorGradientSettings
 					title={__("Background & Text Color")}
@@ -208,4 +214,4 @@ function ButtonEdit({
 export default compose([
 	withColors("backgroundColor", { textColor: "color" }),
 	applyFallbackStyles,
-])(ButtonEdit);
+])(ActBlueButtonEdit);

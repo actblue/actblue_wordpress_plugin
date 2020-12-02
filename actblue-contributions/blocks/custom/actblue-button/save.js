@@ -12,7 +12,7 @@ import {
 	__experimentalGetGradientClass,
 } from "@wordpress/block-editor";
 
-export default function save({ attributes }) {
+const ActBlueButtonSave = ({ attributes }) => {
 	const {
 		backgroundColor,
 		borderRadius,
@@ -24,7 +24,6 @@ export default function save({ attributes }) {
 		textColor,
 		title,
 		token,
-		amount,
 	} = attributes;
 
 	const textClass = getColorClassName("color", textColor);
@@ -56,12 +55,14 @@ export default function save({ attributes }) {
 		borderRadius: borderRadius ? borderRadius + "px" : undefined,
 	};
 
-	// The use of a `title` attribute here is soft-deprecated, but still applied
-	// if it had already been assigned, for the sake of backward-compatibility.
-	// A title will no longer be assigned for new or updated button block links.
+	// The arguments to be passed to the `actblue.requestContribution()` function, stringified so
+	// we can pass it into the inline onClick function below. To add the amount, grab the `amount`
+	// variable from the attributes passed to this function and add it to the stringified object.
+	const contributionArgs = JSON.stringify({ token });
 
-	const contributionArgs = JSON.stringify({ token, amount });
-
+	// The use of a `title` attribute here is soft-deprecated, but still applied if it
+	// had already been assigned, for the sake of backward-compatibility. A title will no
+	// longer be assigned for new or updated button block links.
 	return (
 		<div className="wp-block-button">
 			<RichText.Content
@@ -75,4 +76,6 @@ export default function save({ attributes }) {
 			/>
 		</div>
 	);
-}
+};
+
+export default ActBlueButtonSave;
