@@ -9,6 +9,7 @@ import { SVG, Path } from "@wordpress/primitives";
  */
 import edit from "./edit";
 import save from "./save";
+import transforms from "./transforms";
 
 const attributes = {
 	url: {
@@ -50,6 +51,7 @@ export const settings = {
 	supports: {
 		align: true,
 	},
+	transforms,
 	attributes,
 	edit,
 	save,
