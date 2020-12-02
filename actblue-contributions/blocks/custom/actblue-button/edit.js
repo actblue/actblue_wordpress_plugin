@@ -84,7 +84,7 @@ function ActBlueButtonEdit({
 	setAttributes,
 	className,
 }) {
-	const { borderRadius, placeholder, text, token, amount } = attributes;
+	const { borderRadius, placeholder, text, token } = attributes;
 
 	const {
 		gradientClass,
@@ -124,12 +124,6 @@ function ActBlueButtonEdit({
 						label="Token"
 						value={token}
 						onChange={(value) => setAttributes({ token: value })}
-					/>
-					<TextControl
-						type="number"
-						label="Amount"
-						value={amount}
-						onChange={(value) => setAttributes({ amount: value })}
 					/>
 				</PanelBody>
 				<PanelColorGradientSettings

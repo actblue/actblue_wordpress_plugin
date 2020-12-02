@@ -51,9 +51,10 @@ const attributes = {
 	token: {
 		type: "string",
 	},
-	amount: {
-		type: "string",
-	},
+
+	// amount: {
+	// 	type: "string",
+	// },
 };
 
 export const name = "actblue/button";

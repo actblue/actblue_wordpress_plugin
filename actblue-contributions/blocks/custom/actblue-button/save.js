@@ -24,7 +24,6 @@ const ActBlueButtonSave = ({ attributes }) => {
 		textColor,
 		title,
 		token,
-		amount,
 	} = attributes;
 
 	const textClass = getColorClassName("color", textColor);
@@ -60,7 +59,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 	// if it had already been assigned, for the sake of backward-compatibility.
 	// A title will no longer be assigned for new or updated button block links.
 
-	const contributionArgs = JSON.stringify({ token, amount });
+	const contributionArgs = JSON.stringify({ token });
 
 	return (
 		<div className="wp-block-button">
