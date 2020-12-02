@@ -8,6 +8,7 @@ import { __ } from "@wordpress/i18n";
  */
 import edit from "./edit";
 import save from "./save";
+import transforms from "./transforms";
 import icon from "../../icons/actblue";
 
 export const name = "actblue/buttons";
@@ -26,4 +27,5 @@ export const settings = {
 	},
 	edit,
 	save,
+	transforms,
 };
