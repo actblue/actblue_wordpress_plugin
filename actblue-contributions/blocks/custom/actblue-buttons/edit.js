@@ -17,7 +17,7 @@ const alignmentHooksSetting = {
 	isEmbedButton: true,
 };
 
-function ButtonsEdit({ className }) {
+function ActBlueButtonsEdit({ className }) {
 	return (
 		<div className={`${className} wp-block-buttons`}>
 			<AlignmentHookSettingsProvider value={alignmentHooksSetting}>
@@ -32,4 +32,4 @@ function ButtonsEdit({ className }) {
 	);
 }
 
-export default ButtonsEdit;
+export default ActBlueButtonsEdit;

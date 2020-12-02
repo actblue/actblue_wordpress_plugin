@@ -12,7 +12,7 @@ import {
 	__experimentalGetGradientClass,
 } from "@wordpress/block-editor";
 
-export default function save({ attributes }) {
+const ActBlueButtonSave = ({ attributes }) => {
 	const {
 		backgroundColor,
 		borderRadius,
@@ -75,4 +75,6 @@ export default function save({ attributes }) {
 			/>
 		</div>
 	);
-}
+};
+
+export default ActBlueButtonSave;

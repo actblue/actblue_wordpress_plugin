@@ -73,7 +73,7 @@ function BorderPanel({ borderRadius = "", setAttributes }) {
 	);
 }
 
-function ButtonEdit({
+function ActBlueButtonEdit({
 	attributes,
 	backgroundColor,
 	textColor,
@@ -173,4 +173,4 @@ function ButtonEdit({
 export default compose([
 	withColors("backgroundColor", { textColor: "color" }),
 	applyFallbackStyles,
-])(ButtonEdit);
+])(ActBlueButtonEdit);
