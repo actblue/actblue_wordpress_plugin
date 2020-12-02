@@ -52,6 +52,12 @@ const attributes = {
 		type: "string",
 	},
 
+	/**
+	 * Uncommend the following attribute to enable a user to attach a specific donation
+	 * amount to a button. You can then access this `amount` variable in the attributes
+	 * parameter passed to the edit.js and save.js functions. This is required so that
+	 * the amount value gets saved to the block.
+	 */
 	// amount: {
 	// 	type: "string",
 	// },
