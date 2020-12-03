@@ -136,21 +136,17 @@ function ActBlueButtonEdit({
 			/>
 			<InspectorControls>
 				<PanelBody title={__("ActBlue Settings")}>
-					{!token && (
-						<>
-							<TextControl
-								label="Embed URL"
-								value={endpoint}
-								onChange={(value) => setEndpoint(value)}
-							/>
-							<p>Use the embed URL to fetch your token.</p>
-							<Button isSecondary onClick={handleEndpointSubmit}>
-								Get Token
-							</Button>
-							<br />
-							<br />
-						</>
-					)}
+					<TextControl
+						label="Embed URL"
+						value={endpoint}
+						onChange={(value) => setEndpoint(value)}
+						help="Use an ActBlue embedded form URL to lookup a token."
+					/>
+					<Button isSecondary onClick={handleEndpointSubmit}>
+						Get Token
+					</Button>
+					<br />
+					<br />
 
 					<TextControl
 						label="Token"
