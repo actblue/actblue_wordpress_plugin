@@ -125,10 +125,10 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-                ignore: /.*/
+              ignore: /.*/
       - deploy_plugin:
           filters:
             tags:
               only: /^v.*/
             branches:
-                ignore: /.*/
+              ignore: /.*/
