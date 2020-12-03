@@ -116,9 +116,8 @@ workflows:
       - build
       - deploy_assets:
           filters:
-            branches:
-              only:
-                - main
+            tags:
+              only: /^v.*/
       - code_quality:
           requires:
             - build
