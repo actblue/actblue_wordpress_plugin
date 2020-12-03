@@ -126,6 +126,5 @@ workflows:
             - build
       - deploy_plugin:
           filters:
-            branches:
-              only:
-                - main
+            tags:
+              only: /^v.*/
