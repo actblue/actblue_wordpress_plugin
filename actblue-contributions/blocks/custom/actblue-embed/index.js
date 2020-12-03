@@ -1,23 +1,50 @@
 /**
  * WordPress dependencies
  */
-import { getBlockType } from "@wordpress/blocks";
+import { __ } from "@wordpress/i18n";
 
 /**
- * Internal dependencies.
+ * Internal dependencies
  */
+import edit from "./edit";
+import save from "./save";
+import transforms from "./transforms";
 import icon from "../../icons/actblue";
 
+const attributes = {
+	url: {
+		type: "string",
+	},
+	caption: {
+		type: "string",
+		source: "html",
+		selector: "figcaption",
+	},
+	type: {
+		type: "string",
+	},
+	allowResponsive: {
+		type: "boolean",
+		default: true,
+	},
+};
+
+export { icon };
+export const title = __("ActBlue Embed");
 export const name = "actblue/embed";
 
-export const getSettings = () => {
-	const settings = getBlockType("core/embed");
-
-	return {
-		...settings,
-		name,
-		icon,
-		title: "ActBlue Embed",
-		description: "Embed an ActBlue contribution form.",
-	};
+export const settings = {
+	title,
+	icon,
+	description: __("Embed an ActBlue contribution form."),
+	category: "embed",
+	responsive: false,
+	keywords: [],
+	supports: {
+		align: true,
+	},
+	transforms,
+	attributes,
+	edit,
+	save,
 };
