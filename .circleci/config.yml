@@ -114,17 +114,21 @@ workflows:
   run_tests:
     jobs:
       - build
-      - deploy_assets:
-          filters:
-            tags:
-              only: /^v.*/
       - code_quality:
           requires:
             - build
       - unit_tests:
           requires:
             - build
+      - deploy_assets:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+                ignore: /.*/
       - deploy_plugin:
           filters:
             tags:
               only: /^v.*/
+            branches:
+                ignore: /.*/
