@@ -4,9 +4,13 @@
   "author": "ActBlue",
   "scripts": {
     "build": "wp-scripts build",
-    "start": "wp-scripts start"
+    "start": "wp-scripts start",
+    "test:e2e": "wp-scripts test-e2e",
+    "wp-env": "wp-env"
   },
   "devDependencies": {
+    "@wordpress/e2e-test-utils": "^4.15.1",
+    "@wordpress/env": "^2.1.0",
     "@wordpress/scripts": "12.5.0"
   },
   "description": "",
