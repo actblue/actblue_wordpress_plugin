@@ -29,6 +29,7 @@ const attributes = {
 	},
 };
 
+export { icon };
 export const title = __("ActBlue Embed");
 export const name = "actblue/embed";
 
