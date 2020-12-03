@@ -126,6 +126,8 @@ To release a new version of the plugin via automatic deployment:
 
 5. [Create a new release](https://github.com/actblue/wordpress_plugin/releases/new) in GitHub. Making sure to target the `main` branch, add a tag label that matches the version you're bumping to. Note that this tag label _must_ have a leading `v` (for example, `v1.0.0`) so that the CircleCI and the deployment scripts can identify it. Then add a release title and any release notes and hit `Publish Release`. This will trigger CircleCI to deploy this tagged version of the plugin to the WordPress svn repository with the matching version number.
 
+<img width="990" alt="Screen Shot 2020-12-03 at 10 02 03 AM" src="https://user-images.githubusercontent.com/3286676/101071232-28ea5100-3551-11eb-8375-048206c32432.png">
+
 ### Manual deployment
 
 To manually deploy a new version of the plugin from your local machine:
