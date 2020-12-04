@@ -93,23 +93,21 @@ jobs:
     <<: *container_config
     docker:
       - image: circleci/node:12.19.1
+    working_directory: ~/actblue-contributions/actblue-contributions
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command: |
-            cd $WP_PLUGIN_NAME
-            composer install -n -o
-            npm install
+          command: npm install
       - run:
           name: Build
-          command: cd $WP_PLUGIN_NAME && npm run build
+          command: npm run build
       - run:
           name: Spin up WordPress
-          command: cd $WP_PLUGIN_NAME && npm run wp-env
+          command: npm run wp-env
       - run:
           name: Run e2e tests
-          command: cd $WP_PLUGIN_NAME && npm run test:e2e
+          command: npm run test:e2e
 
   deploy_assets:
     <<: *container_config
