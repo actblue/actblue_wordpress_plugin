@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 references:
   # Environment variables.
@@ -93,7 +93,7 @@ jobs:
     <<: *container_config
     docker:
       - image: circleci/node:12.19.1
-    working_directory: ~/actblue-contributions/actblue-contributions
+    working_directory: ~/actblue-contributions/
     steps:
       - checkout
       - run:
