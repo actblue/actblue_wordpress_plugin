@@ -8,10 +8,17 @@
     "test:e2e": "wp-scripts test-e2e --wordpress-base-url=http://localhost:8888",
     "wp-env": "wp-env"
   },
+  "dependencies": {
+    "@wordpress/icons": "^2.8.0"
+  },
   "devDependencies": {
     "@wordpress/e2e-test-utils": "^4.15.1",
     "@wordpress/env": "^2.1.0",
-    "@wordpress/scripts": "12.5.0"
+    "@wordpress/scripts": "12.5.0",
+    "classnames": "^2.2.6",
+    "memize": "^1.1.0",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0"
   },
   "description": "",
   "main": "index.js",
