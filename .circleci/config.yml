@@ -94,22 +94,20 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Navigate into directory
-          command: cd $WP_PLUGIN_NAME
-      - run:
           name: Install dependencies
           command: |
+            cd $WP_PLUGIN_NAME
             composer install -n -o
             npm install
       - run:
           name: Build
-          command: npm run build
+          command: cd $WP_PLUGIN_NAME && npm run build
       - run:
           name: Spin up WordPress
-          command: npm run wp-env
+          command: cd $WP_PLUGIN_NAME && npm run wp-env
       - run:
           name: Run e2e tests
-          command: npm run test:e2e
+          command: cd $WP_PLUGIN_NAME && npm run test:e2e
 
   deploy_assets:
     <<: *container_config
