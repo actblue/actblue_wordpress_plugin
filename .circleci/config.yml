@@ -92,7 +92,7 @@ jobs:
   e2e_tests:
     <<: *container_config
     docker:
-      - image: cimg/node:14.15.1
+      - image: cimg/python:2.7-node
     working_directory: ~/actblue-contributions/actblue-contributions
     steps:
       - checkout:
