@@ -91,6 +91,8 @@ jobs:
 
   e2e_tests:
     <<: *container_config
+    docker:
+      - image: circleci/node:12.19.1
     steps:
       - checkout
       - run:
