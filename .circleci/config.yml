@@ -98,16 +98,16 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install
-      - run:
-          name: Build
-          command: npm run build
-      - run:
-          name: Spin up WordPress
-          command: npm run wp-env
-      - run:
-          name: Run e2e tests
-          command: npm run test:e2e
+          command: ls -la
+      # - run:
+      #     name: Build
+      #     command: npm run build
+      # - run:
+      #     name: Spin up WordPress
+      #     command: npm run wp-env
+      # - run:
+      #     name: Run e2e tests
+      #     command: npm run test:e2e
 
   deploy_assets:
     <<: *container_config
