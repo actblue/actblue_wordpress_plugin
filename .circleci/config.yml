@@ -89,6 +89,27 @@ jobs:
             bash $WP_PLUGIN_NAME/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
             cd $WP_PLUGIN_NAME && $HOME/.composer/vendor/bin/phpunit
 
+  e2e_tests:
+    <<: *container_config
+    steps:
+      - checkout
+      - run:
+          name: Navigate into directory
+            command: cd $WP_PLUGIN_NAME
+          name: Install dependencies
+          command: |
+            composer install -n -o
+            npm install
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Spin up WordPress
+          command: npm run wp-env
+      - run:
+          name: Run e2e tests
+          command: npm run test:e2e
+
   deploy_assets:
     <<: *container_config
     steps:
@@ -113,20 +134,21 @@ workflows:
   version: 2
   run_tests:
     jobs:
-      - build
-      - deploy_assets:
-          filters:
-            branches:
-              only:
-                - main
-      - code_quality:
-          requires:
-            - build
-      - unit_tests:
-          requires:
-            - build
-      - deploy_plugin:
-          filters:
-            branches:
-              only:
-                - main
+      - e2e_tests
+      # - build
+      # - deploy_assets:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+      # - code_quality:
+      #     requires:
+      #       - build
+      # - unit_tests:
+      #     requires:
+      #       - build
+      # - deploy_plugin:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
