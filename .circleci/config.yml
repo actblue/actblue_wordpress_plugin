@@ -95,7 +95,8 @@ jobs:
       - checkout
       - run:
           name: Navigate into directory
-            command: cd $WP_PLUGIN_NAME
+          command: cd $WP_PLUGIN_NAME
+      - run:
           name: Install dependencies
           command: |
             composer install -n -o
@@ -135,21 +136,22 @@ workflows:
   run_tests:
     jobs:
       - build
-      - code_quality:
-          requires:
-            - build
-      - unit_tests:
-          requires:
-            - build
-      - deploy_assets:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - deploy_plugin:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+      - e2e_tests
+      # - code_quality:
+      #     requires:
+      #       - build
+      # - unit_tests:
+      #     requires:
+      #       - build
+      # - deploy_assets:
+      #     filters:
+      #       tags:
+      #         only: /^v.*/
+      #       branches:
+      #         ignore: /.*/
+      # - deploy_plugin:
+      #     filters:
+      #       tags:
+      #         only: /^v.*/
+      #       branches:
+      #         ignore: /.*/
