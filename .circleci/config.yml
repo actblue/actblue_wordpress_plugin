@@ -133,7 +133,7 @@ workflows:
   version: 2
   run_tests:
     jobs:
-      - build
+      # - build
       - e2e_tests
       # - code_quality:
       #     requires:
