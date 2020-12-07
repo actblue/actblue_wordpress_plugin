@@ -110,7 +110,9 @@ function ActBlueButtonEdit({
 		fetch(url)
 			.then((resp) => {
 				if (resp.status === 404) {
-					throw new Error("Error: that endpoint cannot be found.");
+					throw new Error(
+						"Error: could not find an ActBlue embeddable form at that URL."
+					);
 				}
 				return resp.json();
 			})

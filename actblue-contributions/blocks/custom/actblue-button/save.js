@@ -62,7 +62,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 
 	const onClickInlineFunction = token
 		? `if (window.actblue && typeof window.actblue.requestContribution === 'function') { window.actblue.requestContribution(${contributionArgs}) }; return false;`
-		: 'console.warn("Warning: the ActBlue token for this button is invalid. Please be sure to add a valid endpoint to this button in the editor."); return false';
+		: 'console.warn("Warning: the ActBlue token for this button is invalid. Please be sure to add the URL to a valid ActBlue embeddable form in the editor."); return false';
 
 	// The use of a `title` attribute here is soft-deprecated, but still applied if it
 	// had already been assigned, for the sake of backward-compatibility. A title will no
