@@ -170,7 +170,7 @@ workflows:
   run_tests:
     jobs:
       - build
-      - e2e_tests
+      - e2e_tests:
           requires:
             - build
       # - code_quality:
