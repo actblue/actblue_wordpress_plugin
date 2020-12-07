@@ -4,8 +4,6 @@ references:
   # Environment variables.
   WP_CORE_DIR: &WP_CORE_DIR
     /tmp/wordpress
-  WP_HOST: &WP_HOST
-    actblue.test
   WP_PLUGIN_NAME: &WP_PLUGIN_NAME
     actblue-contributions
   WP_ORG_USERNAME: &WP_ORG_USERNAME
@@ -19,7 +17,6 @@ references:
       - image: circleci/php:7.2-node-browsers
     environment:
       - WP_CORE_DIR: *WP_CORE_DIR
-      - WP_HOST: *WP_HOST
       - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
       - WP_ORG_USERNAME: *WP_ORG_USERNAME
       - WP_TESTS_DIR: *WP_TESTS_DIR
@@ -98,6 +95,10 @@ jobs:
       - checkout:
           path: ~/actblue-contributions
       - run:
+          name: Add WordPress host to hosts file
+          command: echo "127.0.0.1 actblue.test" | sudo tee -a /etc/hosts
+      - *attach_workspace
+      - run:
           name: Install Headless Chrome dependencies
           command: |
             sudo apt-get update && sudo apt-get install -yq \
@@ -117,10 +118,10 @@ jobs:
           command: npm run build
       - run:
           name: Spin up WordPress
-          command: npm run wp-env
+          command: WP_ENV_PORT=80 npm run wp-env start
       - run:
           name: Run e2e tests
-          command: npm run test:e2e
+          command: npm run test:e2e -- --wordpress-base-url=http://actblue.test
 
   deploy_assets:
     <<: *container_config
