@@ -30,6 +30,41 @@ This plugin was designed and built in collaboration with <a href="https://upstat
 
 [ActBlue](https://secure.actblue.com/) is a nonprofit organization dedicated to empowering small-dollar donors. Its online fundraising platform makes it easy for grassroots supporters to make their voices heard and helps thousands of Democratic campaigns, progressive organizations, and nonprofits build people-powered movements.
 
+== Security ==
+
+WordPress’s [mission](https://wordpress.org/about/) to democratize publishing and embrace of [open source](https://opensource.org/osd-annotated) has led it to be adopted by individuals and organizations of all shapes and sizes. The downside of [this ubiquity](https://w3techs.com/technologies/details/cm-wordpress), when paired with the ease of its [famous five-minute install](https://wordpress.org/support/article/how-to-install-wordpress/), is that it’s a frequent target of hacks and malware.
+
+Here are a few tips to minimize the risks associated with building your site with the most popular CMS on the planet:
+
+= Keep it secure =
+
+- If you’re not using a fully managed service like wordpress.com, make sure you’re using a trusted WordPress [hosting provider](https://wordpress.org/hosting/) with a proven track record of security.
+- Use [HTTPS](https://wordpress.org/support/article/https-for-wordpress/) URLs for all pages on your site, especially WordPress core files (starting with `wp-`). **ActBlue embeds won’t work on non-https URLs**.
+- Protect the WordPress Admin by using [strong passwords](https://krebsonsecurity.com/password-dos-and-donts/) and Two-Factor Authentication (2FA), limiting the number of admin users by [using user roles](https://www.wpbeginner.com/beginners-guide/wordpress-user-roles-and-permissions/), [limiting login attempts](https://wordpress.org/plugins/limit-login-attempts-reloaded/), [disabling file editing](https://wordpress.org/support/article/hardening-wordpress/#disable-file-editing), and keeping an [activity log](https://wordpress.org/plugins/wp-security-audit-log/). Also be cautious with emails requesting that you log into your WordPress account (i.e. [phishing attacks](https://securityintelligence.com/news/new-wordpress-phishing-campaigns-target-user-credentials/)).
+- Protect against denial-of-service and other attacks by putting up a Web Application Firewall (WAF) like [Cloudflare](https://www.cloudflare.com/waf/).
+- Set up routine audits of your site codebase using a malware scanning plugin such as [WordFence](https://wordpress.org/plugins/wordfence/), [iThemes Security](https://wordpress.org/plugins/better-wp-security/), or [Sucuri Security](https://wordpress.org/plugins/sucuri-scanner/).
+- Continuously back up up your site through your hosting provider or a plugin like [VaultPress](https://wordpress.org/plugins/vaultpress/) or [UpdraftPlus](https://wordpress.org/plugins/updraftplus/).
+
+= Be careful when installing third party themes or plugins =
+
+- Only install plugins from trusted sources like the official WordPress.org plugin repository. ActBlue will never request that you update your plugin via a link in an email.
+- Do your due diligence — does it work with the latest version of WordPress? Has it been updated in the last two years? How many people are using it and are they happy with it? All of these questions are easily answered by reviewing the WP.org plugin listing and support forum.
+- Minimize the number of installed plugins on your site.
+
+= Keep it up-to-date =
+
+- Enable [automatic updates](https://wordpress.org/support/article/updating-wordpress/#automatic-background-updates) for WordPress core and third-party plugins or themes.
+- Make sure custom theme or plugin components are tested against new WordPress releases.
+- Make sure your server OS and system packages like PHP and MySQL are up-to-date. A good managed hosting provider like [Kinsta](https://kinsta.com/) and [SiteGround](https://www.siteground.com/) will handle all of this for you.
+
+= Learn More =
+
+- https://wordpress.org/support/article/hardening-wordpress/
+- https://kinsta.com/blog/wordpress-security/
+- https://sucuri.net/guides/wordpress-security/
+- https://www.wpbeginner.com/wordpress-security/
+- https://www.wpwhitesecurity.com/guide-choose-right-plugin-wordpress/
+
 == Installation ==
 
 1. Upload the `actblue` directory to the `/wp-content/plugins/` directory.
