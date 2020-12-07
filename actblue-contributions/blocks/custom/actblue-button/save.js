@@ -60,6 +60,10 @@ const ActBlueButtonSave = ({ attributes }) => {
 	// variable from the attributes passed to this function and add it to the stringified object.
 	const contributionArgs = JSON.stringify({ token });
 
+	const onClickInlineFunction = token
+		? `if (window.actblue && typeof window.actblue.requestContribution === 'function') { window.actblue.requestContribution(${contributionArgs}) }; return false;`
+		: 'console.warn("Warning: the ActBlue token for this button is invalid. Please be sure to add a valid endpoint to this button in the editor."); return false';
+
 	// The use of a `title` attribute here is soft-deprecated, but still applied if it
 	// had already been assigned, for the sake of backward-compatibility. A title will no
 	// longer be assigned for new or updated button block links.
@@ -72,7 +76,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 				title={title}
 				style={buttonStyle}
 				value={text}
-				onClick={`if (window.actblue && typeof window.actblue.requestContribution === 'function') { window.actblue.requestContribution(${contributionArgs}) }; return false;`}
+				onClick={onClickInlineFunction}
 			/>
 		</div>
 	);

@@ -48,7 +48,16 @@ const attributes = {
 	},
 
 	// ActBlue form settings.
+
+	// A token for the button. This value is fetched from an ActBlue embed URL
+	// endpoint and will be used in the `requestContribution` call. This value will
+	// not be exposed to an editor.
 	token: {
+		type: "string",
+	},
+
+	// The endpoint a user will hit to retrieve a token.
+	endpoint: {
 		type: "string",
 	},
 

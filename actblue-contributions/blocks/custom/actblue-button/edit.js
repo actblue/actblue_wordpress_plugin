@@ -15,6 +15,7 @@ import {
 	TextControl,
 	withFallbackStyles,
 	Button,
+	Spinner,
 } from "@wordpress/components";
 import {
 	__experimentalUseGradient,
@@ -85,9 +86,10 @@ function ActBlueButtonEdit({
 	setAttributes,
 	className,
 }) {
-	const { borderRadius, placeholder, text, token } = attributes;
+	const { borderRadius, placeholder, text, endpoint } = attributes;
 
-	const [endpoint, setEndpoint] = useState();
+	const [isFetching, setIsFetching] = useState(false);
+	const [fetchMessage, setFetchMessage] = useState("");
 
 	const {
 		gradientClass,
@@ -100,12 +102,25 @@ function ActBlueButtonEdit({
 			return;
 		}
 
+		setIsFetching(true);
+		setFetchMessage("");
+
 		const url = `https://secure.actblue.com/cf/oembed?url=${endpoint}&format=json`;
 
 		fetch(url)
-			.then((resp) => resp.json())
+			.then((resp) => {
+				if (resp.status === 404) {
+					throw new Error("Error: that endpoint cannot be found.");
+				}
+				return resp.json();
+			})
 			.then((resp) => setAttributes({ token: resp.token }))
-			.catch((error) => console.error(error));
+			.catch((error) => {
+				console.error(error);
+				setAttributes({ token: "" });
+				setFetchMessage(error.message);
+			})
+			.finally(() => setIsFetching(false));
 	};
 
 	return (
@@ -135,24 +150,32 @@ function ActBlueButtonEdit({
 				}}
 			/>
 			<InspectorControls>
-				<PanelBody title={__("ActBlue Settings")}>
+				<PanelBody
+					title={__("ActBlue Settings")}
+					className="actblue-button-settings__panel"
+				>
 					<TextControl
 						label="Embed URL"
 						value={endpoint}
-						onChange={(value) => setEndpoint(value)}
-						help="Use an ActBlue embedded form URL to lookup a token."
+						onChange={(value) => setAttributes({ endpoint: value })}
+						help="Use an ActBlue embedded form URL to connect this button."
 					/>
-					<Button isSecondary onClick={handleEndpointSubmit}>
-						Get Token
-					</Button>
-					<br />
-					<br />
 
-					<TextControl
-						label="Token"
-						value={token}
-						onChange={(value) => setAttributes({ token: value })}
-					/>
+					<Button
+						isSecondary
+						onClick={handleEndpointSubmit}
+						disabled={isFetching || !endpoint}
+					>
+						Connect
+					</Button>
+
+					{isFetching && <Spinner />}
+
+					{fetchMessage && (
+						<p className="actblue-button-settings__fetch-message">
+							{fetchMessage}
+						</p>
+					)}
 
 					{/*
 					We can add a field for an `Amount` with another text control. We can grab the
