@@ -97,7 +97,6 @@ jobs:
       - run:
           name: Add WordPress host to hosts file
           command: echo "127.0.0.1 actblue.test" | sudo tee -a /etc/hosts
-      - *attach_workspace
       - run:
           name: Install Headless Chrome dependencies
           command: |
