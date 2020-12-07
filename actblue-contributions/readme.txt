@@ -9,7 +9,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Easily embed your ActBlue contribution forms on any WordPress page
+Easily embed your ActBlue contribution forms on any WordPress page. Designed and built by Upstatement.
 
 == Description ==
 
@@ -23,6 +23,8 @@ This plugin makes it possible to display your ActBlue Embed forms on your WordPr
 - Support for embeddable donation buttons
 - Support for refcodes
 - Gutenberg block with additional customization options
+
+This plugin was designed and built in collaboration with <a href="https://upstatement.com/">Upstatement</a>.
 
 = About ActBlue =
 
