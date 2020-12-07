@@ -10,6 +10,8 @@ references:
     actblue
   WP_TESTS_DIR: &WP_TESTS_DIR
     /tmp/wordpress-tests-lib
+  WP_HOST: &WP_HOST
+    actblue.test
 
   # Container configuration.
   container_config: &container_config
@@ -48,10 +50,17 @@ jobs:
       - run:
           name: Build
           command: cd $WP_PLUGIN_NAME && npm run build
+      - run:
+          name: Install WordPress
+          command: bash .circleci/install-wp.sh
       - persist_to_workspace:
           root: .
           paths:
             - actblue-contributions/vendor
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - wordpress
 
   code_quality:
     <<: *container_config
@@ -89,14 +98,13 @@ jobs:
   e2e_tests:
     <<: *container_config
     docker:
-      - image: cimg/python:2.7-node
-    working_directory: ~/actblue-contributions/actblue-contributions
+      - image: circleci/php:7.2-node
+      - image: circleci/mysql:5.7
     steps:
-      - checkout:
-          path: ~/actblue-contributions
+      - checkout
       - run:
           name: Add WordPress host to hosts file
-          command: echo "127.0.0.1 actblue.test" | sudo tee -a /etc/hosts
+          command: echo "127.0.0.1 ${WP_HOST}" | sudo tee -a /etc/hosts
       - run:
           name: Install Headless Chrome dependencies
           command: |
@@ -109,18 +117,33 @@ jobs:
       - run:
           name: Install puppeteer with chronium
           command: npm install puppeteer
+      - *attach
+      - run:
+          name: Copy vendor directory
+          command: cp -R /tmp/vendor .
+      - run:
+          name: Install MySQL client
+          command: sudo apt-get install mysql-client
+      - run:
+          name: Install MySQL PHP extension
+          command: sudo docker-php-ext-install mysqli
       - run:
           name: Install dependencies
-          command: npm install
+          command: cd $WP_PLUGIN_NAME && npm install
       - run:
           name: Build
-          command: npm run build
+          command: cd $WP_PLUGIN_NAME && npm run build
       - run:
-          name: Spin up WordPress
-          command: WP_ENV_PORT=80 npm run wp-env start
+          name: Setup WordPress
+          command: .circleci/setup-wordpress.sh
+      - run:
+          name: Start PHP server
+          command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
+          background: True
       - run:
           name: Run e2e tests
-          command: npm run test:e2e -- --wordpress-base-url=http://actblue.test
+          command: cd $WP_PLUGIN_NAME && npm run test:e2e -- --wordpress-base-url=http://${WP_HOST}
+
 
   deploy_assets:
     <<: *container_config
