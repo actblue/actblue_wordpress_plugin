@@ -10,6 +10,7 @@ module.exports = {
 	entry: {
 		blocks: "./blocks",
 		editor: "./blocks/editor.scss",
+		["actblue-contributions"]: "./public/js/actblue-contributions.js",
 	},
 	module: {
 		...defaultConfig.module,

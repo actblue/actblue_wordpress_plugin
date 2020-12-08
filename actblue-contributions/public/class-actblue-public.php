@@ -53,6 +53,15 @@ class ActBlue_Public {
 	 */
 	public function enqueue_scripts() {
 		$actblue_src = actblue_get_url( '/cf/assets/actblue.js' );
-		wp_enqueue_script( $this->plugin_name, $actblue_src, array(), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . '-vendor', $actblue_src, array(), $this->version, false );
+
+		// Enqueue the local plugin script.
+		wp_enqueue_script(
+			$this->plugin_name . '-plugin',
+			ACTBLUE_PLUGIN_URI . 'build/actblue-contributions.js',
+			array( $this->plugin_name . '-vendor' ),
+			$this->version,
+			false
+		);
 	}
 }
