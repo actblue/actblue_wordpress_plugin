@@ -136,7 +136,7 @@ jobs:
           command: cd $WP_PLUGIN_NAME && npm run build
       - run:
           name: Setup WordPress
-          command: .circleci/setup-wordpress.sh
+          command: cd $WP_PLUGIN_NAME && ../.circleci/setup-wordpress.sh
       - run:
           name: Start PHP server
           command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
