@@ -22,12 +22,13 @@ import { withSelect, withDispatch } from "@wordpress/data";
 
 import { title, icon } from "./index";
 
+console.log("embed edit here");
+
 class EmbedEdit extends Component {
 	constructor() {
 		super(...arguments);
 		this.switchBackToURLInput = this.switchBackToURLInput.bind(this);
 		this.setUrl = this.setUrl.bind(this);
-		this.getMergedAttributes = this.getMergedAttributes.bind(this);
 		this.setMergedAttributes = this.setMergedAttributes.bind(this);
 		this.handleIncomingPreview = this.handleIncomingPreview.bind(this);
 
@@ -90,23 +91,11 @@ class EmbedEdit extends Component {
 	}
 
 	/***
-	 * @return {Object} Attributes derived from the preview, merged with the current attributes.
-	 */
-	getMergedAttributes() {
-		const { preview } = this.props;
-		const { className } = this.props.attributes;
-		return {
-			...this.props.attributes,
-			...getAttributesFromPreview(preview, title, className),
-		};
-	}
-
-	/***
 	 * Sets block attributes based on the current attributes and preview data.
 	 */
 	setMergedAttributes() {
 		const { setAttributes } = this.props;
-		setAttributes(this.getMergedAttributes());
+		setAttributes(this.props.attributes);
 	}
 
 	switchBackToURLInput() {
@@ -149,15 +138,9 @@ class EmbedEdit extends Component {
 			);
 		}
 
-		// Even though we set attributes that get derived from the preview, we don't
-		// access them directly because for the initial render, the `setAttributes`
-		// call will not have taken effect. The `getAttributesFromPreview` function
-		// that `getMergedAttributes` uses is memoized so that we're not calculating
-		// them on every render.
-		const previewAttributes = this.getMergedAttributes();
-		const { caption, type } = previewAttributes;
+		const { caption, type } = this.props.attributes;
 		const className = classnames(
-			previewAttributes.className,
+			this.props.attributes.className,
 			this.props.className
 		);
 
