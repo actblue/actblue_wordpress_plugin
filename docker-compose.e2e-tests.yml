@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    depends_on:
+      - db
+
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e-tests
+    ports:
+      - "8002:80"
+    environment:
+      # WordPress install configuration.
+      WORDPRESS_TITLE: 'ActBlue Demo'
+      WORDPRESS_URL: http://localhost:8002
+      WORDPRESS_ADMIN_USER: admin
+      WORDPRESS_ADMIN_PASSWORD: password
+      WORDPRESS_ADMIN_EMAIL: admin@example.com
+
+      # DB connection
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+volumes:
+    db_data: {}
