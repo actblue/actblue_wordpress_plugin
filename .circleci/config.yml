@@ -118,10 +118,10 @@ jobs:
       # - run:
       #     name: Install puppeteer with chronium
       #     command: npm install puppeteer
-      # - *attach
-      # - run:
-      #     name: Copy vendor directory
-      #     command: cp -R /tmp/actblue-contributions/vendor actblue-contributions
+      - *attach
+      - run:
+          name: Copy vendor directory
+          command: cp -R /tmp/actblue-contributions/vendor actblue-contributions
       # - run:
       #     name: Install MySQL client
       #     command: sudo apt-get install default-mysql-client
