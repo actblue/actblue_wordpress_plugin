@@ -9,6 +9,6 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:8002); d
     sleep 5
 done
 
-npm run test:e2e --prefix=actblue-contributions
+npm run test:e2e --prefix=actblue-contributions -- --wordpress-base-url=http://localhost:8002
 
 docker-compose -p actblue-contributions-e2e-tests stop
