@@ -105,45 +105,44 @@ jobs:
       - run:
           name: Add WordPress host to hosts file
           command: echo "127.0.0.1 ${WP_HOST}" | sudo tee -a /etc/hosts
-      # - run:
-      #     name: Install Headless Chrome dependencies
-      #     command: |
-      #       sudo apt-get update && sudo apt-get install -yq \
-      #       gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
-      #       libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
-      #       libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
-      #       libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
-      #       fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev
-      # - run:
-      #     name: Install puppeteer with chronium
-      #     command: npm install puppeteer
+      - run:
+          name: Install Headless Chrome dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install -yq \
+            gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+            libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
+            libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
+            libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
+            fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev
+      - run:
+          name: Install puppeteer with chronium
+          command: npm install puppeteer
       - *attach
       - run:
           name: Copy vendor directory
-          # command: cp -R /tmp/vendor .
-          command: ls -la /tmp
-      # - run:
-      #     name: Install MySQL client
-      #     command: sudo apt-get install mysql-client
-      # - run:
-      #     name: Install MySQL PHP extension
-      #     command: sudo docker-php-ext-install mysqli
-      # - run:
-      #     name: Install dependencies
-      #     command: cd $WP_PLUGIN_NAME && npm install
-      # - run:
-      #     name: Build
-      #     command: cd $WP_PLUGIN_NAME && npm run build
-      # - run:
-      #     name: Setup WordPress
-      #     command: .circleci/setup-wordpress.sh
-      # - run:
-      #     name: Start PHP server
-      #     command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
-      #     background: True
-      # - run:
-      #     name: Run e2e tests
-      #     command: cd $WP_PLUGIN_NAME && npm run test:e2e -- --wordpress-base-url=http://${WP_HOST}
+          command: cp -R /tmp/actblue-contributions/vendor actblue-contributions
+      - run:
+          name: Install MySQL client
+          command: sudo apt-get install mysql-client
+      - run:
+          name: Install MySQL PHP extension
+          command: sudo docker-php-ext-install mysqli
+      - run:
+          name: Install dependencies
+          command: cd $WP_PLUGIN_NAME && npm install
+      - run:
+          name: Build
+          command: cd $WP_PLUGIN_NAME && npm run build
+      - run:
+          name: Setup WordPress
+          command: .circleci/setup-wordpress.sh
+      - run:
+          name: Start PHP server
+          command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
+          background: True
+      - run:
+          name: Run e2e tests
+          command: cd $WP_PLUGIN_NAME && npm run test:e2e -- --wordpress-base-url=http://${WP_HOST}
 
 
   deploy_assets:
