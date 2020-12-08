@@ -21,12 +21,12 @@ if [[ -z "$WP_PLUGIN_NAME" ]]; then
 fi
 
 # Install WordPress
-vendor/bin/wp config create --path="${WP_CORE_DIR}" --dbhost="127.0.0.1" --dbname="circle_test" --dbuser="root"
-vendor/bin/wp core install --path="${WP_CORE_DIR}" --url="http://${WP_HOST}" --title="Passwords Evolved Test" --admin_user="admin" --admin_password="password" --admin_email="admin@example.com"
-vendor/bin/wp rewrite structure --path="${WP_CORE_DIR}" '/%postname%/'
+actblue-contributions/vendor/bin/wp config create --path="${WP_CORE_DIR}" --dbhost="127.0.0.1" --dbname="circle_test" --dbuser="root"
+actblue-contributions/vendor/bin/wp core install --path="${WP_CORE_DIR}" --url="http://${WP_HOST}" --title="Passwords Evolved Test" --admin_user="admin" --admin_password="password" --admin_email="admin@example.com"
+actblue-contributions/vendor/bin/wp rewrite structure --path="${WP_CORE_DIR}" '/%postname%/'
 
 # Copy our plugin to WordPress directory
-cp -r ./ ${WP_CORE_DIR}/wp-content/plugins/${WP_PLUGIN_NAME}
+cp -r ./actblue-contributions ${WP_CORE_DIR}/wp-content/plugins/${WP_PLUGIN_NAME}
 
 # Activate our plugin
-vendor/bin/wp plugin activate --path="${WP_CORE_DIR}" ${WP_PLUGIN_NAME}
+actblue-contributions/vendor/bin/wp plugin activate --path="${WP_CORE_DIR}" ${WP_PLUGIN_NAME}
