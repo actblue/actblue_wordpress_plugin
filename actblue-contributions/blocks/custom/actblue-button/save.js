@@ -24,6 +24,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 		textColor,
 		title,
 		token,
+		endpoint,
 	} = attributes;
 
 	const textClass = getColorClassName("color", textColor);
@@ -63,7 +64,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 			<RichText.Content
 				tagName="a"
 				className={`${buttonClasses} js-actblue-donation-button`}
-				href="#"
+				href={endpoint}
 				title={title}
 				style={buttonStyle}
 				value={text}

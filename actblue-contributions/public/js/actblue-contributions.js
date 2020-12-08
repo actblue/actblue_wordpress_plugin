@@ -26,8 +26,6 @@ const onDocumentReady = (callback) => {
 const handleButtonClick = (event) => {
 	const { token } = event.currentTarget.dataset;
 
-	event.preventDefault();
-
 	if (!token) {
 		console.warn(
 			"Warning: the ActBlue token for this button is invalid. Please be sure to add the URL to a valid ActBlue embeddable form in the editor."
@@ -36,6 +34,7 @@ const handleButtonClick = (event) => {
 	}
 
 	window.actblue.requestContribution({ token });
+	event.preventDefault();
 };
 
 /**
