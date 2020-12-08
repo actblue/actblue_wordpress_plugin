@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ls -la
+ls -la actblue-contributions
 
 # if [[ -z "$CIRCLECI" ]]; then
 #     echo "This script can only be run by CircleCI. Aborting." 1>&2
