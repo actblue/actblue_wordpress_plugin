@@ -122,25 +122,25 @@ jobs:
       - run:
           name: Copy vendor directory
           command: cp -R /tmp/actblue-contributions/vendor actblue-contributions
-      # - run:
-      #     name: Install MySQL client
-      #     command: sudo apt-get install default-mysql-client
-      # - run:
-      #     name: Install MySQL PHP extension
-      #     command: sudo docker-php-ext-install mysqli
-      # - run:
-      #     name: Install dependencies
-      #     command: cd $WP_PLUGIN_NAME && npm install
-      # - run:
-      #     name: Build
-      #     command: cd $WP_PLUGIN_NAME && npm run build
+      - run:
+          name: Install MySQL client
+          command: sudo apt-get install default-mysql-client
+      - run:
+          name: Install MySQL PHP extension
+          command: sudo docker-php-ext-install mysqli
+      - run:
+          name: Install dependencies
+          command: cd $WP_PLUGIN_NAME && npm install
+      - run:
+          name: Build
+          command: cd $WP_PLUGIN_NAME && npm run build
       - run:
           name: Setup WordPress
           command: .circleci/setup-wordpress.sh
-      # - run:
-      #     name: Start PHP server
-      #     command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
-      #     background: True
+      - run:
+          name: Start PHP server
+          command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
+          background: True
       # - run:
       #     name: Run e2e tests
       #     command: cd $WP_PLUGIN_NAME && npm run test:e2e -- --wordpress-base-url=http://${WP_HOST}
