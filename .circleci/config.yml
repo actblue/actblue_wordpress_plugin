@@ -20,6 +20,7 @@ references:
     environment:
       - WP_CORE_DIR: *WP_CORE_DIR
       - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
+      - WP_HOST: *WP_HOST
       - WP_ORG_USERNAME: *WP_ORG_USERNAME
       - WP_TESTS_DIR: *WP_TESTS_DIR
     working_directory: ~/actblue-contributions
