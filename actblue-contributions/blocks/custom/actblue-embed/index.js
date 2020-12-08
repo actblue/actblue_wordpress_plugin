@@ -38,7 +38,7 @@ export const icon = () => (
 	</SVG>
 );
 
-export const title = __("ActBlue Embeddable");
+export const title = __("ActBlue Embed");
 export const name = "actblue/embed";
 
 export const settings = {
