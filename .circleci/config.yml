@@ -2,16 +2,14 @@ version: 2
 
 references:
   # Environment variables.
-  WP_CORE_DIR: &WP_CORE_DIR
-    /tmp/wordpress
-  WP_HOST: &WP_HOST
-    actblue.test
-  WP_PLUGIN_NAME: &WP_PLUGIN_NAME
-    actblue-contributions
-  WP_ORG_USERNAME: &WP_ORG_USERNAME
-    actblue
-  WP_TESTS_DIR: &WP_TESTS_DIR
-    /tmp/wordpress-tests-lib
+  WP_CORE_DIR: &WP_CORE_DIR /tmp/wordpress
+  WP_HOST: &WP_HOST actblue.test
+  WP_PLUGIN_NAME: &WP_PLUGIN_NAME actblue-contributions
+  WP_ORG_USERNAME: &WP_ORG_USERNAME actblue
+  WP_TESTS_DIR: &WP_TESTS_DIR /tmp/wordpress-tests-lib
+  GITHUB_TOKEN: &GITHUB_TOKEN
+  GPG_UID: &GPG_UID
+  GPG_PRIVATE_KEY: &GPG_PRIVATE_KEY
 
   # Container configuration.
   container_config: &container_config
@@ -25,8 +23,7 @@ references:
       - WP_TESTS_DIR: *WP_TESTS_DIR
     working_directory: ~/actblue-contributions
 
-  workspace_root: &workspace_root
-    /tmp
+  workspace_root: &workspace_root /tmp
 
   install_subversion: &install_subversion
     run:
@@ -54,6 +51,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
+            - actblue-contributions/build
             - actblue-contributions/vendor
 
   code_quality:
@@ -109,6 +107,28 @@ jobs:
           name: Deploy assets to WordPress plugin directory
           command: .circleci/deploy-plugin.sh
 
+  publish_github_release:
+    docker:
+      - image: cibuilds/github:0.13
+    steps:
+      - checkout
+      - *attach
+      - run:
+          name: "Install archive script dependencies"
+          command: |
+            apk add --no-cache gnupg rsync
+      - run:
+          name: "Set up GPG key for signing"
+          command: |
+            echo "$GPG_PRIVATE_KEY" > signing.key
+      - run:
+          name: "Create ZIP archive"
+          command: bash bin/archive.sh 
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./artifacts/
+
 workflows:
   version: 2
   run_tests:
@@ -127,6 +147,14 @@ workflows:
             branches:
               ignore: /.*/
       - deploy_plugin:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - publish_github_release:
+          requires:
+            - build
           filters:
             tags:
               only: /^v.*/
