@@ -40,14 +40,14 @@ Here are a few tips to minimize the risks associated with using the ActBlue Cont
 
 = Keep it secure =
 
-- If you’re not using a fully managed service like wordpress.com, make sure you’re using a trusted WordPress [hosting provider](https://wordpress.org/hosting/) with a proven track record of security.
+- If you’re not using a fully managed service like wordpress.com, make sure you’re using a trusted WordPress [hosting provider](https://wordpress.org/hosting/) with a proven track record of security. Look for hosts that have a dedicated support team, provide SSL, manage WordPress updates, and proactively scan for attacks.
 - Use [HTTPS](https://wordpress.org/support/article/https-for-wordpress/) URLs for your entire site, especially WordPress core files (starting with `wp-`). **ActBlue embeds won’t work on non-HTTPS URLs**.
 - Protect access to the WordPress Dashboard by using [strong passwords](https://krebsonsecurity.com/password-dos-and-donts/) and [Two-Factor Authentication](https://wordpress.org/plugins/two-factor/) (2FA)
 - Limit the number of admin users by [using user roles](https://www.wpbeginner.com/beginners-guide/wordpress-user-roles-and-permissions/)
 - [Limit login attempts](https://wordpress.org/plugins/limit-login-attempts-reloaded/) to prevent account credential brute force attacks
 - [Disable file editing](https://wordpress.org/support/article/hardening-wordpress/#disable-file-editing) from within the WordPress Dashboard
 - Keep a WordPress [activity log](https://wordpress.org/plugins/wp-security-audit-log/) and web request logs and review them regularly for unexpected events. These may be an indication that an admin is behaving maliciously, or that an attacker has gained access to an admin account.
-- Be wary of email messages requesting that you log into your WordPress account (i.e. [phishing attacks](https://securityintelligence.com/news/new-wordpress-phishing-campaigns-target-user-credentials/))
+- Be wary of email messages requesting that you log into your WordPress account (i.e. [phishing attacks](https://securityintelligence.com/news/new-wordpress-phishing-campaigns-target-user-credentials/)) and/or upload plugins manually
 - Protect against denial-of-service and other attacks by putting up a Web Application Firewall (WAF) such as [Cloudflare](https://www.cloudflare.com/waf/) in front of your site.
 - Set up routine audits of your site codebase using a malware scanning plugin such as [WordFence](https://wordpress.org/plugins/wordfence/), [iThemes Security](https://wordpress.org/plugins/better-wp-security/), or [Sucuri Security](https://wordpress.org/plugins/sucuri-scanner/).
 - Continuously back up up your site through your hosting provider or a plugin like [VaultPress](https://wordpress.org/plugins/vaultpress/) or [UpdraftPlus](https://wordpress.org/plugins/updraftplus/).
