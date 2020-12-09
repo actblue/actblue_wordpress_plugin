@@ -2,16 +2,11 @@ version: 2
 
 references:
   # Environment variables.
-  WP_CORE_DIR: &WP_CORE_DIR
-    /tmp/wordpress
-  WP_HOST: &WP_HOST
-    actblue.test
-  WP_PLUGIN_NAME: &WP_PLUGIN_NAME
-    actblue-contributions
-  WP_ORG_USERNAME: &WP_ORG_USERNAME
-    actblue
-  WP_TESTS_DIR: &WP_TESTS_DIR
-    /tmp/wordpress-tests-lib
+  WP_CORE_DIR: &WP_CORE_DIR /tmp/wordpress
+  WP_HOST: &WP_HOST actblue.test
+  WP_PLUGIN_NAME: &WP_PLUGIN_NAME actblue-contributions
+  WP_ORG_USERNAME: &WP_ORG_USERNAME actblue
+  WP_TESTS_DIR: &WP_TESTS_DIR /tmp/wordpress-tests-lib
 
   # Container configuration.
   container_config: &container_config
@@ -25,13 +20,12 @@ references:
       - WP_TESTS_DIR: *WP_TESTS_DIR
     working_directory: ~/actblue-contributions
 
-  workspace_root: &workspace_root
-    /tmp
+  workspace_root: &workspace_root /tmp
 
-  install_subversion: &install_subversion
+  install_tools: &install_tools
     run:
-      name: Install subversion
-      command: sudo apt-get update && sudo apt-get install subversion
+      name: Install tools
+      command: sudo apt-get update && sudo apt-get install subversion rsync
 
   attach: &attach
     attach_workspace:
@@ -54,6 +48,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
+            - actblue-contributions/build
             - actblue-contributions/vendor
 
   code_quality:
@@ -75,7 +70,7 @@ jobs:
       - image: circleci/mysql:5.7
     steps:
       - checkout
-      - *install_subversion
+      - *install_tools
       - run:
           name: Install dependencies
           command: |
@@ -89,44 +84,75 @@ jobs:
             bash $WP_PLUGIN_NAME/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
             cd $WP_PLUGIN_NAME && $HOME/.composer/vendor/bin/phpunit
 
-  deploy_assets:
-    <<: *container_config
-    steps:
-      - checkout
-      - *attach
-      - *install_subversion
-      - run:
-          name: Deploy assets to WordPress plugin directory
-          command: .circleci/deploy-assets.sh
-
   deploy_plugin:
     <<: *container_config
     steps:
       - checkout
       - *attach
-      - *install_subversion
+      - *install_tools
+      - run:
+          name: Copy built assets
+          command: cp -R /tmp/actblue-contributions/build actblue-contributions
       - run:
           name: Deploy assets to WordPress plugin directory
+          command: .circleci/deploy-assets.sh
+      - run:
+          name: Deploy plugin to WordPress plugin directory
           command: .circleci/deploy-plugin.sh
+
+  publish_github_release:
+    docker:
+      - image: cibuilds/github:0.13
+    steps:
+      - checkout
+      - *attach
+      - run:
+          name: Copy built assets
+          command: cp -R /tmp/actblue-contributions/build actblue-contributions
+      - run:
+          name: "Install archive script dependencies"
+          command: |
+            apk add --no-cache gnupg rsync
+      - run:
+          name: "Create ZIP archive"
+          command: bash bin/archive.sh
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./artifacts/
 
 workflows:
   version: 2
   run_tests:
     jobs:
       - build
-      - deploy_assets:
-          filters:
-            branches:
-              only:
-                - main
       - code_quality:
           requires:
             - build
       - unit_tests:
           requires:
             - build
-      - deploy_plugin:
+  deploy:
+    jobs:
+      - build:
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only:
-                - main
+              ignore: /.*/
+      - deploy_plugin:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - publish_github_release:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
