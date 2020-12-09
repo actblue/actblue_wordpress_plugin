@@ -68,6 +68,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 				title={title}
 				style={buttonStyle}
 				value={text}
+				target="_blank"
 				data-token={token}
 			/>
 		</div>
