@@ -24,6 +24,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 		textColor,
 		title,
 		token,
+		endpoint,
 	} = attributes;
 
 	const textClass = getColorClassName("color", textColor);
@@ -55,11 +56,6 @@ const ActBlueButtonSave = ({ attributes }) => {
 		borderRadius: borderRadius ? borderRadius + "px" : undefined,
 	};
 
-	// The arguments to be passed to the `actblue.requestContribution()` function, stringified so
-	// we can pass it into the inline onClick function below. To add the amount, grab the `amount`
-	// variable from the attributes passed to this function and add it to the stringified object.
-	const contributionArgs = JSON.stringify({ token });
-
 	// The use of a `title` attribute here is soft-deprecated, but still applied if it
 	// had already been assigned, for the sake of backward-compatibility. A title will no
 	// longer be assigned for new or updated button block links.
@@ -67,12 +63,13 @@ const ActBlueButtonSave = ({ attributes }) => {
 		<div className="wp-block-button">
 			<RichText.Content
 				tagName="a"
-				className={buttonClasses}
-				href="#"
+				className={`${buttonClasses} js-actblue-donation-button`}
+				href={endpoint}
 				title={title}
 				style={buttonStyle}
 				value={text}
-				onClick={`if (window.actblue && typeof window.actblue.requestContribution === 'function') { window.actblue.requestContribution(${contributionArgs}) }; return false;`}
+				target="_blank"
+				data-token={token}
 			/>
 		</div>
 	);

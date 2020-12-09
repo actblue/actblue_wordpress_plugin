@@ -115,9 +115,9 @@ class ActBlue {
 	 * Load the required dependencies for this plugin.
 	 *
 	 * Include the following files that make up the plugin:
-	 * - ActBlue_Loader. Orchestrates the hooks of the plugin.
 	 * - ActBlue_Admin. Defines all hooks for the admin area.
 	 * - ActBlue_Public. Defines all hooks for the public side of the site.
+	 * - ActBlue_Blocks. Defines all hooks for editor blocks.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.

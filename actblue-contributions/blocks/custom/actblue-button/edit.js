@@ -7,13 +7,14 @@ import classnames from "classnames";
  * WordPress dependencies
  */
 import { __ } from "@wordpress/i18n";
-import { useCallback } from "@wordpress/element";
+import { useCallback, useState } from "@wordpress/element";
 import { compose } from "@wordpress/compose";
 import {
 	PanelBody,
 	RangeControl,
 	TextControl,
 	withFallbackStyles,
+	Button,
 } from "@wordpress/components";
 import {
 	__experimentalUseGradient,
@@ -84,13 +85,54 @@ function ActBlueButtonEdit({
 	setAttributes,
 	className,
 }) {
-	const { borderRadius, placeholder, text, token } = attributes;
+	const { borderRadius, placeholder, text, endpoint } = attributes;
+
+	const [isFetching, setIsFetching] = useState(false);
+	const [fetchMessage, setFetchMessage] = useState("");
+	const [buttonText, setButtonText] = useState("Connect");
+	const [isSuccess, setIsSuccess] = useState(false);
 
 	const {
 		gradientClass,
 		gradientValue,
 		setGradient,
 	} = __experimentalUseGradient();
+
+	const handleEndpointSubmit = () => {
+		if (!endpoint) {
+			return;
+		}
+
+		setIsFetching(true);
+		setButtonText("Connecting...");
+		setFetchMessage("");
+
+		const url = `https://secure.actblue.com/cf/oembed?url=${endpoint}&format=json`;
+
+		fetch(url)
+			.then((resp) => {
+				if (resp.status === 404) {
+					throw new Error(
+						"Error: could not find an ActBlue embeddable form at that URL."
+					);
+				}
+				return resp.json();
+			})
+			.then((resp) => {
+				setAttributes({ token: resp.token });
+				setTimeout(() => setIsSuccess(false), 2000);
+				setIsSuccess(true);
+			})
+			.catch((error) => {
+				console.error(error);
+				setAttributes({ token: "" });
+				setFetchMessage(error.message);
+			})
+			.finally(() => {
+				setButtonText("Connect");
+				setIsFetching(false);
+			});
+	};
 
 	return (
 		<div className={className}>
@@ -119,12 +161,41 @@ function ActBlueButtonEdit({
 				}}
 			/>
 			<InspectorControls>
-				<PanelBody title={__("ActBlue Settings")}>
+				<PanelBody
+					title={__("ActBlue Settings")}
+					className="actblue-button-settings__panel"
+				>
 					<TextControl
-						label="Token"
-						value={token}
-						onChange={(value) => setAttributes({ token: value })}
+						label="Embed URL"
+						value={endpoint}
+						onChange={(value) => setAttributes({ endpoint: value })}
+						help="Use an ActBlue embedded form URL to connect this button."
 					/>
+
+					<Button
+						isSecondary
+						onClick={handleEndpointSubmit}
+						disabled={isFetching || !endpoint}
+					>
+						{buttonText}
+					</Button>
+
+					<span
+						className={classnames(
+							"actblue-button-settings__success-message",
+							{
+								"actblue-button-settings__success-message--visible": isSuccess,
+							}
+						)}
+					>
+						Success!
+					</span>
+
+					{fetchMessage && (
+						<p className="actblue-button-settings__fetch-message">
+							{fetchMessage}
+						</p>
+					)}
 
 					{/*
 					We can add a field for an `Amount` with another text control. We can grab the
