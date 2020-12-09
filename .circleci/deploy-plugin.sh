@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 while getopts "u:p:h" opt; do
     case ${opt} in
         u )
