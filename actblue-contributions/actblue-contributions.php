@@ -7,8 +7,8 @@
  *
  * @wordpress-plugin
  * Plugin Name:      ActBlue Contributions
- * Description:      Easily embed your ActBlue contribution forms on any WordPress page
- * Author:           ActBlue
+ * Description:      Easily embed your ActBlue contribution forms on any WordPress page. Designed and built by Upstatement.
+ * Author:           <a href="https://secure.actblue.com/">ActBlue</a>, <a href="https://upstatement.com">Upstatement</a>
  * Author URI:       https://secure.actblue.com/
  * License:          GPL-2.0+
  * License URI:      http://www.gnu.org/licenses/gpl-2.0.txt
