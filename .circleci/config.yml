@@ -92,7 +92,7 @@ jobs:
       - *install_tools
       - run:
           name: Copy built assets
-          command: cp -R /tmp/$WP_PLUGIN_NAME/build $WP_PLUGIN_NAME
+          command: cp -R /tmp/actblue-contributions/build actblue-contributions
       - run:
           name: Deploy assets to WordPress plugin directory
           command: .circleci/deploy-assets.sh
@@ -108,7 +108,7 @@ jobs:
       - *attach
       - run:
           name: Copy built assets
-          command: cp -R /tmp/$WP_PLUGIN_NAME/build $WP_PLUGIN_NAME
+          command: cp -R /tmp/actblue-contributions/build actblue-contributions
       - run:
           name: "Install archive script dependencies"
           command: |
