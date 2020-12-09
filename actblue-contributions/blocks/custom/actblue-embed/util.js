@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from "classnames/dedupe";
-import memoize from "memize";
 
 /**
  * WordPress dependencies
