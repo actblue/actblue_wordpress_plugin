@@ -47,10 +47,6 @@ describe("Wrapper block", () => {
 		// wait for 1 second for the embed to load.
 		await page.waitFor(1000);
 
-		await page.screenshot({
-			path: "e2e-tests/__screenshots__/after-click.png",
-		});
-
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });

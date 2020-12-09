@@ -64,34 +64,3 @@ export function fallback(url, onReplace) {
 	const link = <a href={url}>{url}</a>;
 	onReplace(createBlock("core/paragraph", { content: renderToString(link) }));
 }
-
-/***
- * Gets block attributes based on the preview and responsive state.
- *
- * @param {Object} preview The preview data.
- * @param {Object} currentClassNames The block's current class names.
- *
- * @return {Object} Attributes and values.
- */
-export const getAttributesFromPreview = memoize(
-	(preview, currentClassNames) => {
-		if (!preview) {
-			return {};
-		}
-
-		const attributes = {};
-		// Some plugins only return HTML with no type info, so default this to 'rich'.
-		let { type = "rich" } = preview;
-		// If we got a provider name from the API, use it for the slug, otherwise we use the title,
-		// because not all embed code gives us a provider name.
-		const { html } = preview;
-
-		if (html || "photo" === type) {
-			attributes.type = type;
-		}
-
-		attributes.className = getClassNames(currentClassNames);
-
-		return attributes;
-	}
-);
