@@ -21,7 +21,8 @@ references:
       - WP_TESTS_DIR: *WP_TESTS_DIR
     working_directory: ~/actblue-contributions
 
-  workspace_root: &workspace_root /tmp
+  workspace_root: &workspace_root
+    /tmp
 
   install_subversion: &install_subversion
     run:
@@ -48,7 +49,7 @@ jobs:
           command: cd $WP_PLUGIN_NAME && npm run build
       - run:
           name: Install WordPress
-          command: bash .circleci/install-wordpress.sh
+          command: WP_VERSION=5.5 bash .circleci/install-wordpress.sh
       - persist_to_workspace:
           root: .
           paths:
@@ -131,14 +132,14 @@ jobs:
           name: Install MySQL PHP extension
           command: sudo docker-php-ext-install mysqli
       - run:
-          name: Setup WordPress
-          command: bash .circleci/setup-wordpress.sh
-      - run:
           name: Install front-end dependencies
           command: cd $WP_PLUGIN_NAME && npm install
       - run:
           name: Build assets
           command: cd $WP_PLUGIN_NAME && npm run build
+      - run:
+          name: Setup WordPress
+          command: bash .circleci/setup-wordpress.sh
       - run:
           name: Start PHP server
           command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
