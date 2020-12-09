@@ -31,9 +31,9 @@ done
 shift $((OPTIND -1))
 
 
-# If this is being run by CircleCI, make sure we're on the `main` branch.
-if [[ -n "$CIRCLECI" && ( -z "$CIRCLE_BRANCH" || "$CIRCLE_BRANCH" != "main" ) ]]; then
-    echo "Build branch is required and must be 'main' branch. Stopping deployment." 1>&2
+# If this is being run by CircleCI, make sure the job was triggered by a tag.
+if [[ -n "$CIRCLECI" && -z "$CIRCLE_TAG" ]]; then
+    echo "Deployment through CircleCI can only be initiated by a tag. Stopping deployment." 1>&2
     exit 0
 fi
 
