@@ -108,10 +108,6 @@ jobs:
           command: |
             apk add --no-cache gnupg rsync
       - run:
-          name: "Set up GPG key for signing"
-          command: |
-            echo "$GPG_PRIVATE_KEY" > signing.key
-      - run:
           name: "Create ZIP archive"
           command: bash bin/archive.sh
       - run:

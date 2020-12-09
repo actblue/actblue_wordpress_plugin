@@ -11,10 +11,6 @@
 # Include hidden files with globs
 shopt -s dotglob
 
-# Import GPG private key path and username from environment
-GPG_UID=${GPG_UID:-test@example.com}
-GPG_PRIVATE_KEYPATH=${GPG_PRIVATE_KEYPATH:-signing.key}
-
 echo "Creating artifcats directory ..."
 rm -rf artifacts && mkdir artifacts
 
@@ -25,7 +21,7 @@ echo "Creating zip file ..."
 (cd dist && zip -r ../artifacts/actblue-contributions.zip ./*)
 
 echo "Import GPG signing key ..."
-gpg --import "$GPG_PRIVATE_KEYPATH"
+echo -e "$GPG_PRIVATE_KEY" | gpg --import
 
 echo "Signing zip file ..."
 gpg -u "$GPG_UID" --detach-sign --output artifacts/actblue-contributions.zip.asc artifacts/actblue-contributions.zip

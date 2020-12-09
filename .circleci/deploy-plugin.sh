@@ -66,40 +66,49 @@ if svn ls "${SVN_URL}/tags/${LATEST_SVN_TAG}" > /dev/null 2>&1; then
 fi
 
 # Checkout the git tag.
+echo "Checking out the laatest git tag"
 git checkout tags/$LATEST_GIT_TAG
 
 # Create the build directory.
 mkdir $PLUGIN_BUILD_PATH
 
 # Copy plugin files.
+echo "Copying plugin files"
 rsync -rc --exclude-from="./actblue-contributions/.distignore" ./actblue-contributions/ $PLUGIN_BUILD_PATH
 
 # Go back to the `main` branch to reset the state of the local repository.
+echo "Reset git state"
 git checkout main
 
 # Checkout the SVN repo
-svn checkout -q $SVN_URL $PLUGIN_SVN_PATH
+echo "Checkout the svn repository from WordPress"
+svn checkout $SVN_URL $PLUGIN_SVN_PATH
 
 # Move to SVN directory
+echo "Move into the local svn repository"
 cd $PLUGIN_SVN_PATH
 
 # Delete the trunk directory and create a `tags` directory if there isn't one.
+echo "Configure the local svn directory"
 rm -rf ./trunk
 if [ ! -d "./tags" ]; then
   mkdir tags
 fi
 
 # Copy our new version of the plugin as the new trunk directory.
+echo "Copy the plugin into the local svn repository"
 cp -r $PLUGIN_BUILD_PATH ./trunk
 
 # Copy our new version of the plugin into new version tag directory.
 cp -r $PLUGIN_BUILD_PATH ./tags/$LATEST_SVN_TAG
 
 # Add new files to SVN
+echo "Add new files to SVN"
 svn stat | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
 
 # Remove deleted files from SVN.
 svn stat | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
 
 # Commit to SVN.
+echo "Commit to WordPress svn repository"
 svn commit --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD -m "Deploy version $LATEST_SVN_TAG"
