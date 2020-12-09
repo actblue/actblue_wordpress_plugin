@@ -24,7 +24,7 @@ references:
 
   install_tools: &install_tools
     run:
-      name: Install subversion
+      name: Install tools
       command: sudo apt-get update && sudo apt-get install subversion rsync
 
   attach: &attach
