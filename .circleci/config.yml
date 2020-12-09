@@ -49,7 +49,7 @@ jobs:
           command: cd $WP_PLUGIN_NAME && npm run build
       - run:
           name: Install WordPress
-          command: WP_VERSION=5.5 bash .circleci/install-wordpress.sh
+          command: bash .circleci/install-wordpress.sh
       - persist_to_workspace:
           root: .
           paths:
