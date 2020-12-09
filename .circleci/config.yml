@@ -51,6 +51,7 @@ jobs:
           root: .
           paths:
             - actblue-contributions/build
+            - actblue-contributions/node_modules
             - actblue-contributions/vendor
 
   code_quality:
@@ -120,6 +121,7 @@ jobs:
           command: |
             cp -R /tmp/$WP_PLUGIN_NAME/vendor $WP_PLUGIN_NAME
             cp -R /tmp/$WP_PLUGIN_NAME/build $WP_PLUGIN_NAME
+            cp -R /tmp/$WP_PLUGIN_NAME/node_modules $WP_PLUGIN_NAME
       - run:
           name: Install MySQL client
           command: sudo apt-get update && sudo apt-get install default-mysql-client
