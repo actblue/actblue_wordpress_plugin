@@ -60,11 +60,7 @@ LATEST_GIT_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
 # Remove the "v" at the beginning of the git tag
 LATEST_SVN_TAG=${LATEST_GIT_TAG:1}
 
-# Check if the latest SVN tag exists already
-TAG=$(svn ls "${SVN_URL}/tags/${LATEST_SVN_TAG}")
-error=$?
-if [ $error == 0 ]; then
-    # Tag exists, don't deploy
+if svn ls "${SVN_URL}/tags/${LATEST_SVN_TAG}" > /dev/null 2>&1; then
     echo "Latest tag ($LATEST_SVN_TAG) already exists on the WordPress directory. No deployment needed!"
     exit 0
 fi
