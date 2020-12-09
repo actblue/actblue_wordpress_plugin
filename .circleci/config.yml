@@ -24,10 +24,10 @@ references:
   workspace_root: &workspace_root
     /tmp
 
-  install_subversion: &install_subversion
+  install_tools: &install_tools
     run:
-      name: Install subversion
-      command: sudo apt-get update && sudo apt-get install subversion
+      name: Install tools
+      command: sudo apt-get update && sudo apt-get install subversion rsync
 
   attach: &attach
     attach_workspace:
@@ -79,7 +79,7 @@ jobs:
       - image: circleci/mysql:5.7
     steps:
       - checkout
-      - *install_subversion
+      - *install_tools
       - run:
           name: Install dependencies
           command: |
@@ -148,25 +148,20 @@ jobs:
           name: Run e2e tests
           command: cd $WP_PLUGIN_NAME && npm run test:e2e -- --wordpress-base-url=http://${WP_HOST}
 
-
-  deploy_assets:
-    <<: *container_config
-    steps:
-      - checkout
-      - *attach
-      - *install_subversion
-      - run:
-          name: Deploy assets to WordPress plugin directory
-          command: .circleci/deploy-assets.sh
-
   deploy_plugin:
     <<: *container_config
     steps:
       - checkout
       - *attach
-      - *install_subversion
+      - *install_tools
+      - run:
+          name: Copy built assets
+          command: cp -R /tmp/actblue-contributions/build actblue-contributions
       - run:
           name: Deploy assets to WordPress plugin directory
+          command: .circleci/deploy-assets.sh
+      - run:
+          name: Deploy plugin to WordPress plugin directory
           command: .circleci/deploy-plugin.sh
 
   publish_github_release:
@@ -176,13 +171,12 @@ jobs:
       - checkout
       - *attach
       - run:
+          name: Copy built assets
+          command: cp -R /tmp/actblue-contributions/build actblue-contributions
+      - run:
           name: "Install archive script dependencies"
           command: |
             apk add --no-cache gnupg rsync
-      - run:
-          name: "Set up GPG key for signing"
-          command: |
-            echo "$GPG_PRIVATE_KEY" > signing.key
       - run:
           name: "Create ZIP archive"
           command: bash bin/archive.sh
@@ -205,9 +199,9 @@ workflows:
       - e2e_tests:
           requires:
             - build
-      - deploy_assets:
-          requires:
-            - build
+  deploy:
+    jobs:
+      - build:
           filters:
             tags:
               only: /^v.*/

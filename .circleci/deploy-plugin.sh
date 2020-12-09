@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 while getopts "u:p:h" opt; do
     case ${opt} in
         u )
@@ -31,9 +33,9 @@ done
 shift $((OPTIND -1))
 
 
-# If this is being run by CircleCI, make sure we're on the `main` branch.
-if [[ -n "$CIRCLECI" && ( -z "$CIRCLE_BRANCH" || "$CIRCLE_BRANCH" != "main" ) ]]; then
-    echo "Build branch is required and must be 'main' branch. Stopping deployment." 1>&2
+# If this is being run by CircleCI, make sure the job was triggered by a tag.
+if [[ -n "$CIRCLECI" && -z "$CIRCLE_TAG" ]]; then
+    echo "Deployment through CircleCI can only be initiated by a tag. Stopping deployment." 1>&2
     exit 0
 fi
 
@@ -58,50 +60,55 @@ LATEST_GIT_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
 # Remove the "v" at the beginning of the git tag
 LATEST_SVN_TAG=${LATEST_GIT_TAG:1}
 
-# Check if the latest SVN tag exists already
-TAG=$(svn ls "${SVN_URL}/tags/${LATEST_SVN_TAG}")
-error=$?
-if [ $error == 0 ]; then
-    # Tag exists, don't deploy
+if svn ls "${SVN_URL}/tags/${LATEST_SVN_TAG}" > /dev/null 2>&1; then
     echo "Latest tag ($LATEST_SVN_TAG) already exists on the WordPress directory. No deployment needed!"
     exit 0
 fi
 
 # Checkout the git tag.
+echo "Checking out the laatest git tag"
 git checkout tags/$LATEST_GIT_TAG
 
 # Create the build directory.
 mkdir $PLUGIN_BUILD_PATH
 
 # Copy plugin files.
+echo "Copying plugin files"
 rsync -rc --exclude-from="./actblue-contributions/.distignore" ./actblue-contributions/ $PLUGIN_BUILD_PATH
 
 # Go back to the `main` branch to reset the state of the local repository.
+echo "Reset git state"
 git checkout main
 
 # Checkout the SVN repo
-svn checkout -q $SVN_URL $PLUGIN_SVN_PATH
+echo "Checkout the svn repository from WordPress"
+svn checkout $SVN_URL $PLUGIN_SVN_PATH
 
 # Move to SVN directory
+echo "Move into the local svn repository"
 cd $PLUGIN_SVN_PATH
 
 # Delete the trunk directory and create a `tags` directory if there isn't one.
+echo "Configure the local svn directory"
 rm -rf ./trunk
 if [ ! -d "./tags" ]; then
   mkdir tags
 fi
 
 # Copy our new version of the plugin as the new trunk directory.
+echo "Copy the plugin into the local svn repository"
 cp -r $PLUGIN_BUILD_PATH ./trunk
 
 # Copy our new version of the plugin into new version tag directory.
 cp -r $PLUGIN_BUILD_PATH ./tags/$LATEST_SVN_TAG
 
 # Add new files to SVN
+echo "Add new files to SVN"
 svn stat | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
 
 # Remove deleted files from SVN.
 svn stat | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
 
 # Commit to SVN.
+echo "Commit to WordPress svn repository"
 svn commit --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD -m "Deploy version $LATEST_SVN_TAG"
