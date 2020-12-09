@@ -15,7 +15,6 @@ import {
 	TextControl,
 	withFallbackStyles,
 	Button,
-	Spinner,
 } from "@wordpress/components";
 import {
 	__experimentalUseGradient,
@@ -90,6 +89,8 @@ function ActBlueButtonEdit({
 
 	const [isFetching, setIsFetching] = useState(false);
 	const [fetchMessage, setFetchMessage] = useState("");
+	const [buttonText, setButtonText] = useState("Connect");
+	const [isSuccess, setIsSuccess] = useState(false);
 
 	const {
 		gradientClass,
@@ -103,6 +104,7 @@ function ActBlueButtonEdit({
 		}
 
 		setIsFetching(true);
+		setButtonText("Connecting...");
 		setFetchMessage("");
 
 		const url = `https://secure.actblue.com/cf/oembed?url=${endpoint}&format=json`;
@@ -116,13 +118,20 @@ function ActBlueButtonEdit({
 				}
 				return resp.json();
 			})
-			.then((resp) => setAttributes({ token: resp.token }))
+			.then((resp) => {
+				setAttributes({ token: resp.token });
+				setTimeout(() => setIsSuccess(false), 2000);
+				setIsSuccess(true);
+			})
 			.catch((error) => {
 				console.error(error);
 				setAttributes({ token: "" });
 				setFetchMessage(error.message);
 			})
-			.finally(() => setIsFetching(false));
+			.finally(() => {
+				setButtonText("Connect");
+				setIsFetching(false);
+			});
 	};
 
 	return (
@@ -168,10 +177,19 @@ function ActBlueButtonEdit({
 						onClick={handleEndpointSubmit}
 						disabled={isFetching || !endpoint}
 					>
-						Connect
+						{buttonText}
 					</Button>
 
-					{isFetching && <Spinner />}
+					<span
+						className={classnames(
+							"actblue-button-settings__success-message",
+							{
+								"actblue-button-settings__success-message--visible": isSuccess,
+							}
+						)}
+					>
+						Success!
+					</span>
 
 					{fetchMessage && (
 						<p className="actblue-button-settings__fetch-message">

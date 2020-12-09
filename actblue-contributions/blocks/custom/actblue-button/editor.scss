@@ -17,3 +17,14 @@
 	margin-top: 0.5em;
 	color: red;
 }
+
+.actblue-button-settings__success-message {
+	transition: opacity 0.2s;
+	opacity: 0;
+	display: inline-block;
+	margin-left: 1em;
+}
+
+.actblue-button-settings__success-message--visible {
+	opacity: 1;
+}
