@@ -94,14 +94,11 @@ jobs:
           name: Copy built assets
           command: cp -R /tmp/$WP_PLUGIN_NAME/build $WP_PLUGIN_NAME
       - run:
-          name: Debug check
-          command: ls -la $WP_PLUGIN_NAME
-      # - run:
-      #     name: Deploy assets to WordPress plugin directory
-      #     command: .circleci/deploy-assets.sh
-      # - run:
-      #     name: Deploy plugin to WordPress plugin directory
-      #     command: .circleci/deploy-plugin.sh
+          name: Deploy assets to WordPress plugin directory
+          command: .circleci/deploy-assets.sh
+      - run:
+          name: Deploy plugin to WordPress plugin directory
+          command: .circleci/deploy-plugin.sh
 
   publish_github_release:
     docker:
@@ -135,30 +132,27 @@ workflows:
       - unit_tests:
           requires:
             - build
+  deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - deploy_plugin:
           requires:
             - build
-  # deploy:
-  #   jobs:
-  #     - build:
-  #         filters:
-  #           tags:
-  #             only: /^v.*/
-  #           branches:
-  #             ignore: /.*/
-  #     - deploy_plugin:
-  #         requires:
-  #           - build
-  #         filters:
-  #           tags:
-  #             only: /^v.*/
-  #           branches:
-  #             ignore: /.*/
-  #     - publish_github_release:
-  #         requires:
-  #           - build
-  #         filters:
-  #           tags:
-  #             only: /^v.*/
-  #           branches:
-  #             ignore: /.*/
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - publish_github_release:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
