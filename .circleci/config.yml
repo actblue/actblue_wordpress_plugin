@@ -22,7 +22,7 @@ references:
 
   workspace_root: &workspace_root /tmp
 
-  install_subversion: &install_subversion
+  install_tools: &install_tools
     run:
       name: Install subversion
       command: sudo apt-get update && sudo apt-get install subversion rsync
@@ -70,7 +70,7 @@ jobs:
       - image: circleci/mysql:5.7
     steps:
       - checkout
-      - *install_subversion
+      - *install_tools
       - run:
           name: Install dependencies
           command: |
@@ -89,7 +89,7 @@ jobs:
     steps:
       - checkout
       - *attach
-      - *install_subversion
+      - *install_tools
       - run:
           name: Copy built assets
           command: cp -R /tmp/$WP_PLUGIN_NAME/build $WP_PLUGIN_NAME
@@ -97,7 +97,7 @@ jobs:
           name: Deploy assets to WordPress plugin directory
           command: .circleci/deploy-assets.sh
       - run:
-          name: Deploy assets to WordPress plugin directory
+          name: Deploy plugin to WordPress plugin directory
           command: .circleci/deploy-plugin.sh
 
   publish_github_release:
