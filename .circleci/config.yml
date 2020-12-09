@@ -48,10 +48,17 @@ jobs:
       - run:
           name: Build
           command: cd $WP_PLUGIN_NAME && npm run build
+      - run:
+          name: Install WordPress
+          command: bash .circleci/install-wordpress.sh
       - persist_to_workspace:
           root: .
           paths:
             - actblue-contributions/vendor
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - wordpress
 
   code_quality:
     <<: *container_config
@@ -124,9 +131,6 @@ jobs:
       - run:
           name: Install MySQL PHP extension
           command: sudo docker-php-ext-install mysqli
-      - run:
-          name: Install WordPress
-          command: bash .circleci/install-wordpress.sh
       - run:
           name: Setup WordPress
           command: bash .circleci/setup-wordpress.sh
