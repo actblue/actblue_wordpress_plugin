@@ -180,12 +180,16 @@ workflows:
           requires:
             - build
       - deploy_assets:
+          requires:
+            - build
           filters:
             tags:
               only: /^v.*/
             branches:
               ignore: /.*/
       - deploy_plugin:
+          requires:
+            - build
           filters:
             tags:
               only: /^v.*/
