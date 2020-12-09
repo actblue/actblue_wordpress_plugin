@@ -3,7 +3,7 @@ Contributors: actblue,upstatement
 Donate link: https://secure.actblue.com/
 Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributions
 Requires at least: 4.5
-Tested up to: 5.5.3
+Tested up to: 5.6
 Requires PHP: 5.6
 Stable tag: 1.0.0
 License: GPLv2 or later
