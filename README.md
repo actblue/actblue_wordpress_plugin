@@ -5,17 +5,20 @@ This repository holds the source code for the ActBlue WordPress plugin, as well 
 ## Structure
 
 ### `actblue-contributions/`
+
 The WordPress plugin source.
 
 ### `assets/`
+
 Assets for the plugin. This includes things like banner images and screenshots that go on the plugin page on WordPress.org.
 
 ### `docker/`
+
 Configuration files for the local docker image.
 
 ### `.circleci/`
-Configuration for continuous integration via CircleCI. This directory also holds two bash scripts that help facilitate the deployment of the plugin to the WordPress svn repository.
 
+Configuration for continuous integration via CircleCI. This directory also holds two bash scripts that help facilitate the deployment of the plugin to the WordPress svn repository.
 
 ## Prerequisites
 
@@ -23,7 +26,6 @@ Configuration for continuous integration via CircleCI. This directory also holds
 - [yarn](https://classic.yarnpkg.com/en/) to manage JavaScript dependencies, including those required to build editor blocks.
 
 You'll also need to ensure that your ports 80 and 443 are free.
-
 
 ## Installation
 
@@ -72,7 +74,7 @@ docker-compose down -v --remove-orphans --rmi local
 You can also stop the container to free up resources on your machine while still retaining state by running the following:
 
 ```sh
-docker-composer stop
+docker-compose stop
 ```
 
 You can run the following command to list the running containers and confirm that the container has been stopped (it won't be listed):
@@ -108,19 +110,20 @@ To release a new version of the plugin via automatic deployment:
    ```
 
 2. Bump the version numbers in the plugin directory:
-    - `package.json`
-    - `composer.json`
-    - Inside the `actblue-contributions.php` file:
-        - `Version` in the docblock at the top of the file.
-        - `ACTBLUE_PLUGIN_VERSION` constant.
+
+   - `package.json`
+   - `composer.json`
+   - Inside the `actblue-contributions.php` file:
+     - `Version` in the docblock at the top of the file.
+     - `ACTBLUE_PLUGIN_VERSION` constant.
 
 3. Commit these changes and push to GitHub:
 
-    ```sh
-    git add .
-    git commit -m "Version bump to #.#.#"
-    git push origin release-#.#.#
-    ```
+   ```sh
+   git add .
+   git commit -m "Version bump to #.#.#"
+   git push origin release-#.#.#
+   ```
 
 4. PR the release branch into the `main` branch via the GitHub GUI. Feel free to add release notes to this PR. Once the checks have passed, merge the PR into `main`.
 
@@ -136,9 +139,9 @@ To manually deploy a new version of the plugin from your local machine:
 
 2. Make sure that all distributable assets have been built. The `actblue-contributions/` directory should hold all distributable files and any relevant assets should be placed in the `assets/` directory.
 
-    ```sh
-    yarn --cwd actblue-contributions build
-    ```
+   ```sh
+   yarn --cwd actblue-contributions build
+   ```
 
 3. Ensure that you have the username and password for the WordPress.org account that has write access to the WordPress svn repository. These credentials can be passed to the script via command line arguments, or be set with the `WP_ORG_USERNAME` and `WP_ORG_PASSWORD` environment variables.
 
