@@ -25,9 +25,6 @@ references:
       - WP_TESTS_DIR: *WP_TESTS_DIR
     working_directory: ~/actblue-contributions
 
-  workspace_root: &workspace_root
-    /tmp
-
   install_subversion: &install_subversion
     run:
       name: Install subversion
@@ -35,7 +32,7 @@ references:
 
   attach: &attach
     attach_workspace:
-      at: *workspace_root
+      at: /tmp
 
 jobs:
   build:
@@ -51,17 +48,10 @@ jobs:
       - run:
           name: Build
           command: cd $WP_PLUGIN_NAME && npm run build
-      - run:
-          name: Install WordPress
-          command: bash .circleci/install-wordpress.sh
       - persist_to_workspace:
           root: .
           paths:
             - actblue-contributions/vendor
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - wordpress
 
   code_quality:
     <<: *container_config
@@ -135,14 +125,17 @@ jobs:
           name: Install MySQL PHP extension
           command: sudo docker-php-ext-install mysqli
       - run:
-          name: Install dependencies
-          command: cd $WP_PLUGIN_NAME && npm install
-      - run:
-          name: Build
-          command: cd $WP_PLUGIN_NAME && npm run build
+          name: Install WordPress
+          command: bash .circleci/install-wordpress.sh
       - run:
           name: Setup WordPress
-          command: .circleci/setup-wordpress.sh
+          command: bash .circleci/setup-wordpress.sh
+      - run:
+          name: Install front-end dependencies
+          command: cd $WP_PLUGIN_NAME && npm install
+      - run:
+          name: Build assets
+          command: cd $WP_PLUGIN_NAME && npm run build
       - run:
           name: Start PHP server
           command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
