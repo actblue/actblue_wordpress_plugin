@@ -14,7 +14,7 @@
  * License URI:      http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:      actblue
  * Domain Path:      /languages
- * Version:          1.0.1
+ * Version:          1.1.0
  */
 
 // If this file is called directly, abort.
@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'ACTBLUE_PLUGIN_VERSION', '1.0.1' );
+define( 'ACTBLUE_PLUGIN_VERSION', '1.1.0' );
 
 /**
  * Defines the ActBlue host.

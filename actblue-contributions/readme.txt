@@ -5,7 +5,7 @@ Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributi
 Requires at least: 4.5
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,14 @@ If you have a question about the ActBlue platform, visit our [support site](http
 
 == Changelog ==
 
+= 1.1.0 =
+* Adds a custom Gutenberg block for ActBlue contribution form embeds.
+
 = 1.0.0 =
 * Adds the ActBlue script to public-facing pages.
 * Adds the ActBlue oEmbed endpoint to the list of allowed providers.
+
+== Upgrade Notice ==
+
+= 1.1.0 =
+Adds a custom Gutenberg block for ActBlue contribution form embeds
