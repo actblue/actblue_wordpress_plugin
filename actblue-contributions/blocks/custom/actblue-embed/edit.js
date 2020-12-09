@@ -22,8 +22,6 @@ import { withSelect, withDispatch } from "@wordpress/data";
 
 import { title, icon } from "./index";
 
-console.log("embed edit here");
-
 class EmbedEdit extends Component {
 	constructor() {
 		super(...arguments);
