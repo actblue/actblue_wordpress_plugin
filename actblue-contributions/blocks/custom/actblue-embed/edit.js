@@ -6,6 +6,7 @@ import EmbedControls from "./embed-controls";
 import EmbedLoading from "./embed-loading";
 import EmbedPlaceholder from "./embed-placeholder";
 import EmbedPreview from "./embed-preview";
+import EmbedSettings from "./embed-settings";
 
 /**
  * External dependencies
@@ -134,18 +135,24 @@ class EmbedEdit extends Component {
 		// No preview, or we can't embed the current URL, or we've clicked the edit button.
 		if (!preview || cannotEmbed || editingURL) {
 			return (
-				<EmbedPlaceholder
-					icon={icon}
-					label={label}
-					onSubmit={this.setUrl}
-					value={url}
-					cannotEmbed={cannotEmbed}
-					onChange={(event) =>
-						this.setState({ url: event.target.value })
-					}
-					fallback={() => fallback(url, this.props.onReplace)}
-					tryAgain={tryAgain}
-				/>
+				<>
+					<EmbedPlaceholder
+						icon={icon}
+						label={label}
+						onSubmit={this.setUrl}
+						value={url}
+						cannotEmbed={cannotEmbed}
+						onChange={(event) =>
+							this.setState({ url: event.target.value })
+						}
+						fallback={() => fallback(url, this.props.onReplace)}
+						tryAgain={tryAgain}
+					/>
+					<EmbedSettings
+						refcode={this.props.attributes.refcode}
+						onChange={(value) => setAttributes({ refcode: value })}
+					/>
+				</>
 			);
 		}
 
@@ -180,6 +187,12 @@ class EmbedEdit extends Component {
 					icon={icon}
 					label={label}
 				/>
+				<EmbedSettings
+					refcode={this.props.attributes.refcode}
+					onUpdate={(newRefcode) =>
+						setAttributes({ refcode: newRefcode })
+					}
+				/>
 			</>
 		);
 	}
@@ -187,13 +200,26 @@ class EmbedEdit extends Component {
 
 export default compose(
 	withSelect((select, ownProps) => {
-		const { url } = ownProps.attributes;
+		let { url, refcode } = ownProps.attributes;
 		const core = select("core");
 		const {
 			getEmbedPreview,
 			isPreviewEmbedFallback,
 			isRequestingEmbedPreview,
 		} = core;
+
+		const queryParams = [];
+
+		if (refcode) {
+			queryParams.push(`refcode=${refcode}`);
+		}
+
+		const queryString = queryParams.length ? queryParams.join("&") : false;
+
+		if (url && queryString) {
+			url = `${url}?${queryString}`;
+		}
+
 		const preview = undefined !== url && getEmbedPreview(url);
 		const previewIsFallback =
 			undefined !== url && isPreviewEmbedFallback(url);
