@@ -104,6 +104,9 @@ If you have a question about the ActBlue platform, visit our [support site](http
 
 == Changelog ==
 
+= 1.2.0 =
+* Adds a custom Gutenberg block for ActBlue contribution buttons.
+
 = 1.1.0 =
 * Adds a custom Gutenberg block for ActBlue contribution form embeds.
 
@@ -112,6 +115,3 @@ If you have a question about the ActBlue platform, visit our [support site](http
 * Adds the ActBlue oEmbed endpoint to the list of allowed providers.
 
 == Upgrade Notice ==
-
-= 1.1.0 =
-Adds a custom Gutenberg block for ActBlue contribution form embeds
