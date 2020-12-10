@@ -95,6 +95,8 @@ yarn --cwd actblue-contributions version --new-version $NEW_VERSION --no-git-tag
 #  - actblue-contributions.php
 sed -i '' -E "s/(Stable tag:[[:space:]]).+/\1${NEW_VERSION}/g" "actblue-contributions/readme.txt"
 sed -i '' -E "s/(\"version\":[[:space:]]\").+(\")/\1${NEW_VERSION}\2/g" "actblue-contributions/composer.json"
+sed -i '' -E "s/(Version:[[:space:]]+).+/\1${NEW_VERSION}/g" "actblue-contributions/actblue-contributions.php"
+sed -i '' -E "s/(define\( \'ACTBLUE_PLUGIN_VERSION\', \').+(\' \);)/\1${NEW_VERSION}\2/g" "actblue-contributions/actblue-contributions.php"
 
 if [ "$COMMIT" ]; then
 echo "Do a commit"
