@@ -84,6 +84,10 @@ git checkout main
 echo "Checkout the svn repository from WordPress"
 svn checkout $SVN_URL $PLUGIN_SVN_PATH
 
+echo "Move assets over"
+rm -rf $PLUGIN_SVN_PATH/assets # Delete the assets directory
+rsync -rc --exclude=".gitkeep" ./assets/ $PLUGIN_SVN_PATH/assets/ # Copy our plugin assets as the new assets directory
+
 # Move to SVN directory
 echo "Move into the local svn repository"
 cd $PLUGIN_SVN_PATH
