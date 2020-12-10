@@ -83,8 +83,18 @@ echo
 fi
 
 echo "Bumping to $NEW_VERSION"
+echo
 
-yarn version $NEW_VERSION --no-git-tag-version --no-commit-hooks
+# Updates the package.json with the `yarn version` command
+# See https://classic.yarnpkg.com/en/docs/cli/version/
+yarn --cwd actblue-contributions version --new-version $NEW_VERSION --no-git-tag-version --no-commit-hooks
+
+# Update the version numbers in the following files inside the plugin directory:
+#  - readme.txt
+#  - composer.json
+#  - actblue-contributions.php
+sed -i '' -E "s/(Stable tag:[[:space:]]).+/\1${NEW_VERSION}/g" "actblue-contributions/readme.txt"
+sed -i '' -E "s/(\"version\":[[:space:]]\").+(\")/\1${NEW_VERSION}\2/g" "actblue-contributions/composer.json"
 
 if [ "$COMMIT" ]; then
 echo "Do a commit"
