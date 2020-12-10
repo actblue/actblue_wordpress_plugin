@@ -112,6 +112,33 @@ class ActBlue {
 	}
 
 	/**
+	 * Send an ActBlue user-agent for http requests to ActBlue endpoints. This
+	 * should be used as the callback for the `http_headers_useragent` filter.
+	 * Because of this, the method needs to be public so the filter can access it.
+	 *
+	 * @param string $user_agent User agent to send with the request.
+	 * @param string $url        URL being requested.
+	 *
+	 * @return string
+	 *
+	 * @link   https://developer.wordpress.org/reference/hooks/http_headers_useragent/
+	 * @since  1.3.0
+	 * @access public
+	 */
+	public function send_actblue_useragent( $user_agent, $url ) {
+		$provider_url       = actblue_get_url( '/cf/oembed' );
+		$is_actblue_request = 0 === strpos( $url, $provider_url );
+
+		// If the request is NOT one to the ActBlue url, just return the default user-agent.
+		if ( ! $is_actblue_request ) {
+			return $user_agent;
+		}
+
+		$actblue_user_agent = "ActBlue/{$this->version}; " . get_site_url();
+		return $actblue_user_agent;
+	}
+
+	/**
 	 * Load the required dependencies for this plugin.
 	 *
 	 * Include the following files that make up the plugin:
@@ -147,6 +174,22 @@ class ActBlue {
 	}
 
 	/**
+	 * Registers setup hooks. This is where we can add filters or actions that
+	 * handle any setup tasks for the ActBlue plugin.
+	 *
+	 * @since  1.3.0
+	 * @access private
+	 */
+	private function register_setup_hooks() {
+		/**
+		 * Manage the user agent sent for http requests.
+		 *
+		 * @link https://developer.wordpress.org/reference/functions/add_filter/
+		 */
+		add_filter( 'http_headers_useragent', array( $this, 'send_actblue_useragent' ), 10, 2 );
+	}
+
+	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
@@ -173,6 +216,7 @@ class ActBlue {
 	 * @since 1.0.0
 	 */
 	public function run() {
+		$this->register_setup_hooks();
 		$this->register_public_hooks();
 		$this->register_blocks();
 	}
