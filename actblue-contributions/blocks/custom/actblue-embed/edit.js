@@ -19,10 +19,12 @@ import { __, sprintf } from "@wordpress/i18n";
 import { Component } from "@wordpress/element";
 import { compose } from "@wordpress/compose";
 import { withSelect, withDispatch } from "@wordpress/data";
+import { PanelBody, TextControl, Button } from "@wordpress/components";
+import { InspectorControls } from "@wordpress/block-editor";
 
 import { title, icon } from "./index";
 
-class EmbedEdit extends Component {
+class EmbedEditMain extends Component {
 	constructor() {
 		super(...arguments);
 		this.switchBackToURLInput = this.switchBackToURLInput.bind(this);
@@ -166,15 +168,91 @@ class EmbedEdit extends Component {
 	}
 }
 
+class EmbedEdit extends Component {
+	constructor() {
+		super(...arguments);
+		this.handleRefcodeChange = this.handleRefcodeChange.bind(this);
+
+		// When the embed has a preview, we'll want to store refocde changes in
+		// local state since changes to the attributes trigger a rerender and a
+		// refetch of the oEmbed endpoint.
+		this.state = {
+			refcode: this.props.attributes.refcode,
+		};
+	}
+
+	handleRefcodeChange(value) {
+		// If the preview exists, we don't want to update the attribute on input
+		// change since that would trigger a rerender and another fetch to the
+		// oEmbed endpoint. So instead, just use local state.
+		if (this.props.preview) {
+			this.setState({ refcode: value });
+		} else {
+			this.props.setAttributes({ refcode: value });
+		}
+	}
+
+	render() {
+		const refcode = this.props.preview
+			? this.state.refcode
+			: this.props.attributes.refcode;
+
+		return (
+			<>
+				<EmbedEditMain {...this.props} />
+				<InspectorControls>
+					<PanelBody
+						title={__("ActBlue Settings")}
+						className="actblue-embed-settings__panel"
+					>
+						<TextControl
+							label="Refcode"
+							value={refcode}
+							onChange={this.handleRefcodeChange}
+							help="Add a refcode to this embed form."
+						/>
+
+						{this.props.preview && (
+							<Button
+								isSecondary
+								onClick={() =>
+									this.props.setAttributes({
+										refcode: this.state.refcode,
+									})
+								}
+							>
+								Update
+							</Button>
+						)}
+					</PanelBody>
+				</InspectorControls>
+			</>
+		);
+	}
+}
+
 export default compose(
 	withSelect((select, ownProps) => {
-		const { url } = ownProps.attributes;
+		let { url, refcode } = ownProps.attributes;
 		const core = select("core");
 		const {
 			getEmbedPreview,
 			isPreviewEmbedFallback,
 			isRequestingEmbedPreview,
 		} = core;
+
+		const queryParams = [];
+
+		if (refcode) {
+			queryParams.push(`refcode=${refcode}`);
+		}
+
+		const queryString = queryParams.length ? queryParams.join("&") : false;
+
+		if (url && queryString) {
+			url = `${url}?${queryString}`;
+		}
+
 		const preview = undefined !== url && getEmbedPreview(url);
 		const previewIsFallback =
 			undefined !== url && isPreviewEmbedFallback(url);
