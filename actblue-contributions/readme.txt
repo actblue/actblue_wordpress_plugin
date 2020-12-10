@@ -5,7 +5,7 @@ Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributi
 Requires at least: 4.5
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,7 +40,7 @@ Here are a few tips to minimize the risks associated with using the ActBlue Cont
 
 = Keep it secure =
 
-- If you’re not using a fully managed service like wordpress.com, make sure you’re using a trusted WordPress [hosting provider](https://wordpress.org/hosting/) with a proven track record of security. Look for hosts that have a dedicated support team, provide SSL, manage WordPress updates, and proactively scan for attacks.
+- If you’re not using a fully managed service like wordpress.com, make sure you’re using a trusted WordPress [hosting provider](https://wordpress.org/hosting/) with a proven track record of security. Look for hosts that have a dedicated support team, provide SSL, manage WordPress updates, and proactively scan for vulnerabilities, misconfigurations, and attacks.
 - Use [HTTPS](https://wordpress.org/support/article/https-for-wordpress/) URLs for your entire site, especially WordPress core files (starting with `wp-`). **ActBlue embeds won’t work on non-HTTPS URLs**.
 - Protect access to the WordPress Dashboard by using [strong passwords](https://krebsonsecurity.com/password-dos-and-donts/) and [Two-Factor Authentication](https://wordpress.org/plugins/two-factor/) (2FA)
 - Limit the number of admin users by [using user roles](https://www.wpbeginner.com/beginners-guide/wordpress-user-roles-and-permissions/)
@@ -104,6 +104,9 @@ If you have a question about the ActBlue platform, visit our [support site](http
 
 == Changelog ==
 
+= 1.2.0 =
+* Adds a custom Gutenberg block for ActBlue contribution buttons.
+
 = 1.1.0 =
 * Adds a custom Gutenberg block for ActBlue contribution form embeds.
 
@@ -112,6 +115,3 @@ If you have a question about the ActBlue platform, visit our [support site](http
 * Adds the ActBlue oEmbed endpoint to the list of allowed providers.
 
 == Upgrade Notice ==
-
-= 1.1.0 =
-Adds a custom Gutenberg block for ActBlue contribution form embeds
