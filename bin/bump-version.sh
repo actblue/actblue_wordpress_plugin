@@ -2,13 +2,6 @@
 
 PARAMS=""
 
-
-
-
-echo $CURRENT_BRANCH
-
-exit
-
 show_help() {
   cat <<EOF
 Usage: ${0##*/} [options]
