@@ -99,9 +99,13 @@ sed -i '' -E "s/(Version:[[:space:]]+).+/\1${NEW_VERSION}/g" "actblue-contributi
 sed -i '' -E "s/(define\( \'ACTBLUE_PLUGIN_VERSION\', \').+(\' \);)/\1${NEW_VERSION}\2/g" "actblue-contributions/actblue-contributions.php"
 
 if [ "$COMMIT" ]; then
-echo "Do a commit"
+echo "Committing the version bump..."
+git checkout -b release-$NEW_VERSION
+git add .
+git commit -m "Version bump to ${NEW_VERSION}"
 fi
 
 if [ "$TAG" ]; then
 echo "Do a tag"
+git tag v$NEW_VERSION
 fi
