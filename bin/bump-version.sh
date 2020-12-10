@@ -2,6 +2,13 @@
 
 PARAMS=""
 
+
+
+
+echo $CURRENT_BRANCH
+
+exit
+
 show_help() {
   cat <<EOF
 Usage: ${0##*/} [options]
@@ -100,12 +107,13 @@ sed -i '' -E "s/(define\( \'ACTBLUE_PLUGIN_VERSION\', \').+(\' \);)/\1${NEW_VERS
 
 if [ "$COMMIT" ]; then
 echo "Committing the version bump..."
-git checkout -b release-$NEW_VERSION
-git add .
-git commit -m "Version bump to ${NEW_VERSION}"
+# CURRENT_BRANCH=$(git branch --show-current)
+# git checkout -b release-$NEW_VERSION
+# git add .
+# git commit -m "Version bump to ${NEW_VERSION}"
 fi
 
 if [ "$TAG" ]; then
-echo "Do a tag"
-git tag v$NEW_VERSION
+echo "Tagging the latest version..."
+# git tag v$NEW_VERSION
 fi
