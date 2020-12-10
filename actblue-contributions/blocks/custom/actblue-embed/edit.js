@@ -1,12 +1,11 @@
 /**
  * Internal dependencies
  */
-import { fallback, getAttributesFromPreview } from "./util";
+import { fallback } from "./util";
 import EmbedControls from "./embed-controls";
 import EmbedLoading from "./embed-loading";
 import EmbedPlaceholder from "./embed-placeholder";
 import EmbedPreview from "./embed-preview";
-import EmbedSettings from "./embed-settings";
 
 /**
  * External dependencies
@@ -28,7 +27,6 @@ class EmbedEdit extends Component {
 		super(...arguments);
 		this.switchBackToURLInput = this.switchBackToURLInput.bind(this);
 		this.setUrl = this.setUrl.bind(this);
-		this.getMergedAttributes = this.getMergedAttributes.bind(this);
 		this.setMergedAttributes = this.setMergedAttributes.bind(this);
 		this.handleIncomingPreview = this.handleIncomingPreview.bind(this);
 
@@ -91,23 +89,11 @@ class EmbedEdit extends Component {
 	}
 
 	/***
-	 * @return {Object} Attributes derived from the preview, merged with the current attributes.
-	 */
-	getMergedAttributes() {
-		const { preview } = this.props;
-		const { className } = this.props.attributes;
-		return {
-			...this.props.attributes,
-			...getAttributesFromPreview(preview, title, className),
-		};
-	}
-
-	/***
 	 * Sets block attributes based on the current attributes and preview data.
 	 */
 	setMergedAttributes() {
 		const { setAttributes } = this.props;
-		setAttributes(this.getMergedAttributes());
+		setAttributes(this.props.attributes);
 	}
 
 	switchBackToURLInput() {
@@ -135,36 +121,24 @@ class EmbedEdit extends Component {
 		// No preview, or we can't embed the current URL, or we've clicked the edit button.
 		if (!preview || cannotEmbed || editingURL) {
 			return (
-				<>
-					<EmbedPlaceholder
-						icon={icon}
-						label={label}
-						onSubmit={this.setUrl}
-						value={url}
-						cannotEmbed={cannotEmbed}
-						onChange={(event) =>
-							this.setState({ url: event.target.value })
-						}
-						fallback={() => fallback(url, this.props.onReplace)}
-						tryAgain={tryAgain}
-					/>
-					<EmbedSettings
-						refcode={this.props.attributes.refcode}
-						onChange={(value) => setAttributes({ refcode: value })}
-					/>
-				</>
+				<EmbedPlaceholder
+					icon={icon}
+					label={label}
+					onSubmit={this.setUrl}
+					value={url}
+					cannotEmbed={cannotEmbed}
+					onChange={(event) =>
+						this.setState({ url: event.target.value })
+					}
+					fallback={() => fallback(url, this.props.onReplace)}
+					tryAgain={tryAgain}
+				/>
 			);
 		}
 
-		// Even though we set attributes that get derived from the preview, we don't
-		// access them directly because for the initial render, the `setAttributes`
-		// call will not have taken effect. The `getAttributesFromPreview` function
-		// that `getMergedAttributes` uses is memoized so that we're not calculating
-		// them on every render.
-		const previewAttributes = this.getMergedAttributes();
-		const { caption, type } = previewAttributes;
+		const { caption, type } = this.props.attributes;
 		const className = classnames(
-			previewAttributes.className,
+			this.props.attributes.className,
 			this.props.className
 		);
 
@@ -187,12 +161,6 @@ class EmbedEdit extends Component {
 					icon={icon}
 					label={label}
 				/>
-				<EmbedSettings
-					refcode={this.props.attributes.refcode}
-					onUpdate={(newRefcode) =>
-						setAttributes({ refcode: newRefcode })
-					}
-				/>
 			</>
 		);
 	}
@@ -200,26 +168,13 @@ class EmbedEdit extends Component {
 
 export default compose(
 	withSelect((select, ownProps) => {
-		let { url, refcode } = ownProps.attributes;
+		const { url } = ownProps.attributes;
 		const core = select("core");
 		const {
 			getEmbedPreview,
 			isPreviewEmbedFallback,
 			isRequestingEmbedPreview,
 		} = core;
-
-		const queryParams = [];
-
-		if (refcode) {
-			queryParams.push(`refcode=${refcode}`);
-		}
-
-		const queryString = queryParams.length ? queryParams.join("&") : false;
-
-		if (url && queryString) {
-			url = `${url}?${queryString}`;
-		}
-
 		const preview = undefined !== url && getEmbedPreview(url);
 		const previewIsFallback =
 			undefined !== url && isPreviewEmbedFallback(url);
