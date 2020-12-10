@@ -81,8 +81,13 @@ echo "Reset git state"
 git checkout main
 
 # Checkout the SVN repo
+sleep 5
 echo "Checkout the svn repository from WordPress"
 svn checkout $SVN_URL $PLUGIN_SVN_PATH
+
+echo "Move assets over"
+rm -rf $PLUGIN_SVN_PATH/assets # Delete the assets directory
+rsync -rc --exclude=".gitkeep" ./assets/ $PLUGIN_SVN_PATH/assets/ # Copy our plugin assets as the new assets directory
 
 # Move to SVN directory
 echo "Move into the local svn repository"
@@ -109,6 +114,7 @@ svn stat | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
 # Remove deleted files from SVN.
 svn stat | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
 
+sleep 10
 # Commit to SVN.
 echo "Commit to WordPress svn repository"
 svn commit --no-auth-cache --username $WP_ORG_USERNAME --password $WP_ORG_PASSWORD -m "Deploy version $LATEST_SVN_TAG"
