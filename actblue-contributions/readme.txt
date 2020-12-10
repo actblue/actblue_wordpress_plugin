@@ -18,11 +18,8 @@ This plugin makes it possible to display your ActBlue Embed forms on your WordPr
 = Features =
 - Registers a custom [oEmbed](https://wordpress.org/support/article/embeds/) provider for ActBlue embed forms
 - Adds the `actblue.js` script tag to all of your pages to power analytics and conversion features
-
-= Coming Soon =
-- Support for embeddable donation buttons
-- Support for refcodes
-- Gutenberg block with additional customization options
+- Adds an ActBlue Form Gutenberg block, which can accept contributions from your own site.
+- Adds an ActBlue Buttons Gutenberg block, which open a form in a modal.
 
 This plugin was designed and built in collaboration with <a href="https://upstatement.com/">Upstatement</a>.
 
