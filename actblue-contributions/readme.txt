@@ -5,7 +5,7 @@ Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributi
 Requires at least: 4.5
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,13 +16,10 @@ Easily embed your ActBlue contribution forms on any WordPress page. Designed and
 This plugin makes it possible to display your ActBlue Embed forms on your WordPress site by dropping a contribution form link in any WordPress editor.
 
 = Features =
+- Adds an ActBlue Form editor block, which can accept contributions from your own site.
+- Adds an ActBlue Buttons editor block, which creates a button that will open a form in a modal.
 - Registers a custom [oEmbed](https://wordpress.org/support/article/embeds/) provider for ActBlue embed forms
 - Adds the `actblue.js` script tag to all of your pages to power analytics and conversion features
-
-= Coming Soon =
-- Support for embeddable donation buttons
-- Support for refcodes
-- Gutenberg block with additional customization options
 
 This plugin was designed and built in collaboration with <a href="https://upstatement.com/">Upstatement</a>.
 
@@ -103,6 +100,9 @@ If you have a question about the ActBlue platform, visit our [support site](http
 2. The link will automatically be replaced with the live form.
 
 == Changelog ==
+
+= 1.2.1 =
+* Updates readme with current features.
 
 = 1.2.0 =
 * Adds a custom Gutenberg block for ActBlue contribution buttons.
