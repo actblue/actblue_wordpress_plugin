@@ -45,21 +45,27 @@ class ActBlue_Blocks {
 	}
 
 	/**
-	 * Register the JavaScript for the blocks. This function should be added as a
+	 * Register scripts and styles for the blocks. This function should be added as a
 	 * callback when using the `enqueue_block_editor_assets` hook.
 	 *
 	 * @since 1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_admin() {
 		$blocks_asset = include ACTBLUE_PLUGIN_DIR . 'build/blocks.asset.php';
-
 		wp_enqueue_script(
 			$this->plugin_name . '-blocks',
 			ACTBLUE_PLUGIN_URI . 'build/blocks.js',
 			$blocks_asset['dependencies'],
-			$this->version,
+			$blocks_asset['version'],
 			true
 		);
-	}
 
+		$editor_asset = include ACTBLUE_PLUGIN_DIR . 'build/editor.asset.php';
+		wp_enqueue_style(
+			$this->plugin_name . '-blocks-editor-style',
+			ACTBLUE_PLUGIN_URI . 'build/editor.css',
+			array(),
+			$editor_asset['version']
+		);
+	}
 }

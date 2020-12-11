@@ -1,0 +1,30 @@
+// Mimic the default admin styles for the button block.
+.wp-block-buttons div[data-type="actblue/button"] {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	display: inline-block;
+	width: auto;
+	margin-right: 8px;
+}
+
+.block-editor-block-styles div[data-type="actblue/button"] {
+	display: table;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.actblue-button-settings__panel .actblue-button-settings__fetch-message {
+	margin-top: 0.5em;
+	color: red;
+}
+
+.actblue-button-settings__success-message {
+	transition: opacity 0.2s;
+	opacity: 0;
+	display: inline-block;
+	margin-left: 1em;
+}
+
+.actblue-button-settings__success-message--visible {
+	opacity: 1;
+}

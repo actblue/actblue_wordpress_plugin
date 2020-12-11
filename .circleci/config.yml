@@ -152,9 +152,6 @@ jobs:
           name: Copy built assets
           command: cp -R /tmp/actblue-contributions/build actblue-contributions
       - run:
-          name: Deploy assets to WordPress plugin directory
-          command: .circleci/deploy-assets.sh
-      - run:
           name: Deploy plugin to WordPress plugin directory
           command: .circleci/deploy-plugin.sh
 

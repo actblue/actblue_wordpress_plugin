@@ -1,10 +1,10 @@
 {
   "name": "actblue-contributions",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "author": "ActBlue",
   "scripts": {
-    "build": "wp-scripts build",
-    "start": "wp-scripts start",
+    "build": "wp-scripts build --config webpack.config.js",
+    "start": "wp-scripts start --config webpack.config.js",
     "test:e2e": "wp-scripts test-e2e"
   },
   "dependencies": {
