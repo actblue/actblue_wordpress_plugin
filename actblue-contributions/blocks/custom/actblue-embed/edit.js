@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { fallback } from "./util";
 import EmbedControls from "./embed-controls";
 import EmbedLoading from "./embed-loading";
 import EmbedPlaceholder from "./embed-placeholder";
@@ -15,21 +14,33 @@ import classnames from "classnames";
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from "@wordpress/i18n";
-import { Component } from "@wordpress/element";
+import { __ } from "@wordpress/i18n";
+import { Component, renderToString } from "@wordpress/element";
+import { createBlock } from "@wordpress/blocks";
 import { compose } from "@wordpress/compose";
 import { withSelect, withDispatch } from "@wordpress/data";
 import { PanelBody, TextControl, Button } from "@wordpress/components";
 import { InspectorControls } from "@wordpress/block-editor";
 
-import { title, icon } from "./index";
+import { icon } from "./index";
+
+/**
+ * Fallback behaviour for unembeddable URLs.
+ * Creates a paragraph block containing a link to the URL, and calls `onReplace`.
+ *
+ * @param {string}   url       The URL that could not be embedded.
+ * @param {Function} onReplace Function to call with the created fallback block.
+ */
+function fallback(url, onReplace) {
+	const link = <a href={url}>{url}</a>;
+	onReplace(createBlock("core/paragraph", { content: renderToString(link) }));
+}
 
 class EmbedEditMain extends Component {
 	constructor() {
 		super(...arguments);
 		this.switchBackToURLInput = this.switchBackToURLInput.bind(this);
 		this.setUrl = this.setUrl.bind(this);
-		this.setMergedAttributes = this.setMergedAttributes.bind(this);
 		this.handleIncomingPreview = this.handleIncomingPreview.bind(this);
 
 		this.state = {
@@ -42,8 +53,12 @@ class EmbedEditMain extends Component {
 		}
 	}
 
+	/**
+	 * Sets block attributes based on the current attributes and preview data.
+	 */
 	handleIncomingPreview() {
-		this.setMergedAttributes();
+		const { setAttributes } = this.props;
+		setAttributes(this.props.attributes);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -90,16 +105,12 @@ class EmbedEditMain extends Component {
 		setAttributes({ url });
 	}
 
-	/***
-	 * Sets block attributes based on the current attributes and preview data.
-	 */
-	setMergedAttributes() {
-		const { setAttributes } = this.props;
-		setAttributes(this.props.attributes);
-	}
-
 	switchBackToURLInput() {
 		this.setState({ editingURL: true });
+
+		// When switching back to set a new URL, clear any ActBlue settings that
+		// were previously set.
+		this.props.clearActBlueSettings();
 	}
 
 	render() {
@@ -117,8 +128,7 @@ class EmbedEditMain extends Component {
 			return <EmbedLoading />;
 		}
 
-		// translators: %s: type of embed e.g: "YouTube", "Twitter", etc. "Embed" is used when no specific type exists
-		const label = sprintf(__("%s URL"), title);
+		const label = "ActBlue URL";
 
 		// No preview, or we can't embed the current URL, or we've clicked the edit button.
 		if (!preview || cannotEmbed || editingURL) {
@@ -168,38 +178,69 @@ class EmbedEditMain extends Component {
 	}
 }
 
+/**
+ * This class holds the entire embed block, including the block UI and the settings
+ * for the block in the sidebar. New settings to be passed with the url to the
+ * oEmbed endpoint can be added to the `<InspectorControls>` component.
+ *
+ * There are a number of available UI components in the @wordpress/components
+ * package that can be used to handle text inputs, buttons, selects, etc.
+ *
+ * @link https://developer.wordpress.org/block-editor/components/
+ */
 class EmbedEdit extends Component {
 	constructor() {
 		super(...arguments);
-		this.handleRefcodeChange = this.handleRefcodeChange.bind(this);
+		this.handleRefcodeUpdate = this.handleRefcodeUpdate.bind(this);
+		this.clearActBlueSettings = this.clearActBlueSettings.bind(this);
 
-		// When the embed has a preview, we'll want to store refocde changes in
-		// local state since changes to the attributes trigger a rerender and a
-		// refetch of the oEmbed endpoint.
+		// Handle the refcode in local state so that changing the attribute doesn't
+		// trigger a refetch of the endpoint.
 		this.state = {
 			refcode: this.props.attributes.refcode,
 		};
 	}
 
-	handleRefcodeChange(value) {
-		// If the preview exists, we don't want to update the attribute on input
-		// change since that would trigger a rerender and another fetch to the
-		// oEmbed endpoint. So instead, just use local state.
-		if (this.props.preview) {
-			this.setState({ refcode: value });
-		} else {
-			this.props.setAttributes({ refcode: value });
+	componentDidUpdate() {
+		// If there's no preview, then we can safely update the block attribute
+		// without worrying about it triggering a refetch of the endpoint.
+		if (!this.props.preview) {
+			this.props.setAttributes({ refcode: this.state.refcode });
 		}
 	}
 
-	render() {
-		const refcode = this.props.preview
-			? this.state.refcode
-			: this.props.attributes.refcode;
+	/**
+	 * When the update button is clicked, set the refcode attribute on the block.
+	 * This will trigger a refetch of the endpoint with the new refcode attached as
+	 * a query param.
+	 */
+	handleRefcodeUpdate() {
+		this.props.setAttributes({
+			refcode: this.state.refcode,
+		});
+	}
 
+	/**
+	 * Set up a function to clear the settings in the event that we want to start
+	 * over, like if the user decides to input a new embed url.
+	 */
+	clearActBlueSettings() {
+		this.props.setAttributes({ refcode: "" });
+		this.setState({ refcode: "" });
+	}
+
+	render() {
 		return (
 			<>
-				<EmbedEditMain {...this.props} />
+				<EmbedEditMain
+					{...this.props}
+					clearActBlueSettings={this.clearActBlueSettings}
+				/>
+
+				{/*
+				The following component holds content that will go in the editor
+				sidebar when an `ActBlue Embed` block is selected.
+				*/}
 				<InspectorControls>
 					<PanelBody
 						title={__("ActBlue Settings")}
@@ -207,19 +248,24 @@ class EmbedEdit extends Component {
 					>
 						<TextControl
 							label="Refcode"
-							value={refcode}
-							onChange={this.handleRefcodeChange}
+							value={this.state.refcode}
+							onChange={(value) =>
+								this.setState({ refcode: value })
+							}
 							help="Add a refcode to this embed form."
 						/>
 
+						{/*
+						Only show the update button when there is already embedded
+						content in the block. Any input added to the refcode before
+						a fetch has happened will get sent along with the initial
+						request. Clicking this button after an initial embed will
+						trigger a refetch of the oEmbed endpoint and a new embed.
+						*/}
 						{this.props.preview && (
 							<Button
 								isSecondary
-								onClick={() =>
-									this.props.setAttributes({
-										refcode: this.state.refcode,
-									})
-								}
+								onClick={this.handleRefcodeUpdate}
 							>
 								Update
 							</Button>
