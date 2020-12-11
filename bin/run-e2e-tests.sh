@@ -31,6 +31,7 @@ echo "Testing with WordPress version: $WP_VERSION"
 echo
 
 echo "Building assets"
+yarn --cwd actblue-contributions install
 yarn --cwd actblue-contributions build
 
 echo "Setting up the WordPress environment"
@@ -43,10 +44,11 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:8002); d
     sleep 3
 done
 
+echo
 docker-compose -p actblue-contributions-e2e-tests exec wordpress wp core version
 
 echo "Run the end-to-end tests"
 npm run test:e2e --prefix=actblue-contributions -- --wordpress-base-url=http://localhost:8002
 
 echo "Stop the environment"
-docker-compose -p actblue-contributions-e2e-tests down -v --remove-orphans --rmi=local
+docker-compose -p actblue-contributions-e2e-tests down -v
