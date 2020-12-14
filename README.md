@@ -95,7 +95,7 @@ docker-compose exec wordpress phpunit
 
 ## Deployment
 
-The distributed code for this plugin is hosted on the WordPress svn repository and is located at http://plugins.svn.wordpress.org/actblue-contributions/. This GitHub repository comes with two scripts that help facilitate the deployment of the plugin assets and source to that svn repository. The scripts will run as a part of CircleCI's continuous integration, but you can also manually deploy the plugin by running them locally.
+The distributed code for this plugin is hosted on the WordPress svn repository and is located at http://plugins.svn.wordpress.org/actblue-contributions/. This GitHub repository comes with a script that helps facilitate the deployment of the plugin assets and source to that svn repository. The script will run as a part of CircleCI's continuous integration, but you can also manually deploy the plugin by running it locally.
 
 ### Releasing a new version
 
@@ -106,30 +106,47 @@ To release a new version of the plugin via automatic deployment:
 1. Create a release branch off of the `develop` branch with the corresponding version number:
 
    ```sh
-   git checkout -b release-#.#.#
+   git checkout -b release-0.0.0
    ```
 
-2. Bump the version numbers in the plugin directory:
+2. Bump the plugin version:
 
-   - `package.json`
-   - `composer.json`
-   - Inside the `actblue-contributions.php` file:
-     - `Version` in the docblock at the top of the file.
-     - `ACTBLUE_PLUGIN_VERSION` constant.
+   ```sh
+   ./bin/bump-version.sh
+   ```
 
 3. Commit these changes and push to GitHub:
 
    ```sh
    git add .
-   git commit -m "Version bump to #.#.#"
-   git push origin release-#.#.#
+   git commit -m "Version bump to 0.0.0"
+   git push origin release-0.0.0
    ```
 
-4. PR the release branch into the `main` branch via the GitHub GUI. Feel free to add release notes to this PR. Once the checks have passed, merge the PR into `main`.
+4. PR the release branch into the `main` branch via the GitHub GUI. Once the checks have passed, merge the PR into `main`.
 
-5. [Create a new release](https://github.com/actblue/wordpress_plugin/releases/new) in GitHub. Making sure to target the `main` branch, add a tag label that matches the version you're bumping to. Note that this tag label _must_ have a leading `v` (for example, `v1.0.0`) so that the CircleCI and the deployment scripts can identify it. Then add a release title and any release notes and hit `Publish Release`. This will trigger CircleCI to deploy this tagged version of the plugin to the WordPress svn repository with the matching version number.
+5. Locally, pull down the latest from `main`, and create a new annotated tag for the new version release. Note that this tag label _must_ have a leading `v` (for example, `v1.0.0`) so that the CircleCI and the deployment scripts can identify it.
 
-<img width="990" alt="Screen Shot 2020-12-03 at 10 02 03 AM" src="https://user-images.githubusercontent.com/3286676/101071232-28ea5100-3551-11eb-8375-048206c32432.png">
+    ```sh
+    git checkout main
+    git pull origin main
+    git tag -a v0.0.0 -m "Release 0.0.0"
+    ```
+
+6. Push the tag to the GitHub repository. ***Note that this action will trigger a deployment to the WordPress svn repository.***
+
+    ```sh
+    git push origin --tags
+    ```
+
+7. Finally, merge the `main` branch brack into the `develop` branch to align both branches.
+
+    ```sh
+    git checkout develop
+    git pull origin develop
+    git merge main
+    git push origin develop
+    ```
 
 ### Manual deployment
 
@@ -145,16 +162,19 @@ To manually deploy a new version of the plugin from your local machine:
 
 3. Ensure that you have the username and password for the WordPress.org account that has write access to the WordPress svn repository. These credentials can be passed to the script via command line arguments, or be set with the `WP_ORG_USERNAME` and `WP_ORG_PASSWORD` environment variables.
 
-Then run the following scripts:
+Then run the following script:
 
 ```sh
-# Deploy any assets for the plugin listing on WordPress.org:
-./.circleci deploy-assets.sh
-
-# Deploy the plugin source:
+# Deploy the plugin assets and source files to the WordPress.org repository:
 ./.circleci deploy-plugin.sh
 
 # Both script also accept command line arguments for the WordPress.org username
 # and password if those haven't been set as environment variables.
-./.circleci deploy-assets.sh -u actblue -p password
+./.circleci deploy-plugin.sh -u actblue -p password
+```
+
+There is also a utility script that can be used to _only_ deploy the assets for the WordPress.org plugin listing. This script has the same requirements and can take the same parameters as the `deploy-plugin.sh` script.
+
+```sh
+./.circleci deploy-assets.sh
 ```
