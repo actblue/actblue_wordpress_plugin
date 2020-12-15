@@ -1,9 +1,11 @@
-export default ({ url, refcode }) => {
+export default ({ url, ...query }) => {
 	const queryParams = [];
 
-	if (refcode) {
-		queryParams.push(`refcode=${refcode}`);
-	}
+	Object.keys(query).map((key) => {
+		queryParams.push(
+			`${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`
+		);
+	});
 
 	const queryString = queryParams.length ? queryParams.join("&") : false;
 

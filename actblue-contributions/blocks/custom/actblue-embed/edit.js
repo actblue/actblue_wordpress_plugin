@@ -240,7 +240,10 @@ class EmbedEdit extends Component {
 export default compose(
 	withSelect((select, ownProps) => {
 		const { url: baseUrl } = ownProps.attributes;
-		const url = urlWithQueryConfiguration({ url: baseUrl });
+		const url = urlWithQueryConfiguration({
+			url: baseUrl,
+			preview: "true",
+		});
 		const core = select("core");
 		const {
 			getEmbedPreview,
