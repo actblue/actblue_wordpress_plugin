@@ -134,7 +134,7 @@ class ActBlue {
 			return $user_agent;
 		}
 
-		$actblue_user_agent = "WordPress/" . get_bloginfo( 'version' ) . "; ActBlueContributions/{$this->version}; " . get_site_url();
+		$actblue_user_agent = 'WordPress/' . get_bloginfo( 'version' ) . "; ActBlueContributions/{$this->version}; " . get_site_url();
 		return $actblue_user_agent;
 	}
 
