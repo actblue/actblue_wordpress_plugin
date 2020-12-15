@@ -23,6 +23,7 @@ import { PanelBody, TextControl, Button } from "@wordpress/components";
 import { InspectorControls } from "@wordpress/block-editor";
 
 import { icon } from "./index";
+import urlWithQueryConfiguration from "./urlWithQueryConfiguration";
 
 /**
  * Fallback behaviour for unembeddable URLs.
@@ -279,25 +280,14 @@ class EmbedEdit extends Component {
 
 export default compose(
 	withSelect((select, ownProps) => {
-		let { url, refcode } = ownProps.attributes;
+		const { url: baseUrl, refcode } = ownProps.attributes;
+		const url = urlWithQueryConfiguration({ url: baseUrl, refcode });
 		const core = select("core");
 		const {
 			getEmbedPreview,
 			isPreviewEmbedFallback,
 			isRequestingEmbedPreview,
 		} = core;
-
-		const queryParams = [];
-
-		if (refcode) {
-			queryParams.push(`refcode=${refcode}`);
-		}
-
-		const queryString = queryParams.length ? queryParams.join("&") : false;
-
-		if (url && queryString) {
-			url = `${url}?${queryString}`;
-		}
 
 		const preview = undefined !== url && getEmbedPreview(url);
 		const previewIsFallback =
