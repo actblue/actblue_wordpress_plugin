@@ -192,33 +192,7 @@ class EmbedEditMain extends Component {
 class EmbedEdit extends Component {
 	constructor() {
 		super(...arguments);
-		this.handleRefcodeUpdate = this.handleRefcodeUpdate.bind(this);
 		this.clearActBlueSettings = this.clearActBlueSettings.bind(this);
-
-		// Handle the refcode in local state so that changing the attribute doesn't
-		// trigger a refetch of the endpoint.
-		this.state = {
-			refcode: this.props.attributes.refcode,
-		};
-	}
-
-	componentDidUpdate() {
-		// If there's no preview, then we can safely update the block attribute
-		// without worrying about it triggering a refetch of the endpoint.
-		if (!this.props.preview) {
-			this.props.setAttributes({ refcode: this.state.refcode });
-		}
-	}
-
-	/**
-	 * When the update button is clicked, set the refcode attribute on the block.
-	 * This will trigger a refetch of the endpoint with the new refcode attached as
-	 * a query param.
-	 */
-	handleRefcodeUpdate() {
-		this.props.setAttributes({
-			refcode: this.state.refcode,
-		});
 	}
 
 	/**
@@ -227,7 +201,6 @@ class EmbedEdit extends Component {
 	 */
 	clearActBlueSettings() {
 		this.props.setAttributes({ refcode: "" });
-		this.setState({ refcode: "" });
 	}
 
 	render() {
@@ -249,28 +222,14 @@ class EmbedEdit extends Component {
 					>
 						<TextControl
 							label="Refcode"
-							value={this.state.refcode}
+							value={this.props.attributes.refcode}
 							onChange={(value) =>
-								this.setState({ refcode: value })
+								this.props.setAttributes({
+									refcode: value,
+								})
 							}
 							help="Add a refcode to this embed form."
 						/>
-
-						{/*
-						Only show the update button when there is already embedded
-						content in the block. Any input added to the refcode before
-						a fetch has happened will get sent along with the initial
-						request. Clicking this button after an initial embed will
-						trigger a refetch of the oEmbed endpoint and a new embed.
-						*/}
-						{this.props.preview && (
-							<Button
-								isSecondary
-								onClick={this.handleRefcodeUpdate}
-							>
-								Update
-							</Button>
-						)}
 					</PanelBody>
 				</InspectorControls>
 			</>
@@ -280,8 +239,8 @@ class EmbedEdit extends Component {
 
 export default compose(
 	withSelect((select, ownProps) => {
-		const { url: baseUrl, refcode } = ownProps.attributes;
-		const url = urlWithQueryConfiguration({ url: baseUrl, refcode });
+		const { url: baseUrl } = ownProps.attributes;
+		const url = urlWithQueryConfiguration({ url: baseUrl });
 		const core = select("core");
 		const {
 			getEmbedPreview,
