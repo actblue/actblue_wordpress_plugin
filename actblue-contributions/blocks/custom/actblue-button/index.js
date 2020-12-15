@@ -61,6 +61,10 @@ const attributes = {
 		type: "string",
 	},
 
+	refcode: {
+		type: "string",
+	},
+
 	/**
 	 * Uncommend the following attribute to enable a user to attach a specific donation
 	 * amount to a button. You can then access this `amount` variable in the attributes

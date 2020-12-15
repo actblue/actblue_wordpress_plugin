@@ -15,6 +15,7 @@ import {
 	TextControl,
 	withFallbackStyles,
 	Button,
+	HorizontalRule,
 } from "@wordpress/components";
 import {
 	__experimentalUseGradient,
@@ -85,7 +86,7 @@ function ActBlueButtonEdit({
 	setAttributes,
 	className,
 }) {
-	const { borderRadius, placeholder, text, endpoint } = attributes;
+	const { borderRadius, placeholder, text, endpoint, refcode } = attributes;
 
 	const [isFetching, setIsFetching] = useState(false);
 	const [fetchMessage, setFetchMessage] = useState("");
@@ -104,7 +105,6 @@ function ActBlueButtonEdit({
 		}
 
 		setIsFetching(true);
-		setButtonText("Connecting...");
 		setFetchMessage("");
 
 		const url = `https://secure.actblue.com/cf/oembed?url=${endpoint}&format=json`;
@@ -174,6 +174,7 @@ function ActBlueButtonEdit({
 
 					<Button
 						isSecondary
+						isBusy={isFetching}
 						onClick={handleEndpointSubmit}
 						disabled={isFetching || !endpoint}
 					>
@@ -196,6 +197,19 @@ function ActBlueButtonEdit({
 							{fetchMessage}
 						</p>
 					)}
+
+					<HorizontalRule />
+
+					<TextControl
+						label="Refcode"
+						value={refcode}
+						onChange={(value) =>
+							setAttributes({
+								refcode: value,
+							})
+						}
+						help="Associate contributions made through this button with a refcode."
+					/>
 
 					{/*
 					We can add a field for an `Amount` with another text control. We can grab the
