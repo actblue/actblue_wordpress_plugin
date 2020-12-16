@@ -2,9 +2,11 @@ export default ({ url, ...query }) => {
 	const queryParams = [];
 
 	Object.keys(query).map((key) => {
-		queryParams.push(
-			`${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`
-		);
+		if (query[key]) {
+			queryParams.push(
+				`${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`
+			);
+		}
 	});
 
 	const queryString = queryParams.length ? queryParams.join("&") : false;
