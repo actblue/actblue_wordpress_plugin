@@ -24,7 +24,7 @@ const onDocumentReady = (callback) => {
  * @return void
  */
 const handleButtonClick = (event) => {
-	const { token } = event.currentTarget.dataset;
+	const { token, refcode } = event.currentTarget.dataset;
 
 	if (!token) {
 		console.warn(
@@ -33,7 +33,7 @@ const handleButtonClick = (event) => {
 		return;
 	}
 
-	window.actblue.requestContribution({ token });
+	window.actblue.requestContribution({ token, refcodes: { refcode } });
 	event.preventDefault();
 };
 
