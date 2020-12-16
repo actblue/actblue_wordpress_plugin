@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import { getPhotoHtml } from "./util";
-
-/**
  * External dependencies
  */
 import classnames from "classnames/dedupe";
@@ -60,7 +55,7 @@ class EmbedPreview extends Component {
 		const { scripts } = preview;
 		const { interactive } = this.state;
 
-		const html = "photo" === type ? getPhotoHtml(preview) : preview.html;
+		const html = preview.html;
 		const cannotPreview = false;
 		const sandboxClassnames = classnames(
 			type,
