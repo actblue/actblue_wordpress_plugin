@@ -102,6 +102,12 @@ class EmbedEditMain extends Component {
 		}
 		const { url } = this.state;
 		const { setAttributes } = this.props;
+		if (url.indexOf("https://secure.actblue.com") !== 0) {
+			console.error(
+				"Can not use ActBlue Embed block to embed non-ActBlue urls"
+			);
+			return;
+		}
 		this.setState({ editingURL: false });
 		setAttributes({ url });
 	}
