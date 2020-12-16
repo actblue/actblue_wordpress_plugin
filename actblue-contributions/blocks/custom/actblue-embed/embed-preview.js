@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import { getPhotoHtml } from "./util";
-
-/**
  * External dependencies
  */
 import classnames from "classnames/dedupe";
@@ -59,7 +54,7 @@ class EmbedPreview extends Component {
 		} = this.props;
 		const { interactive } = this.state;
 
-		const html = "photo" === type ? getPhotoHtml(preview) : preview.html;
+		const html = preview.html;
 		const cannotPreview = false;
 
 		// Disabled because the overlay div doesn't actually have a role or functionality

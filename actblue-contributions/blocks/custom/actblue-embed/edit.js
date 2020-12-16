@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { fallback, getAttributesFromPreview } from "./util";
 import EmbedControls from "./embed-controls";
 import EmbedLoading from "./embed-loading";
 import EmbedPlaceholder from "./embed-placeholder";
@@ -15,20 +14,34 @@ import classnames from "classnames";
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from "@wordpress/i18n";
-import { Component } from "@wordpress/element";
+import { __ } from "@wordpress/i18n";
+import { Component, renderToString } from "@wordpress/element";
+import { createBlock } from "@wordpress/blocks";
 import { compose } from "@wordpress/compose";
 import { withSelect, withDispatch } from "@wordpress/data";
+import { PanelBody, TextControl, Button } from "@wordpress/components";
+import { InspectorControls } from "@wordpress/block-editor";
 
-import { title, icon } from "./index";
+import { icon } from "./index";
+import urlWithQueryConfiguration from "./urlWithQueryConfiguration";
 
-class EmbedEdit extends Component {
+/**
+ * Fallback behaviour for unembeddable URLs.
+ * Creates a paragraph block containing a link to the URL, and calls `onReplace`.
+ *
+ * @param {string}   url       The URL that could not be embedded.
+ * @param {Function} onReplace Function to call with the created fallback block.
+ */
+function fallback(url, onReplace) {
+	const link = <a href={url}>{url}</a>;
+	onReplace(createBlock("core/paragraph", { content: renderToString(link) }));
+}
+
+class EmbedEditMain extends Component {
 	constructor() {
 		super(...arguments);
 		this.switchBackToURLInput = this.switchBackToURLInput.bind(this);
 		this.setUrl = this.setUrl.bind(this);
-		this.getMergedAttributes = this.getMergedAttributes.bind(this);
-		this.setMergedAttributes = this.setMergedAttributes.bind(this);
 		this.handleIncomingPreview = this.handleIncomingPreview.bind(this);
 
 		this.state = {
@@ -41,8 +54,12 @@ class EmbedEdit extends Component {
 		}
 	}
 
+	/**
+	 * Sets block attributes based on the current attributes and preview data.
+	 */
 	handleIncomingPreview() {
-		this.setMergedAttributes();
+		const { setAttributes } = this.props;
+		setAttributes(this.props.attributes);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -95,28 +112,12 @@ class EmbedEdit extends Component {
 		setAttributes({ url });
 	}
 
-	/***
-	 * @return {Object} Attributes derived from the preview, merged with the current attributes.
-	 */
-	getMergedAttributes() {
-		const { preview } = this.props;
-		const { className } = this.props.attributes;
-		return {
-			...this.props.attributes,
-			...getAttributesFromPreview(preview, title, className),
-		};
-	}
-
-	/***
-	 * Sets block attributes based on the current attributes and preview data.
-	 */
-	setMergedAttributes() {
-		const { setAttributes } = this.props;
-		setAttributes(this.getMergedAttributes());
-	}
-
 	switchBackToURLInput() {
 		this.setState({ editingURL: true });
+
+		// When switching back to set a new URL, clear any ActBlue settings that
+		// were previously set.
+		this.props.clearActBlueSettings();
 	}
 
 	render() {
@@ -134,8 +135,7 @@ class EmbedEdit extends Component {
 			return <EmbedLoading />;
 		}
 
-		// translators: %s: type of embed e.g: "YouTube", "Twitter", etc. "Embed" is used when no specific type exists
-		const label = sprintf(__("%s URL"), title);
+		const label = "ActBlue URL";
 
 		// No preview, or we can't embed the current URL, or we've clicked the edit button.
 		if (!preview || cannotEmbed || editingURL) {
@@ -155,15 +155,9 @@ class EmbedEdit extends Component {
 			);
 		}
 
-		// Even though we set attributes that get derived from the preview, we don't
-		// access them directly because for the initial render, the `setAttributes`
-		// call will not have taken effect. The `getAttributesFromPreview` function
-		// that `getMergedAttributes` uses is memoized so that we're not calculating
-		// them on every render.
-		const previewAttributes = this.getMergedAttributes();
-		const { caption, type } = previewAttributes;
+		const { caption, type } = this.props.attributes;
 		const className = classnames(
-			previewAttributes.className,
+			this.props.attributes.className,
 			this.props.className
 		);
 
@@ -191,15 +185,78 @@ class EmbedEdit extends Component {
 	}
 }
 
+/**
+ * This class holds the entire embed block, including the block UI and the settings
+ * for the block in the sidebar. New settings to be passed with the url to the
+ * oEmbed endpoint can be added to the `<InspectorControls>` component.
+ *
+ * There are a number of available UI components in the @wordpress/components
+ * package that can be used to handle text inputs, buttons, selects, etc.
+ *
+ * @link https://developer.wordpress.org/block-editor/components/
+ */
+class EmbedEdit extends Component {
+	constructor() {
+		super(...arguments);
+		this.clearActBlueSettings = this.clearActBlueSettings.bind(this);
+	}
+
+	/**
+	 * Set up a function to clear the settings in the event that we want to start
+	 * over, like if the user decides to input a new embed url.
+	 */
+	clearActBlueSettings() {
+		this.props.setAttributes({ refcode: "" });
+	}
+
+	render() {
+		return (
+			<>
+				<EmbedEditMain
+					{...this.props}
+					clearActBlueSettings={this.clearActBlueSettings}
+				/>
+
+				{/*
+				The following component holds content that will go in the editor
+				sidebar when an `ActBlue Embed` block is selected.
+				*/}
+				<InspectorControls>
+					<PanelBody
+						title={__("ActBlue Settings")}
+						className="actblue-embed-settings__panel"
+					>
+						<TextControl
+							label="Refcode"
+							value={this.props.attributes.refcode}
+							onChange={(value) =>
+								this.props.setAttributes({
+									refcode: value,
+								})
+							}
+							help="Add a refcode to this embed form."
+						/>
+					</PanelBody>
+				</InspectorControls>
+			</>
+		);
+	}
+}
+
 export default compose(
 	withSelect((select, ownProps) => {
-		const { url } = ownProps.attributes;
+		const { url: baseUrl } = ownProps.attributes;
+		const url = urlWithQueryConfiguration({
+			url: baseUrl,
+			preview: "true",
+		});
 		const core = select("core");
 		const {
 			getEmbedPreview,
 			isPreviewEmbedFallback,
 			isRequestingEmbedPreview,
 		} = core;
+
 		const preview = undefined !== url && getEmbedPreview(url);
 		const previewIsFallback =
 			undefined !== url && isPreviewEmbedFallback(url);

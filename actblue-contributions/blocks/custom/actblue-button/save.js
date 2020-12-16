@@ -17,14 +17,15 @@ const ActBlueButtonSave = ({ attributes }) => {
 		backgroundColor,
 		borderRadius,
 		customBackgroundColor,
-		customTextColor,
 		customGradient,
+		customTextColor,
+		endpoint,
 		gradient,
+		refcode,
 		text,
 		textColor,
 		title,
 		token,
-		endpoint,
 	} = attributes;
 
 	const textClass = getColorClassName("color", textColor);
@@ -70,6 +71,8 @@ const ActBlueButtonSave = ({ attributes }) => {
 				value={text}
 				target="_blank"
 				data-token={token}
+				data-refcode={refcode}
+				rel="noopener noreferrer"
 			/>
 		</div>
 	);

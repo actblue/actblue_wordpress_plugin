@@ -27,6 +27,11 @@ const attributes = {
 		type: "boolean",
 		default: true,
 	},
+
+	// ActBlue arguments
+	refcode: {
+		type: "string",
+	},
 };
 
 export { icon };
