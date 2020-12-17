@@ -24,6 +24,7 @@ const onDocumentReady = (callback) => {
  * @return void
  */
 const handleButtonClick = (event) => {
+	const { currentTarget } = event;
 	const { token, refcode } = event.currentTarget.dataset;
 
 	if (!token) {
@@ -33,7 +34,14 @@ const handleButtonClick = (event) => {
 		return;
 	}
 
-	window.actblue.requestContribution({ token, refcodes: { refcode } });
+	window.actblue.requestContribution({
+		token,
+		refcodes: { refcode },
+		onLanded: () => {
+			currentTarget.classList.remove("is-style-outline");
+		},
+	});
+	currentTarget.classList.add("is-style-outline");
 	event.preventDefault();
 };
 
