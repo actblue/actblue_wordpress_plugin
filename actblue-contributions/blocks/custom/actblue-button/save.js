@@ -14,6 +14,7 @@ import {
 
 const ActBlueButtonSave = ({ attributes }) => {
 	const {
+		amount,
 		backgroundColor,
 		borderRadius,
 		customBackgroundColor,
@@ -72,6 +73,7 @@ const ActBlueButtonSave = ({ attributes }) => {
 				target="_blank"
 				data-token={token}
 				data-refcode={refcode}
+				data-amount={amount}
 				rel="noopener noreferrer"
 			/>
 		</div>
