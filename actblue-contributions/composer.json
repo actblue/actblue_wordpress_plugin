@@ -13,5 +13,5 @@
     "phpcompatibility/phpcompatibility-wp": "^2.1",
     "wp-coding-standards/wpcs": "^2.3"
   },
-  "prefer-stable" : true
+  "prefer-stable": true
 }
