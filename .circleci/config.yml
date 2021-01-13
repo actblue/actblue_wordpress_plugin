@@ -45,18 +45,12 @@ jobs:
       - run:
           name: Build
           command: cd $WP_PLUGIN_NAME && npm run build
-      - run:
-          name: Install WordPress
-          command: bash .circleci/install-wordpress.sh
       - persist_to_workspace:
           root: .
           paths:
             - actblue-contributions/build
+            - actblue-contributions/node_modules
             - actblue-contributions/vendor
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - wordpress
 
   code_quality:
     <<: *container_config
@@ -121,8 +115,11 @@ jobs:
             sudo mv wp-cli.phar /usr/local/bin/wp
       - *attach
       - run:
-          name: Copy vendor directory
-          command: cp -R /tmp/actblue-contributions/vendor actblue-contributions
+          name: Copy assets
+          command: |
+            cp -R /tmp/$WP_PLUGIN_NAME/vendor $WP_PLUGIN_NAME
+            cp -R /tmp/$WP_PLUGIN_NAME/build $WP_PLUGIN_NAME
+            cp -R /tmp/$WP_PLUGIN_NAME/node_modules $WP_PLUGIN_NAME
       - run:
           name: Install MySQL client
           command: sudo apt-get update && sudo apt-get install default-mysql-client
@@ -130,14 +127,11 @@ jobs:
           name: Install MySQL PHP extension
           command: sudo docker-php-ext-install mysqli
       - run:
-          name: Install dependencies
-          command: cd $WP_PLUGIN_NAME && npm install
-      - run:
-          name: Build
-          command: cd $WP_PLUGIN_NAME && npm run build
+          name: Install WordPress
+          command: bash .circleci/install-wordpress.sh
       - run:
           name: Setup WordPress
-          command: .circleci/setup-wordpress.sh
+          command: bash .circleci/setup-wordpress.sh
       - run:
           name: Start PHP server
           command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR

@@ -11,7 +11,8 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
   chmod +x /usr/local/bin/wp;
 
 # Download WordPress.
-RUN wp core download
+ARG WP_VERSION=latest
+RUN wp core download --version=$WP_VERSION
 
 # Copy the plugin into the right place.
 COPY actblue-contributions /var/www/html/wp-content/plugins/actblue-contributions

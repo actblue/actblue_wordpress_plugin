@@ -20,6 +20,10 @@ Configuration files for the local docker image.
 
 Configuration for continuous integration via CircleCI. This directory also holds two bash scripts that help facilitate the deployment of the plugin to the WordPress svn repository.
 
+### `bin/`
+
+Includes scripts that perform utility actions like manually archiving the plugin, running end-to-end tests locally, and bumping the plugin version.
+
 ## Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) to get the local environment set up and running via a docker container (note that this has only been tested with the Mac version).
@@ -85,13 +89,46 @@ docker-compose ps
 
 ## Testing
 
+This repository includes PHP unit tests and end-to-end tests to confirm plugin functionality. Both testing suites are run as a part of CircleCI'c continuous integration step, and are available via local scripts as well.
+
+### PHP Unit testing
 PHP unit testing via [PHPUnit 5](https://phpunit.de/getting-started/phpunit-5.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
 
-To run the PHP unit tests on the container, run the following command (note that the container needs to be running for this to work):
+To start the container and run the PHP unit tests on the container, run the following command (note that port 80 on your computer will need to be free):
 
 ```sh
-docker-compose exec wordpress phpunit
+./bin/run-unit-tests.sh
 ```
+
+#### Writing tests
+
+The PHP unit tests can be found in the `actblue-contributions/tests/` directory. Any file in that directory that has a filename with `test-` prepended to it will be run as a part of the testing script.
+
+### End-to-end testing
+
+End-to-end testing is handled via the [WordPress e2e suite](https://make.wordpress.org/core/2019/06/27/introducing-the-wordpress-e2e-tests/), which uses [Jest](https://jestjs.io/) as a testing/asserting framework and [Puppeteer](https://pptr.dev/) to communicate with the browser.
+
+To run the tests locally, you'll need [Docker](https://www.docker.com/) installed on your machine to run the environment to test against. The entire local testing process can be run with the following script:
+
+```sh
+./bin/run-e2e-tests.sh
+```
+
+This script will build the plugin assets with yarn, then spin up a docker container containing WordPress. Once that is set up, the script will run the end-to-end tests on the container, then stop and tear down the environment.
+
+#### Testing different WordPress versions
+
+The end-to-end script can take a `--version` flag that will allow you to set the WordPress version to test against:
+
+```sh
+./bin/run-e2e-tests.sh --version 5.4
+```
+
+The `version` flag can accept a version number, 'latest', or 'nightly'.
+
+#### Writing tests
+
+Tests are located in the `actblue-contributions/e2e-tests/` directory. Any JavaScript file that has the `.spec.js` suffix will be used to look for tests to run. In addition to using [Jest](https://jestjs.io/) as the testing framework and [Puppeteer](https://pptr.dev/) to communicate with the browser, the [WordPress `e2e-test-utils` package](https://developer.wordpress.org/block-editor/packages/packages-e2e-test-utils/) is also used to handle WordPress-specific actions.
 
 ## Deployment
 

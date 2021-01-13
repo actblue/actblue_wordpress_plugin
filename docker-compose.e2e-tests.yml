@@ -19,6 +19,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.e2e-tests
+      args:
+        - WP_VERSION
     ports:
       - "8002:80"
     environment:
