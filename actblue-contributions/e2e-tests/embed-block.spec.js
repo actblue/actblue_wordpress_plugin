@@ -34,7 +34,7 @@ describe("Wrapper block", () => {
 
 		// Type in the embed URL.
 		await page.type(
-			'input[aria-label="ActBlue Embed URL"]',
+			'input[aria-label="ActBlue URL"]',
 			"https://secure.actblue.com/donate/actblue-1-embed"
 		);
 
