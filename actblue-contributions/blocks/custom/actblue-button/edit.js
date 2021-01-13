@@ -86,7 +86,14 @@ function ActBlueButtonEdit({
 	setAttributes,
 	className,
 }) {
-	const { borderRadius, placeholder, text, endpoint, refcode } = attributes;
+	const {
+		borderRadius,
+		placeholder,
+		text,
+		endpoint,
+		refcode,
+		amount,
+	} = attributes;
 
 	const [isFetching, setIsFetching] = useState(false);
 	const [fetchMessage, setFetchMessage] = useState("");
@@ -211,17 +218,17 @@ function ActBlueButtonEdit({
 						help="Associate contributions made through this button with a refcode."
 					/>
 
-					{/*
-					We can add a field for an `Amount` with another text control. We can grab the
-					`amount` variable from the attributes passed to this edit function.
-					*/}
-
-					{/* <TextControl
+					<TextControl
 						type="number"
 						label="Amount"
-						value={amount}
-						onChange={(value) => setAttributes({ amount: value })}
-					/> */}
+						value={amount ? amount / 100 : ""}
+						onChange={(value) =>
+							setAttributes({
+								amount: value ? value * 100 : undefined,
+							})
+						}
+						help="Set the amount of the contribution in dollars, leave blank to let the donor choose an amount."
+					/>
 				</PanelBody>
 				<PanelColorGradientSettings
 					title={__("Background & Text Color")}
