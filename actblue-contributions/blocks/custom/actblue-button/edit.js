@@ -221,9 +221,11 @@ function ActBlueButtonEdit({
 					<TextControl
 						type="number"
 						label="Amount"
-						value={amount / 100}
+						value={amount ? amount / 100 : ""}
 						onChange={(value) =>
-							setAttributes({ amount: value * 100 })
+							setAttributes({
+								amount: value ? value * 100 : undefined,
+							})
 						}
 						help="Set the amount of the contribution in dollars, leave blank to let the donor choose an amount."
 					/>
