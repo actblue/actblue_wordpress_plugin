@@ -5,7 +5,7 @@ Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributi
 Requires at least: 4.5
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,10 @@ If you have a question about the ActBlue platform, visit our [support site](http
 2. The link will automatically be replaced with the live form.
 
 == Changelog ==
+
+= 1.4.0 =
+* ActBlue buttons can pre-select an amount in the form mdoal that opens
+* ActBlue buttons changes style on click, to demonstrate that a form modal is loading
 
 = 1.3.0 =
 * Adds refcode support for buttons and embeddable forms
