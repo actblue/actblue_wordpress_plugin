@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 references:
   # Environment variables.
@@ -14,8 +14,8 @@ references:
       - image: circleci/php:7.2-node-browsers
     environment:
       - WP_CORE_DIR: *WP_CORE_DIR
-      - WP_HOST: *WP_HOST
       - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
+      - WP_HOST: *WP_HOST
       - WP_ORG_USERNAME: *WP_ORG_USERNAME
       - WP_TESTS_DIR: *WP_TESTS_DIR
     working_directory: ~/actblue-contributions
@@ -49,6 +49,7 @@ jobs:
           root: .
           paths:
             - actblue-contributions/build
+            - actblue-contributions/node_modules
             - actblue-contributions/vendor
 
   code_quality:
@@ -84,6 +85,61 @@ jobs:
             bash $WP_PLUGIN_NAME/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
             cd $WP_PLUGIN_NAME && $HOME/.composer/vendor/bin/phpunit
 
+  e2e_tests:
+    <<: *container_config
+    docker:
+      - image: circleci/php:7.2-node
+      - image: circleci/mysql:5.7
+    steps:
+      - checkout
+      - run:
+          name: Add WordPress host to hosts file
+          command: echo "127.0.0.1 ${WP_HOST}" | sudo tee -a /etc/hosts
+      - run:
+          name: Install Headless Chrome dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install -yq \
+            gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+            libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
+            libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
+            libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
+            fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev
+      - run:
+          name: Install puppeteer with chronium
+          command: npm install puppeteer
+      - run:
+          name: Install wp-cli
+          command: |
+            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+            chmod +x wp-cli.phar
+            sudo mv wp-cli.phar /usr/local/bin/wp
+      - *attach
+      - run:
+          name: Copy assets
+          command: |
+            cp -R /tmp/$WP_PLUGIN_NAME/vendor $WP_PLUGIN_NAME
+            cp -R /tmp/$WP_PLUGIN_NAME/build $WP_PLUGIN_NAME
+            cp -R /tmp/$WP_PLUGIN_NAME/node_modules $WP_PLUGIN_NAME
+      - run:
+          name: Install MySQL client
+          command: sudo apt-get update && sudo apt-get install default-mysql-client
+      - run:
+          name: Install MySQL PHP extension
+          command: sudo docker-php-ext-install mysqli
+      - run:
+          name: Install WordPress
+          command: bash .circleci/install-wordpress.sh
+      - run:
+          name: Setup WordPress
+          command: bash .circleci/setup-wordpress.sh
+      - run:
+          name: Start PHP server
+          command: sudo php -S $WP_HOST:80 -t $WP_CORE_DIR
+          background: True
+      - run:
+          name: Run e2e tests
+          command: cd $WP_PLUGIN_NAME && npm run test:e2e -- --wordpress-base-url=http://${WP_HOST}
+
   deploy_plugin:
     <<: *container_config
     steps:
@@ -107,14 +163,14 @@ jobs:
           name: Copy built assets
           command: cp -R /tmp/actblue-contributions/build actblue-contributions
       - run:
-          name: "Install archive script dependencies"
+          name: 'Install archive script dependencies'
           command: |
             apk add --no-cache gnupg rsync
       - run:
-          name: "Create ZIP archive"
+          name: 'Create ZIP archive'
           command: bash bin/archive.sh
       - run:
-          name: "Publish Release on GitHub"
+          name: 'Publish Release on GitHub'
           command: |
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./artifacts/
 
@@ -127,6 +183,9 @@ workflows:
           requires:
             - build
       - unit_tests:
+          requires:
+            - build
+      - e2e_tests:
           requires:
             - build
   deploy:

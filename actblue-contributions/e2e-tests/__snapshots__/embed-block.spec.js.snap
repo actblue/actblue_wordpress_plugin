@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Wrapper block Add embed url 1`] = `
+"<!-- wp:actblue/embed {\\"url\\":\\"https://secure.actblue.com/donate/actblue-1-embed\\"} -->
+<figure class=\\"wp-block-actblue-embed wp-block-embed is-provider-actblue\\"><div class=\\"wp-block-embed__wrapper\\">
+https://secure.actblue.com/donate/actblue-1-embed
+</div></figure>
+<!-- /wp:actblue/embed -->"
+`;
+
+exports[`Wrapper block Embed block is available 1`] = `"<!-- wp:actblue/embed /-->"`;
