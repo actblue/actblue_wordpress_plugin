@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import { getPhotoHtml } from "./util";
-
-/**
  * External dependencies
  */
 import classnames from "classnames/dedupe";
@@ -12,7 +7,7 @@ import classnames from "classnames/dedupe";
  * WordPress dependencies
  */
 import { __ } from "@wordpress/i18n";
-import { Placeholder, SandBox } from "@wordpress/components";
+import { Placeholder } from "@wordpress/components";
 import { RichText, BlockIcon } from "@wordpress/block-editor";
 import { Component } from "@wordpress/element";
 
@@ -57,16 +52,10 @@ class EmbedPreview extends Component {
 			icon,
 			label,
 		} = this.props;
-		const { scripts } = preview;
 		const { interactive } = this.state;
 
-		const html = "photo" === type ? getPhotoHtml(preview) : preview.html;
+		const html = preview.html;
 		const cannotPreview = false;
-		const sandboxClassnames = classnames(
-			type,
-			className,
-			"wp-block-embed__wrapper"
-		);
 
 		// Disabled because the overlay div doesn't actually have a role or functionality
 		// as far as the user is concerned. We're just catching the first click so that
@@ -74,13 +63,7 @@ class EmbedPreview extends Component {
 		/* eslint-disable jsx-a11y/no-static-element-interactions */
 		const embedWrapper = (
 			<div className="wp-block-embed__wrapper">
-				<SandBox
-					html={html}
-					scripts={scripts}
-					title="Embedded content from actblue.com"
-					type={sandboxClassnames}
-					onFocus={this.hideOverlay}
-				/>
+				<div dangerouslySetInnerHTML={{ __html: html }} />
 				{!interactive && (
 					<div
 						className="block-library-embed__interactive-overlay"
