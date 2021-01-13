@@ -25,7 +25,7 @@ const onDocumentReady = (callback) => {
  */
 const handleButtonClick = (event) => {
 	const { currentTarget } = event;
-	const { token, refcode } = event.currentTarget.dataset;
+	const { token, refcode, amount } = currentTarget.dataset;
 
 	if (!token) {
 		console.warn(
@@ -36,6 +36,7 @@ const handleButtonClick = (event) => {
 
 	window.actblue.requestContribution({
 		token,
+		amount,
 		refcodes: { refcode },
 		onLanded: () => {
 			currentTarget.classList.remove("is-style-outline");
@@ -51,9 +52,10 @@ const handleButtonClick = (event) => {
  * @return void
  */
 const actblueInit = () => {
+	const { actblue } = window;
 	if (
-		typeof window.actblue !== "object" ||
-		typeof window.actblue.requestContribution !== "function"
+		typeof actblue !== "object" ||
+		typeof actblue.requestContribution !== "function"
 	) {
 		console.warn("The actblue.js script is not loaded, but is required.");
 		return;
