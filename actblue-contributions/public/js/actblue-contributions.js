@@ -38,7 +38,11 @@ const handleButtonClick = (event) => {
 		token,
 		amount,
 		refcodes: { refcode },
+		onLanded: () => {
+			currentTarget.classList.remove("is-style-outline");
+		},
 	});
+	currentTarget.classList.add("is-style-outline");
 	event.preventDefault();
 };
 
