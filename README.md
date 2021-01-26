@@ -10,7 +10,14 @@ If you want to install the plugin on your WordPress site, you can download and i
 
 ### GitHub Releases
 
-You can also download the latest version of the plugin from the [GitHub releases page](https://github.com/actblue/actblue_wordpress_plugin/releases). These releases are signed with the [ActBlue GPG key](#ActBlue-GPG-key).
+You can also download the latest version of the plugin from the [GitHub releases page](https://github.com/actblue/actblue_wordpress_plugin/releases).
+
+#### Verifying GitHub Releases
+
+These releases are signed with the [ActBlue GPG key](#ActBlue-GPG-key), to verify the signature:
+
+1. Import the signing key: `gpg --keyserver pgp.mit.edu --recv-keys D842AF7166B99EDA`
+2. Verify the downloaded file: `gpg --verify actblue-contributions.zip.asc`
 
 ## Structure
 
@@ -227,6 +234,17 @@ There is also a utility script that can be used to _only_ deploy the assets for 
 ```
 
 # ActBlue PGP key
+
+Key Info:
+
+```
+pub   rsa3072 2020-12-09 [SC] [expires: 2022-12-09]
+      44CD70EA353C06DE5AB608E4D842AF7166B99EDA
+uid           [  full  ] integrations@actbluetech.com
+sub   rsa3072 2020-12-09 [E]
+```
+
+Available on keyservers: [keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?search=0x44CD70EA353C06DE5AB608E4D842AF7166B99EDA&fingerprint=on&op=index), [pgp.mit.edu](https://pgp.mit.edu/pks/lookup?search=0x44CD70EA353C06DE5AB608E4D842AF7166B99EDA&op=index)
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
