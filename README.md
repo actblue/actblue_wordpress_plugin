@@ -1,6 +1,16 @@
-# ActBlue Contributions Plugin and Docker Setup
+# ActBlue Contributions Plugin
 
 This repository holds the source code for the ActBlue WordPress plugin, as well as a docker container that can be used to spin up a local environment containing WordPress (with the plugin installed and activated). The container comes with SSL support and PHP unit tests with PHPUnit](https://phpunit.de).
+
+## Installation
+
+### WordPress Plugin Repository
+
+If you want to install the plugin on your WordPress site, you can download and install the latest version of the plugin from WordPress.org: [ActBlue Contributions](https://wordpress.org/plugins/actblue-contributions/).
+
+### GitHub Releases
+
+You can also download the latest version of the plugin from the [GitHub releases page](https://github.com/actblue/actblue_wordpress_plugin/releases). These releases are signed with the [ActBlue GPG key](#ActBlue-GPG-key).
 
 ## Structure
 
@@ -85,6 +95,10 @@ docker-compose ps
 
 ## Testing
 
+This repository includes PHP unit tests and end-to-end tests to confirm plugin functionality. Both testing suites are run as a part of CircleCI'c continuous integration step, and are available via local scripts as well.
+
+### PHP Unit testing
+
 PHP unit testing via [PHPUnit 5](https://phpunit.de/getting-started/phpunit-5.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
 
 To run the PHP unit tests on the container, run the following command (note that the container needs to be running for this to work):
@@ -127,26 +141,26 @@ To release a new version of the plugin via automatic deployment:
 
 5. Locally, pull down the latest from `main`, and create a new annotated tag for the new version release. Note that this tag label _must_ have a leading `v` (for example, `v1.0.0`) so that the CircleCI and the deployment scripts can identify it.
 
-    ```sh
-    git checkout main
-    git pull origin main
-    git tag -a v0.0.0 -m "Release 0.0.0"
-    ```
+   ```sh
+   git checkout main
+   git pull origin main
+   git tag -a v0.0.0 -m "Release 0.0.0"
+   ```
 
-6. Push the tag to the GitHub repository. ***Note that this action will trigger a deployment to the WordPress svn repository.***
+6. Push the tag to the GitHub repository. **_Note that this action will trigger a deployment to the WordPress svn repository._**
 
-    ```sh
-    git push origin --tags
-    ```
+   ```sh
+   git push origin --tags
+   ```
 
 7. Finally, merge the `main` branch brack into the `develop` branch to align both branches.
 
-    ```sh
-    git checkout develop
-    git pull origin develop
-    git merge main
-    git push origin develop
-    ```
+   ```sh
+   git checkout develop
+   git pull origin develop
+   git merge main
+   git push origin develop
+   ```
 
 ### Manual deployment
 
@@ -177,4 +191,50 @@ There is also a utility script that can be used to _only_ deploy the assets for 
 
 ```sh
 ./.circleci deploy-assets.sh
+```
+
+# ActBlue PGP key
+
+```
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+X4tzSMimCwnR6jAL+Xw=
+=QGAP
+-----END PGP PUBLIC KEY BLOCK-----
 ```
