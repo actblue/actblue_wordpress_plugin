@@ -18,6 +18,14 @@ These releases are signed with the [ActBlue GPG key](#ActBlue-GPG-key), to verif
 
 1. Import the signing key: `gpg --keyserver pgp.mit.edu --recv-keys D842AF7166B99EDA`
 2. Verify the downloaded file: `gpg --verify actblue-contributions.zip.asc`
+3. Correct output will look like (with a different signature date):
+```
+gpg: assuming signed data in 'actblue-contributions.zip'
+gpg: Signature made Wed Jan 13 13:25:17 2021 EST
+gpg:                using RSA key 44CD70EA353C06DE5AB608E4D842AF7166B99EDA
+gpg:                issuer "integrations@actbluetech.com"
+gpg: Good signature from "integrations@actbluetech.com" [full]
+```
 
 ## Structure
 
