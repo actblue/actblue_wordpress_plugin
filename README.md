@@ -95,10 +95,6 @@ docker-compose ps
 
 ## Testing
 
-This repository includes PHP unit tests and end-to-end tests to confirm plugin functionality. Both testing suites are run as a part of CircleCI'c continuous integration step, and are available via local scripts as well.
-
-### PHP Unit testing
-
 PHP unit testing via [PHPUnit 5](https://phpunit.de/getting-started/phpunit-5.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
 
 To run the PHP unit tests on the container, run the following command (note that the container needs to be running for this to work):
