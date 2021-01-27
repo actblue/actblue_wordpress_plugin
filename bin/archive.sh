@@ -24,7 +24,7 @@ echo "Import GPG signing key ..."
 echo -e "$GPG_PRIVATE_KEY" | gpg --import
 
 echo "Signing zip file ..."
-gpg -u "$GPG_UID" --detach-sign --output artifacts/actblue-contributions.zip.asc artifacts/actblue-contributions.zip
+gpg -u "$GPG_UID" --detach-sign --armor --output artifacts/actblue-contributions.zip.asc artifacts/actblue-contributions.zip
 
 echo "Cleaning up ..."
 rm -rf dist
