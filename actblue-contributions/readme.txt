@@ -101,6 +101,9 @@ If you have a question about the ActBlue platform, visit our [support site](http
 
 == Changelog ==
 
+= 1.4.1 =
+* Compatibility with WordPress 5.7
+
 = 1.4.0 =
 * ActBlue buttons can pre-select an amount in the form modal that opens
 * ActBlue buttons changes style on click, to demonstrate that a form modal is loading
