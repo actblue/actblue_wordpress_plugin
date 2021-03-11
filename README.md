@@ -1,6 +1,31 @@
-# ActBlue Contributions Plugin and Docker Setup
+# ActBlue Contributions Plugin
 
 This repository holds the source code for the ActBlue WordPress plugin, as well as a docker container that can be used to spin up a local environment containing WordPress (with the plugin installed and activated). The container comes with SSL support and PHP unit tests with PHPUnit](https://phpunit.de).
+
+## Installation
+
+### WordPress Plugin Repository
+
+If you want to install the plugin on your WordPress site, you can download and install the latest version of the plugin from WordPress.org: [ActBlue Contributions](https://wordpress.org/plugins/actblue-contributions/).
+
+### GitHub Releases
+
+You can also download the latest version of the plugin from the [GitHub releases page](https://github.com/actblue/actblue_wordpress_plugin/releases).
+
+#### Verifying GitHub Releases
+
+These releases are signed with the [ActBlue GPG key](#ActBlue-GPG-key), to verify the signature:
+
+1. Import the signing key: `gpg --keyserver pgp.mit.edu --recv-keys D842AF7166B99EDA`
+2. Verify the downloaded file: `gpg --verify actblue-contributions.zip.asc`
+3. Correct output will look like (with a different signature date):
+```
+gpg: assuming signed data in 'actblue-contributions.zip'
+gpg: Signature made Wed Jan 13 13:25:17 2021 EST
+gpg:                using RSA key 44CD70EA353C06DE5AB608E4D842AF7166B99EDA
+gpg:                issuer "integrations@actbluetech.com"
+gpg: Good signature from "integrations@actbluetech.com" [full]
+```
 
 ## Structure
 
@@ -19,6 +44,10 @@ Configuration files for the local docker image.
 ### `.circleci/`
 
 Configuration for continuous integration via CircleCI. This directory also holds two bash scripts that help facilitate the deployment of the plugin to the WordPress svn repository.
+
+### `bin/`
+
+Includes scripts that perform utility actions like manually archiving the plugin, running end-to-end tests locally, and bumping the plugin version.
 
 ## Prerequisites
 
@@ -85,13 +114,46 @@ docker-compose ps
 
 ## Testing
 
+This repository includes PHP unit tests and end-to-end tests to confirm plugin functionality. Both testing suites are run as a part of CircleCI'c continuous integration step, and are available via local scripts as well.
+
+### PHP Unit testing
 PHP unit testing via [PHPUnit 5](https://phpunit.de/getting-started/phpunit-5.html) is installed when building and starting the local docker container. Tests can be written in the `actblue/tests/` directory. Note that a test file _must_ start with the `test-` prefix to be included in the test runner.
 
-To run the PHP unit tests on the container, run the following command (note that the container needs to be running for this to work):
+To start the container and run the PHP unit tests on the container, run the following command (note that port 80 on your computer will need to be free):
 
 ```sh
-docker-compose exec wordpress phpunit
+./bin/run-unit-tests.sh
 ```
+
+#### Writing tests
+
+The PHP unit tests can be found in the `actblue-contributions/tests/` directory. Any file in that directory that has a filename with `test-` prepended to it will be run as a part of the testing script.
+
+### End-to-end testing
+
+End-to-end testing is handled via the [WordPress e2e suite](https://make.wordpress.org/core/2019/06/27/introducing-the-wordpress-e2e-tests/), which uses [Jest](https://jestjs.io/) as a testing/asserting framework and [Puppeteer](https://pptr.dev/) to communicate with the browser.
+
+To run the tests locally, you'll need [Docker](https://www.docker.com/) installed on your machine to run the environment to test against. The entire local testing process can be run with the following script:
+
+```sh
+./bin/run-e2e-tests.sh
+```
+
+This script will build the plugin assets with yarn, then spin up a docker container containing WordPress. Once that is set up, the script will run the end-to-end tests on the container, then stop and tear down the environment.
+
+#### Testing different WordPress versions
+
+The end-to-end script can take a `--version` flag that will allow you to set the WordPress version to test against:
+
+```sh
+./bin/run-e2e-tests.sh --version 5.4
+```
+
+The `version` flag can accept a version number, 'latest', or 'nightly'.
+
+#### Writing tests
+
+Tests are located in the `actblue-contributions/e2e-tests/` directory. Any JavaScript file that has the `.spec.js` suffix will be used to look for tests to run. In addition to using [Jest](https://jestjs.io/) as the testing framework and [Puppeteer](https://pptr.dev/) to communicate with the browser, the [WordPress `e2e-test-utils` package](https://developer.wordpress.org/block-editor/packages/packages-e2e-test-utils/) is also used to handle WordPress-specific actions.
 
 ## Deployment
 
@@ -127,26 +189,26 @@ To release a new version of the plugin via automatic deployment:
 
 5. Locally, pull down the latest from `main`, and create a new annotated tag for the new version release. Note that this tag label _must_ have a leading `v` (for example, `v1.0.0`) so that the CircleCI and the deployment scripts can identify it.
 
-    ```sh
-    git checkout main
-    git pull origin main
-    git tag -a v0.0.0 -m "Release 0.0.0"
-    ```
+   ```sh
+   git checkout main
+   git pull origin main
+   git tag -a v0.0.0 -m "Release 0.0.0"
+   ```
 
-6. Push the tag to the GitHub repository. ***Note that this action will trigger a deployment to the WordPress svn repository.***
+6. Push the tag to the GitHub repository. **_Note that this action will trigger a deployment to the WordPress svn repository._**
 
-    ```sh
-    git push origin --tags
-    ```
+   ```sh
+   git push origin --tags
+   ```
 
 7. Finally, merge the `main` branch brack into the `develop` branch to align both branches.
 
-    ```sh
-    git checkout develop
-    git pull origin develop
-    git merge main
-    git push origin develop
-    ```
+   ```sh
+   git checkout develop
+   git pull origin develop
+   git merge main
+   git push origin develop
+   ```
 
 ### Manual deployment
 
@@ -177,4 +239,61 @@ There is also a utility script that can be used to _only_ deploy the assets for 
 
 ```sh
 ./.circleci deploy-assets.sh
+```
+
+# ActBlue PGP key
+
+Key Info:
+
+```
+pub   rsa3072 2020-12-09 [SC] [expires: 2022-12-09]
+      44CD70EA353C06DE5AB608E4D842AF7166B99EDA
+uid           [  full  ] integrations@actbluetech.com
+sub   rsa3072 2020-12-09 [E]
+```
+
+Available on keyservers: [keyserver.ubuntu.com](https://keyserver.ubuntu.com/pks/lookup?search=0x44CD70EA353C06DE5AB608E4D842AF7166B99EDA&fingerprint=on&op=index), [pgp.mit.edu](https://pgp.mit.edu/pks/lookup?search=0x44CD70EA353C06DE5AB608E4D842AF7166B99EDA&op=index)
+
+```
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+X4tzSMimCwnR6jAL+Xw=
+=QGAP
+-----END PGP PUBLIC KEY BLOCK-----
 ```
