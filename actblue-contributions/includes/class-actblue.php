@@ -139,6 +139,25 @@ class ActBlue {
 	}
 
 	/**
+	 * Reports the source of the embed code to the ActBlue service
+	 *
+	 * @param string $tag The generated tag code
+	 * @param string $handle The name of the script tag handle
+	 *
+	 * @return string
+	 *
+	 * @link   https://developer.wordpress.org/reference/hooks/script_loader_tag/
+	 * @since  4.1.0
+	 * @access public
+	 */
+	public function add_source_to_script( $tag, $handle, $src ) {
+		if ($this->plugin_name . '-vendor' == $handle) {
+			$tag = '<script src="' . esc_url($src) . '" data-ab-source="wordpress_plugin-' .$this->version . '"></script>';
+		}
+		return $tag;
+	}
+
+	/**
 	 * Load the required dependencies for this plugin.
 	 *
 	 * Include the following files that make up the plugin:
@@ -187,6 +206,12 @@ class ActBlue {
 		 * @link https://developer.wordpress.org/reference/functions/add_filter/
 		 */
 		add_filter( 'http_headers_useragent', array( $this, 'send_actblue_useragent' ), 10, 2 );
+
+		/**
+		 * Adds the data attribute to the actblue.js script tag, which informs
+		 * ActBlue about the platform.
+		 */
+		add_filter( 'script_loader_tag', array( $this, 'add_source_to_script' ), 10, 3 );
 	}
 
 	/**
