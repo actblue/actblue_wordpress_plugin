@@ -141,8 +141,9 @@ class ActBlue {
 	/**
 	 * Reports the source of the embed code to the ActBlue service
 	 *
-	 * @param string $tag The generated tag code
-	 * @param string $handle The name of the script tag handle
+	 * @param string $tag The generated tag code.
+	 * @param string $handle The name of the script tag handle.
+	 * @param string $src The url of the script.
 	 *
 	 * @return string
 	 *
@@ -151,8 +152,8 @@ class ActBlue {
 	 * @access public
 	 */
 	public function add_source_to_script( $tag, $handle, $src ) {
-		if ($this->plugin_name . '-vendor' == $handle) {
-			$tag = '<script src="' . esc_url($src) . '" data-ab-source="wordpress_plugin-' .$this->version . '"></script>';
+		if ( $this->plugin_name . '-vendor' === $handle ) {
+			$tag = '<script src="' . esc_url( $src ) . '" data-ab-source="wordpress_plugin-' . $this->version . '"></script>'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 		}
 		return $tag;
 	}
