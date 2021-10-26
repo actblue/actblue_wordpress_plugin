@@ -67,8 +67,8 @@ jobs:
   unit_tests:
     <<: *container_config
     docker:
-      - image: circleci/php:7.2
-      - image: circleci/mysql:5.7
+      - image: cimg/php:7.2
+      - image: cimg/mysql:5.7
     steps:
       - checkout
       - *install_tools
@@ -88,8 +88,8 @@ jobs:
   e2e_tests:
     <<: *container_config
     docker:
-      - image: circleci/php:7.2-node
-      - image: circleci/mysql:5.7
+      - image: cimg/php:7.2-node
+      - image: cimg/mysql:5.7
     steps:
       - checkout
       - run:
