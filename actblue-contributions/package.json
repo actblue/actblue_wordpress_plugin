@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@wordpress/e2e-test-utils": "^7.4.0",
-    "@wordpress/scripts": "19.2.4",
+    "@wordpress/scripts": "20.0.0",
     "classnames": "^2.2.6",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0"
