@@ -11,7 +11,7 @@
     "@wordpress/icons": "^2.8.0"
   },
   "devDependencies": {
-    "@wordpress/e2e-test-utils": "^5.4.4",
+    "@wordpress/e2e-test-utils": "^7.4.0",
     "@wordpress/scripts": "^18.1.0",
     "classnames": "^2.2.6",
     "sass": "^1.29.0",
