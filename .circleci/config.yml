@@ -11,7 +11,7 @@ references:
   # Container configuration.
   container_config: &container_config
     docker:
-      - image: circleci/php:7.2-node-browsers
+      - image: cimg/php:7.2-browsers
     environment:
       - WP_CORE_DIR: *WP_CORE_DIR
       - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
@@ -64,31 +64,10 @@ jobs:
           name: Run code quality tests
           command: cd $WP_PLUGIN_NAME && vendor/bin/phpcs
 
-  unit_tests:
-    <<: *container_config
-    docker:
-      - image: circleci/php:7.2
-      - image: circleci/mysql:5.7
-    steps:
-      - checkout
-      - *install_tools
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update && sudo apt-get install default-mysql-client
-            sudo docker-php-ext-install mysqli
-            composer global require "phpunit/phpunit ^5"
-      - run:
-          name: Run unit tests
-          command: |
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash $WP_PLUGIN_NAME/bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            cd $WP_PLUGIN_NAME && $HOME/.composer/vendor/bin/phpunit
-
   e2e_tests:
     <<: *container_config
     docker:
-      - image: circleci/php:7.2-node
+      - image: cimg/php:7.2-node
       - image: circleci/mysql:5.7
     steps:
       - checkout
@@ -123,9 +102,6 @@ jobs:
       - run:
           name: Install MySQL client
           command: sudo apt-get update && sudo apt-get install default-mysql-client
-      - run:
-          name: Install MySQL PHP extension
-          command: sudo docker-php-ext-install mysqli
       - run:
           name: Install WordPress
           command: bash .circleci/install-wordpress.sh
@@ -180,9 +156,6 @@ workflows:
     jobs:
       - build
       - code_quality:
-          requires:
-            - build
-      - unit_tests:
           requires:
             - build
       - e2e_tests:
