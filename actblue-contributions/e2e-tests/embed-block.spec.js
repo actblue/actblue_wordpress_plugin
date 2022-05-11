@@ -19,7 +19,7 @@ describe("Wrapper block", () => {
 
 	// Tests can be added here by using the it() function
 
-	it("Embed block is available", async () => {
+	it.skip("Embed block is available", async () => {
 		await insertBlock("ActBlue Embed");
 
 		// Check if block was inserted
