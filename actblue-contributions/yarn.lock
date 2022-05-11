@@ -2486,7 +2486,7 @@
     object.fromentries "^2.0.0"
     prop-types "^15.7.0"
 
-"@wordpress/api-fetch@^6.5.0":
+"@wordpress/api-fetch@^6.1.0":
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/@wordpress/api-fetch/-/api-fetch-6.5.0.tgz#72760fe343589c73454f8d116ca3760f9d72e2ff"
   integrity sha512-ri3Ha/mgo4lHH5akTSAetd0LLNcuqR/lOBC0hb7tgFUpUXJLWCyZnPNRVFruSgcnXzv5DmeoEnY+F3hPWCZBmA==
@@ -2536,15 +2536,15 @@
     json2php "^0.0.4"
     webpack-sources "^3.2.2"
 
-"@wordpress/e2e-test-utils@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@wordpress/e2e-test-utils/-/e2e-test-utils-7.4.0.tgz#5ad877b6428177edde79b21931bfcfdc45ac255b"
-  integrity sha512-soT2WS4Ys/NTsVUz4KCXzYjIxWjYP8vpNboU51KD/cQcJnbwHvn7IBjacJyqAfjuPv8s5ZP/INcpaWL2vM1hdQ==
+"@wordpress/e2e-test-utils@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/e2e-test-utils/-/e2e-test-utils-7.0.0.tgz#ee2b2858e1271e7e8e71730f2ba16cf7cf33c03c"
+  integrity sha512-XhS9NMWUcqh8TLfJB8pmeeIF5N/YTsgyy7SywdM84tLX+lzVyJV1SZ7hdZXHhTHBfYy4o2yD1+AFB7Dq1NxslQ==
   dependencies:
     "@babel/runtime" "^7.16.0"
-    "@wordpress/api-fetch" "^6.5.0"
-    "@wordpress/keycodes" "^3.8.0"
-    "@wordpress/url" "^3.9.0"
+    "@wordpress/api-fetch" "^6.1.0"
+    "@wordpress/keycodes" "^3.4.0"
+    "@wordpress/url" "^3.5.0"
     form-data "^4.0.0"
     lodash "^4.17.21"
     node-fetch "^2.6.0"
@@ -2660,7 +2660,7 @@
     enzyme "^3.11.0"
     enzyme-to-json "^3.4.4"
 
-"@wordpress/keycodes@^3.8.0":
+"@wordpress/keycodes@^3.4.0":
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/@wordpress/keycodes/-/keycodes-3.8.0.tgz#7181cbbc2703ff980e86534c609d23636368326d"
   integrity sha512-WqYY/NDMQbt9rEAzX+kQRTXBiw0ct4YjPSe4pTVpPW7AHoKpkhyC2xKlYAfIQ6IlbHqRQ0XFLbGBMoi0n9ENAA==
@@ -2765,7 +2765,7 @@
     stylelint-config-recommended "^6.0.0"
     stylelint-config-recommended-scss "^5.0.2"
 
-"@wordpress/url@^3.9.0":
+"@wordpress/url@^3.5.0", "@wordpress/url@^3.9.0":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@wordpress/url/-/url-3.9.0.tgz#d9888026bd04de784acef0f93ffa8a9ddc0621ed"
   integrity sha512-fiPvb9xB8g/xwSprq+mEI1MyH/H9xCfpqKcnG10JdAWRFahQky6QU0cAOPTYNuU96l0++Ha/SkHSylVyftzFAw==
