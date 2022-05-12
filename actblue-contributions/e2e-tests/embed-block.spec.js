@@ -6,7 +6,7 @@ import {
 } from "@wordpress/e2e-test-utils";
 
 import { selectBlockByName } from "./helpers";
-const { expect } = require("@jest/globals");
+jest.useFakeTimers("legacy");
 
 jest.setTimeout(15000);
 
