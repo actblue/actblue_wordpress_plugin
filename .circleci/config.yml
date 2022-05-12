@@ -67,7 +67,7 @@ jobs:
   e2e_tests:
     <<: *container_config
     docker:
-      - image: cimg/php:7.2-node
+      - image: cimg/php:8.0.19-node
       - image: circleci/mysql:5.7
     steps:
       - checkout
