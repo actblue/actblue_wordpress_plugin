@@ -7,7 +7,6 @@ import {
 
 import { selectBlockByName } from "./helpers";
 
-jest.useFakeTimers();
 jest.setTimeout(15000);
 
 describe("Wrapper block", () => {
