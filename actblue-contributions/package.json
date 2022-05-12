@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@wordpress/icons": "^2.8.0",
-    "jest": "^28.1.0"
+    "jest-environment-jsdom": "^28.1.0"
   },
   "devDependencies": {
     "@wordpress/e2e-test-utils": "^7.4.0",
