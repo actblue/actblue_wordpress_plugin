@@ -2,6 +2,10 @@
 
 This repository holds the source code for the ActBlue WordPress plugin, as well as a docker container that can be used to spin up a local environment containing WordPress (with the plugin installed and activated). The container comes with SSL support and PHP unit tests with PHPUnit](https://phpunit.de).
 
+# Releases & Maintenance
+
+This plugin will be tested and released quarterly unless security patches or updates are needed in the intervening time.
+
 ## Installation
 
 ### WordPress Plugin Repository
@@ -26,6 +30,11 @@ gpg:                using RSA key 44CD70EA353C06DE5AB608E4D842AF7166B99EDA
 gpg:                issuer "integrations@actbluetech.com"
 gpg: Good signature from "integrations@actbluetech.com" [full]
 ```
+4. Create a distributable zip archive of the plugin for upload as a Github release. The script does require that `GPG_PRIVATE_KEY` and `GPG_UID` are set as environment variables on your computer.
+
+   `./bin/archive.sh`
+
+   Upload the generated files (i.e. the .zip and the .zip.asc) to the correct release under https://github.com/actblue/actblue_wordpress_plugin/releases.
 
 ## Structure
 
