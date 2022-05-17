@@ -101,6 +101,10 @@ If you have a question about the ActBlue platform, visit our [support site](http
 
 == Changelog ==
 
+= 1.5.1 =
+* Tested up to Wordpress 5.9.3
+* Updates dependencies
+
 = 1.5.0 =
 * Tested up to Wordpress 5.8.1
 * Provide data-ab-source attribute to actblue.js script tag
