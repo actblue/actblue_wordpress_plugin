@@ -7,6 +7,21 @@
     "start": "wp-scripts start --config webpack.config.js",
     "test:e2e": "wp-scripts test-e2e"
   },
+  "resolutions": {
+    "hosted-git-info": "3.0.8",
+    "lodash": "4.17.21",
+    "browserslist": "4.16.5",
+    "trim-newlines": "3.0.1",
+    "glob-parent": "5.1.2",
+    "postcss": "7.0.36",
+    "path-parse": "1.0.7",
+    "tmpl": "1.0.5",
+    "nth-check": "2.0.1",
+    "markdown-it": "12.3.2",
+    "follow-redirects": "1.14.8",
+    "minimist": "1.2.6",
+    "async": "2.6.4"
+  },
   "dependencies": {
     "@wordpress/icons": "^2.8.0"
   },
