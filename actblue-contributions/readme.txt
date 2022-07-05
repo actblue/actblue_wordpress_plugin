@@ -5,7 +5,7 @@ Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributi
 Requires at least: 4.5
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -101,7 +101,7 @@ If you have a question about the ActBlue platform, visit our [support site](http
 
 == Changelog ==
 
-= 1.5.0 =
+= 1.5.1 =
 * Tested up to Wordpress 5.8.1
 * Provide data-ab-source attribute to actblue.js script tag
 
