@@ -45,7 +45,7 @@ describe("Wrapper block", () => {
 		await embedBtn.click();
 
 		// wait for 1 second for the embed to load.
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
