@@ -3,9 +3,9 @@ Contributors: actblue,upstatement
 Donate link: https://secure.actblue.com/
 Tags: donate,donation,fundraising,giving,charity,nonprofit,contribute,contributions
 Requires at least: 4.5
-Tested up to: 5.8
+Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,10 @@ If you have a question about the ActBlue platform, visit our [support site](http
 2. The link will automatically be replaced with the live form.
 
 == Changelog ==
+
+= 1.5.2 =
+* Tested up to Wordpress 6.0
+* Updates dependencies
 
 = 1.5.1 =
 * Tested up to Wordpress 5.8.1
