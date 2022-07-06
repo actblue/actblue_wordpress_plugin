@@ -2,6 +2,10 @@
 
 This repository holds the source code for the ActBlue WordPress plugin, as well as a docker container that can be used to spin up a local environment containing WordPress (with the plugin installed and activated). The container comes with SSL support and PHP unit tests with PHPUnit](https://phpunit.de).
 
+# Releases & Maintenance
+
+This plugin will be tested and released quarterly unless security patches or updates are needed in the intervening time.
+
 ## Installation
 
 ### WordPress Plugin Repository
@@ -184,10 +188,15 @@ To release a new version of the plugin via automatic deployment:
    git commit -m "Version bump to 0.0.0"
    git push origin release-0.0.0
    ```
+4. Create a distributable zip archive of the plugin for upload as a Github release. The script does require that `GPG_PRIVATE_KEY` and `GPG_UID` are set as environment variables on your computer.
 
-4. PR the release branch into the `main` branch via the GitHub GUI. Once the checks have passed, merge the PR into `main`.
+   `./bin/archive.sh`
 
-5. Locally, pull down the latest from `main`, and create a new annotated tag for the new version release. Note that this tag label _must_ have a leading `v` (for example, `v1.0.0`) so that the CircleCI and the deployment scripts can identify it.
+   Upload the generated files (i.e. the .zip and the .zip.asc) to the correct release under https://github.com/actblue/actblue_wordpress_plugin/releases.
+
+5. PR the release branch into the `main` branch via the GitHub GUI. Once the checks have passed, merge the PR into `main`.
+
+6. Locally, pull down the latest from `main`, and create a new annotated tag for the new version release. Note that this tag label _must_ have a leading `v` (for example, `v1.0.0`) so that the CircleCI and the deployment scripts can identify it.
 
    ```sh
    git checkout main
@@ -195,13 +204,13 @@ To release a new version of the plugin via automatic deployment:
    git tag -a v0.0.0 -m "Release 0.0.0"
    ```
 
-6. Push the tag to the GitHub repository. **_Note that this action will trigger a deployment to the WordPress svn repository._**
+7. Push the tag to the GitHub repository. **_Note that this action will trigger a deployment to the WordPress svn repository._**
 
    ```sh
    git push origin --tags
    ```
 
-7. Finally, merge the `main` branch brack into the `develop` branch to align both branches.
+8. Finally, merge the `main` branch brack into the `develop` branch to align both branches.
 
    ```sh
    git checkout develop

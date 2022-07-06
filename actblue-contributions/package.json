@@ -1,18 +1,35 @@
 {
   "name": "actblue-contributions",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "author": "ActBlue",
   "scripts": {
     "build": "wp-scripts build --config webpack.config.js",
     "start": "wp-scripts start --config webpack.config.js",
     "test:e2e": "wp-scripts test-e2e"
   },
+  "resolutions": {
+    "hosted-git-info": "3.0.8",
+    "lodash": "4.17.21",
+    "browserslist": "4.16.5",
+    "trim-newlines": "3.0.1",
+    "glob-parent": "5.1.2",
+    "postcss": "8",
+    "path-parse": "1.0.7",
+    "tmpl": "1.0.5",
+    "nth-check": "2.0.1",
+    "markdown-it": "12.3.2",
+    "follow-redirects": "1.14.8",
+    "minimist": "1.2.6",
+    "async": "2.6.4",
+    "ansi-regex": "5.0.1",
+    "node-fetch": "2.6.7"
+  },
   "dependencies": {
     "@wordpress/icons": "^2.8.0"
   },
   "devDependencies": {
-    "@wordpress/e2e-test-utils": "^5.4.4",
-    "@wordpress/scripts": "^18.1.0",
+    "@wordpress/e2e-test-utils": "^7.4.0",
+    "@wordpress/scripts": "23.3.0",
     "classnames": "^2.2.6",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0"
