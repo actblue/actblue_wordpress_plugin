@@ -1,6 +1,6 @@
 {
   "name": "actblue-contributions",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "author": "ActBlue",
   "scripts": {
     "build": "wp-scripts build --config webpack.config.js",
