@@ -35,7 +35,8 @@ jobs:
   build:
     <<: *container_config
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - run:
           name: Install dependencies
           command: |
@@ -55,7 +56,8 @@ jobs:
   code_quality:
     <<: *container_config
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - *attach
       - run:
           name: Copy vendor directory
@@ -70,7 +72,8 @@ jobs:
       - image: cimg/php:7.3
       - image: circleci/mysql:5.7
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - *install_tools
       - run:
           name: Install dependencies
@@ -90,7 +93,8 @@ jobs:
       - image: cimg/php:8.0.19-node
       - image: circleci/mysql:5.7
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - run:
           name: Add WordPress host to hosts file
           command: echo "127.0.0.1 ${WP_HOST}" | sudo tee -a /etc/hosts
@@ -139,7 +143,8 @@ jobs:
   deploy_plugin:
     <<: *container_config
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - *attach
       - *install_tools
       - run:
@@ -153,7 +158,8 @@ jobs:
     docker:
       - image: cibuilds/github:0.13
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - *attach
       - run:
           name: Copy built assets
