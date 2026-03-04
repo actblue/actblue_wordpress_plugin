@@ -37,6 +37,7 @@ jobs:
           queries: security-extended
 
       - name: Autobuild
+        if: matrix.language != 'actions'
         uses: github/codeql-action/autobuild@v4
 
       - name: Perform CodeQL Analysis
