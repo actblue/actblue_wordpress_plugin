@@ -12,6 +12,7 @@ references:
   container_config: &container_config
     docker:
       - image: cimg/php:7.3-browsers
+    resource_class: medium.gen2
     environment:
       - WP_CORE_DIR: *WP_CORE_DIR
       - WP_PLUGIN_NAME: *WP_PLUGIN_NAME
@@ -69,6 +70,7 @@ jobs:
     docker:
       - image: cimg/php:7.3
       - image: circleci/mysql:5.7
+    resource_class: medium.gen2
     steps:
       - checkout
       - *install_tools
@@ -89,6 +91,7 @@ jobs:
     docker:
       - image: cimg/php:8.0.19-node
       - image: circleci/mysql:5.7
+    resource_class: medium.gen2
     steps:
       - checkout
       - run:
@@ -152,6 +155,7 @@ jobs:
   publish_github_release:
     docker:
       - image: cibuilds/github:0.13
+    resource_class: medium.gen2
     steps:
       - checkout
       - *attach
